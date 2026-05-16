@@ -48,8 +48,8 @@ export function loadConfig(): Config {
     arxivMaxResults: parseInt(process.env.ARXIV_MAX_RESULTS || "300", 10),
     lookbackDays: parseInt(process.env.LOOKBACK_DAYS || "7", 10),
     minRelevanceScore: parseInt(process.env.MIN_RELEVANCE_SCORE || "5", 10),
-    filterAutoInclude: parseInt(process.env.FILTER_AUTO_INCLUDE || "6", 10),
-    filterAutoExclude: parseInt(process.env.FILTER_AUTO_EXCLUDE || "1", 10),
+    filterAutoInclude: parseInt(process.env.FILTER_AUTO_INCLUDE || "7", 10),
+    filterAutoExclude: parseInt(process.env.FILTER_AUTO_EXCLUDE || "2", 10),
     outputPath: process.env.OUTPUT_PATH || "feed.xml",
     feedTitle: process.env.FEED_TITLE || "LLM Acceleration Papers Weekly",
     feedDescription:

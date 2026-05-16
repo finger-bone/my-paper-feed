@@ -156,12 +156,12 @@ function validateConfig(config: Config): void {
 
   if (config.filterAutoInclude < 1 || config.filterAutoInclude > 10) {
     console.warn("  FILTER_AUTO_INCLUDE should be 1-10. Using 6.");
-    config.filterAutoInclude = 6;
+    config.filterAutoInclude = 7;
   }
 
   if (config.filterAutoExclude < 0 || config.filterAutoExclude > 5) {
     console.warn("  FILTER_AUTO_EXCLUDE should be 0-5. Using 1.");
-    config.filterAutoExclude = 1;
+    config.filterAutoExclude = 2;
   }
 }
 

@@ -4,13 +4,19 @@ import type { Config, Paper } from "./types";
 /*
  * ── Keyword pre-filtering ──
  *
- * Strategy: maximize recall, let the LLM handle precision.
- *   - Only auto-exclude papers that are clearly about irrelevant domains.
- *   - Everything else → LLM for relevance judgment + Chinese summary.
+ * Strategy: strict auto-include + broad auto-exclude.
+ *   - auto-include: ONLY papers with obvious acceleration keywords
+ *     (sparsity, quantization, distillation, acceleration, etc.)
+ *   - auto-exclude: papers clearly about applications, platforms, or
+ *     irrelevant domains (≥ 2 LOW_SIGNAL groups → penalty kicks in)
+ *   - everything in between → LLM judges relevance + writes summary
  *
- *   score ≥ 6  → keyword-decided relevant (still gets LLM summary)
- *   score ≤ 1  → auto-exclude (skip LLM entirely)
- *   2 ≤ score ≤ 5 → uncertain → LLM judges relevance + writes summary
+ *   score ≥ 7  → auto-include (obvious acceleration)
+ *   score ≤ 2  → auto-exclude (irrelevant domain/application)
+ *   3 ≤ score ≤ 6 → uncertain → LLM
+ *
+ * LOW_SIGNAL penalties are only applied when score < autoInclude AND
+ * ≥ 2 rule groups match, capped at -4 total.
  */
 
 interface KeywordRule {
@@ -20,7 +26,7 @@ interface KeywordRule {
   score: number;
 }
 
-/** High-confidence keywords → auto-include or boost */
+/** "必然的" — obvious acceleration keywords (高置信度，直接放行) */
 const HIGH_SIGNAL: KeywordRule[] = [
   // ── 推理加速 — 投机解码 / 并行生成 ──
   { include: ["speculative decoding", "speculative sampling", "draft model", "drafting"], score: 10 },
@@ -59,10 +65,7 @@ const HIGH_SIGNAL: KeywordRule[] = [
   { include: ["head pruning", "layer pruning", "depth pruning", "width pruning"], score: 7 },
 
   // ── 推理加速 — 连续批处理 / 服务 ──
-  { include: ["continuous batching", "dynamic batching", "inference serving", "llm serving"], score: 8 },
-  { include: ["llama.cpp", "ggml", "gguf", "ollama", "tgi", "text generation inference"], score: 7 },
-  { include: ["onnx", "onnx runtime", "openvino", "cpu inference", "edge deployment"], score: 7 },
-  { include: ["request scheduling", "load balancing", "admission control", "inference server"], score: 7 },
+  { include: ["continuous batching", "dynamic batching", "inference serving", "llm serving"], score: 7 },
 
   // ── 训练加速 — 分布式 / 并行策略 ──
   { include: ["sequence parallelism", "pipeline parallelism", "tensor parallelism", "data parallelism"], score: 8 },
@@ -74,22 +77,13 @@ const HIGH_SIGNAL: KeywordRule[] = [
 
   // ── 训练加速 — 显存优化 ──
   { include: ["gradient checkpointing", "activation checkpointing", "activation recomputation"], score: 8 },
-  { include: ["offloading", "memory efficient", "memory optimization", "vram optimization"], score: 7 },
   { include: ["mixed precision training", "bf16", "fp16 training", "amp training"], score: 7 },
-  { include: ["activation memory", "activation compression", "memory footprint", "memory saving"], score: 7 },
-  { include: ["unified memory", "page migration", "memory pooling"], score: 6 },
-
-  // ── 训练加速 — 数据 / 调度 ──
-  { include: ["dataset pruning", "data selection", "data filtering", "curriculum learning"], score: 7 },
-  { include: ["progressive training", "stagewise training", "warmup"], score: 6 },
-  { include: ["data efficiency", "sample efficiency", "data compression training"], score: 7 },
 
   // ── 高效架构 — Attention ──
   { include: ["flash attention", "flash-attention", "efficient attention", "linear attention"], score: 9 },
   { include: ["multi-query attention", "mqa", "grouped query attention", "gqa"], score: 9 },
   { include: ["sliding window attention", "dilated attention", "local attention"], score: 8 },
   { include: ["linformer", "nystromformer", "performer", "reformer", "longformer", "bigbird"], score: 8 },
-  { include: ["transformer-xl", "compressive transformer", "adaptive attention"], score: 7 },
   { include: ["softmax attention", "attention approximation", "attention pruning", "attention sparsity"], score: 8 },
   { include: ["cross-attention optimization", "encoder-decoder acceleration"], score: 7 },
 
@@ -107,16 +101,11 @@ const HIGH_SIGNAL: KeywordRule[] = [
 
   // ── 高效架构 — Transformer 变体 ──
   { include: ["efficient transformer", "transformer acceleration", "fast transformer"], score: 8 },
-  { include: ["funnel transformer", "fnet", "sinkhorn transformer", "synthesizer"], score: 7 },
-  { include: ["lightweight transformer", "lightweight model", "tiny model"], score: 7 },
 
   // ── 模型压缩 / 蒸馏 ──
   { include: ["knowledge distillation", "distillation", "distilled", "self-distillation"], score: 7 },
   { include: ["model compression", "network compression", "model shrinking"], score: 8 },
-  { include: ["low-rank", "lora", "low-rank adaptation", "low rank approximation"], score: 7 },
-  { include: ["parameter-efficient fine-tuning", "peft", "adapter", "prefix tuning", "prompt tuning"], score: 7 },
   { include: ["logit distillation", "feature distillation", "structural distillation"], score: 7 },
-  { include: ["weight sharing", "tied weights", "cross-layer sharing"], score: 6 },
 
   // ── 推理加速 — 早退 / 自适应 ──
   { include: ["early exiting", "early exit", "adaptive computation", "anycost"], score: 8 },
@@ -133,44 +122,33 @@ const HIGH_SIGNAL: KeywordRule[] = [
   { include: ["diffusion transformer", "dit acceleration", "flow matching acceleration"], score: 9 },
   { include: ["video generation acceleration", "latent video diffusion", "video latent propagation"], score: 8 },
 
-  // ── 通用效率 ──
-  { include: ["throughput", "latency", "model efficiency", "compute efficient"], score: 6 },
-  { include: ["efficient", "efficiency"], score: 5 },
-  { include: ["inference scaling", "test-time compute", "inference compute"], score: 7 },
-  { include: ["gpu optimization", "gpu memory", "gpu utilization", "hardware accelerator"], score: 7 },
-  { include: ["transformer accelerator", "neural accelerator", "tpu", "npu", "inference chip"], score: 8 },
-  { include: ["end-to-end acceleration", "pipeline optimization", "bottleneck analysis"], score: 7 },
-
   // ── 长上下文加速 ──
-  { include: ["long context", "long-context", "context window extension", "long sequence"], score: 7 },
   { include: ["long context inference", "long context acceleration", "efficient long context"], score: 9 },
 
-  // ── 多模态模型加速 ──
-  { include: ["multimodal inference", "vision-language acceleration", "vl inference"], score: 7 },
-  { include: ["large vision model acceleration", "vision transformer acceleration"], score: 7 },
-
-  // ── 硬件协同设计 ──
-  { include: ["hardware-software co-design", "algorithm-hardware", "fpga accelerator"], score: 7 },
-  { include: ["asic", "processor design", "near-memory computing", "in-memory computing"], score: 7 },
+  // ── 硬件加速 ──
+  { include: ["transformer accelerator", "neural accelerator", "tpu", "npu", "inference chip"], score: 8 },
 ];
 
 /**
- * Keywords that suggest IRRELEVANCE. Penalties are very mild.
- * Only applied when ≥ 3 different rule groups match to avoid
- * accidental exclusion of papers that happen to mention benchmarks.
+ * "应用/平台" — Keywords suggesting IRRELEVANCE (application, platform, etc.)
+ * Only applied when ≥ 2 different rule groups match.
+ * Penalty is capped at -4 to avoid totally tanking score.
  */
 const LOW_SIGNAL: KeywordRule[] = [
-  // ── 纯评测/数据/综述 (无效率贡献) ──
+  // ── 纯评测/数据/综述 ──
   { include: ["benchmark", "leaderboard", "evaluation suite"], score: -2 },
   { include: ["dataset", "corpus", "data collection", "data curation"], score: -2 },
   { include: ["survey", "review", "taxonomy", "overview"], score: -2 },
 
-  // ── 无关应用领域 ──
+  // ── 纯应用领域（明显无关）──
   { include: ["clinical", "medical", "diagnosis", "healthcare"], score: -3 },
   { include: ["protein", "drug", "molecule", "biological"], score: -3 },
   { include: ["finance", "financial", "trading", "stock"], score: -3 },
   { include: ["law", "legal"], score: -3 },
-  { include: ["agriculture", "crop", "weather"], score: -3 },
+  { include: ["agriculture", "crop", "weather forecast"], score: -3 },
+
+  // ── 平台/框架/系统 ──
+  { include: ["platform", "toolkit", "framework", "software system"], score: -2 },
 
   // ── RL / 控制 / 机器人 ──
   { include: ["reinforcement learning", "rlhf", "robot", "robotics"], score: -2 },
@@ -184,7 +162,7 @@ const LOW_SIGNAL: KeywordRule[] = [
   { include: ["agent", "tool use", "function calling"], score: -2 },
   { include: ["multi-agent", "agentic"], score: -2 },
 
-  // ── NLP 应用 ──
+  // ── NLP 下游应用 ──
   { include: ["multilingual", "machine translation"], score: -2 },
   { include: ["sentiment", "sentiment analysis"], score: -3 },
   { include: ["recommendation", "recommender system"], score: -3 },
@@ -193,13 +171,24 @@ const LOW_SIGNAL: KeywordRule[] = [
   { include: ["named entity recognition", "ner", "pos tagging"], score: -3 },
   { include: ["question answering", "qa", "reading comprehension"], score: -2 },
 
-  // ── 纯生成应用 ──
-  { include: ["text-to-image", "text-to-video", "text-to-speech", "tts"], score: -2 },
-  { include: ["music generation", "creative writing"], score: -3 },
-  { include: ["image generation", "image editing"], score: -2 },
+  // ── 对话/聊天应用 ──
+  { include: ["chatbot", "conversational agent", "dialogue system", "chat system"], score: -2 },
+  { include: ["customer service", "customer support", "helpdesk"], score: -2 },
 
-  // ── 信息检索 ──
+  // ── 教育 ──
+  { include: ["tutoring", "educational", "course", "learning system"], score: -2 },
+
+  // ── 内容生成应用 ──
+  { include: ["text-to-image", "text-to-video", "text-to-speech", "tts"], score: -2 },
+  { include: ["music generation", "creative writing", "story generation"], score: -3 },
+  { include: ["image generation", "image editing"], score: -2 },
+  { include: ["content creation", "content generation", "social media"], score: -2 },
+
+  // ── 其他应用 ──
   { include: ["information retrieval", "web search", "semantic search"], score: -2 },
+  { include: ["email generation", "meeting summarization", "note-taking"], score: -2 },
+  { include: ["e-commerce", "shopping", "product recommendation"], score: -2 },
+  { include: ["video game", "gaming", "game playing"], score: -2 },
 ];
 
 export interface LlmJudgment {
@@ -210,20 +199,21 @@ export interface LlmJudgment {
 }
 
 export interface FilterThresholds {
-  autoInclude: number;   // score ≥ this → keyword-decided relevant (still gets LLM summary)
-  autoExclude: number;   // score ≤ this → skip LLM, mark irrelevant
+  autoInclude: number;   // score ≥ this → auto-include (obvious acceleration)
+  autoExclude: number;   // score ≤ this → auto-exclude (irrelevant)
 }
 
 const DEFAULT_THRESHOLDS: FilterThresholds = {
-  autoInclude: 6,   // lowered from 7 — more papers get LLM evaluation
-  autoExclude: 1,   // lowered from 2 — fewer papers auto-excluded
+  autoInclude: 7,   // only obvious acceleration keywords auto-include
+  autoExclude: 2,   // broader exclusion for application/platform papers
 };
 
 /**
  * Phase 1: Keyword-based pre-filtering.
- * Lowered thresholds so more papers get LLM evaluation for better accuracy.
- * Auto-excluded papers must be very clearly irrelevant.
- * Auto-included papers still get LLM summary generation.
+ *
+ *   score ≥ 7  → auto-include (obvious acceleration keywords matched)
+ *   score ≤ 2  → auto-exclude (irrelevant domain/application)
+ *   3 ≤ score ≤ 6 → uncertain → LLM
  */
 export function keywordFilter(
   papers: Paper[],
@@ -236,7 +226,7 @@ export function keywordFilter(
     const text = `${paper.title}\n${paper.abstract}`.toLowerCase();
     let score = 5; // neutral baseline
 
-    // 1) High-signal keywords boost score
+    // 1) High-signal: dominant acceleration keywords
     for (const rule of HIGH_SIGNAL) {
       for (const kw of rule.include) {
         if (text.includes(kw)) {
@@ -246,8 +236,8 @@ export function keywordFilter(
       }
     }
 
-    // 2) Low-signal penalty: only when score < autoInclude
-    //    AND at least 3 different rule groups match (very conservative)
+    // 2) Low-signal: penalty when score hasn't reached auto-include
+    //    AND at least 2 different rule groups match
     if (score < thresholds.autoInclude) {
       let lowMatchCount = 0;
       for (const rule of LOW_SIGNAL) {
@@ -258,9 +248,9 @@ export function keywordFilter(
           }
         }
       }
-      if (lowMatchCount >= 3) {
-        // Very mild penalty capped at -2 total
-        const penalty = Math.min(lowMatchCount * -1, -2);
+      if (lowMatchCount >= 2) {
+        // Penalty capped at -4: 2 groups → -2, 3 groups → -3, 4+ → -4
+        const penalty = Math.min(lowMatchCount * -1, -4);
         score = Math.max(score + penalty, 0);
       }
     }
@@ -320,6 +310,7 @@ Papers NOT relevant:
 - Purely theoretical work with no demonstrated efficiency benefit
 - Agent/tool-use frameworks
 - NLP applications like translation, sentiment, QA without efficiency focus
+- Platform/framework papers describing systems without acceleration contributions
 
 **Output format:** Return a JSON object with a "papers" array:
 {
