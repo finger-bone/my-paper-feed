@@ -1,7 +1,7 @@
 import { loadConfig, type Config, type Paper } from "./types";
 import { fetchArxivPapers } from "./sources/arxiv";
 import { fetchHuggingFacePapers } from "./sources/huggingface";
-import { keywordFilter, analyzeUncertainPapers, applyJudgments } from "./llm";
+import { keywordFilter, analyzeUncertainPapers, generateSummariesForDecided, applyJudgments } from "./llm";
 import { generateRssFeed } from "./rss";
 import { loadCache, saveCache, updateCache } from "./cache";
 
@@ -79,6 +79,7 @@ async function main() {
   console.log(`  Keyword auto-include: ${autoIncluded}`);
   console.log(`  Keyword auto-exclude: ${autoExcluded}`);
   console.log(`  LLM analyzed:        ${llmJudgments.size}`);
+  console.log(`  Summaries generated:  ${summaryJudgments.size}`);
   console.log(`  Relevant (in RSS):   ${relevantPapers.length}`);
   if (relevantPapers.length > 0) {
     console.log(
@@ -152,6 +153,14 @@ function validateConfig(config: Config): void {
 
   if (config.filterAutoExclude < 0 || config.filterAutoExclude > 5) {
     console.warn("  FILTER_AUTO_EXCLUDE should be 0-5. Using 2.");
+    config.filterAutoExclude = 2;
+  }
+}
+
+main().catch((err) => {
+  console.error("Fatal error:", err);
+  process.exit(1);
+});
     config.filterAutoExclude = 2;
   }
 }
