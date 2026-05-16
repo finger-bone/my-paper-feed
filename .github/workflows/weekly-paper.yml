@@ -1,0 +1,49 @@
+name: Weekly Paper Feed
+
+on:
+  schedule:
+    # Run every Monday at 8:00 UTC
+    - cron: "0 8 * * 1"
+  # Allow manual trigger
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate-feed:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Generate paper feed
+        run: bun start
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          DEEPSEEK_BASE_URL: ${{ secrets.DEEPSEEK_BASE_URL || 'https://api.deepseek.com' }}
+          DEEPSEEK_MODEL: ${{ secrets.DEEPSEEK_MODEL || 'deepseek-chat' }}
+          ARXIV_MAX_RESULTS: "200"
+          LOOKBACK_DAYS: "7"
+          MIN_RELEVANCE_SCORE: "5"
+          OUTPUT_PATH: "feed.xml"
+          FEED_TITLE: "LLM Acceleration Papers Weekly"
+          FEED_DESCRIPTION: "每周精选大模型推理/训练加速相关论文"
+          FEED_LINK: "https://github.com/${{ github.repository }}"
+
+      - name: Commit and push feed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add feed.xml feed.atom
+          git diff --staged --quiet || git commit -m "chore: update paper feed [skip ci]"
+          git push

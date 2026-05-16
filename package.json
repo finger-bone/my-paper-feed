@@ -1,0 +1,21 @@
+{
+  "name": "paper-feed",
+  "module": "src/index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "dev": "bun --watch run src/index.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "fast-xml-parser": "^5.8.0",
+    "feed": "^5.2.1",
+    "openai": "^6.38.0"
+  }
+}
