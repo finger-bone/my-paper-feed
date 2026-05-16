@@ -1,0 +1,1994 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://github.com/finger-bone/my-paper-feed</id>
+    <title>LLM Acceleration Papers Weekly</title>
+    <updated>2026-05-14T13:52:31.000Z</updated>
+    <generator>paper-feed</generator>
+    <link rel="alternate" href="https://github.com/finger-bone/my-paper-feed"/>
+    <subtitle>每周精选大模型推理/训练加速相关论文</subtitle>
+    <rights>All rights reserved 2026</rights>
+    <entry>
+        <title type="html"><![CDATA[XFP: Quality-Targeted Adaptive Codebook Quantization with Sparse Outlier Separation for LLM Inference]]></title>
+        <id>https://arxiv.org/abs/2605.14844</id>
+        <link href="https://arxiv.org/abs/2605.14844"/>
+        <updated>2026-05-14T13:52:31.000Z</updated>
+        <summary type="html"><![CDATA[We introduce XFP, a dynamic weight quantizer for LLM inference that inverts the conventional workflow: the operator specifies reconstruction quality floors on per-channel cosine similarity (one strict floor for attention and shared experts, one lazy floor for routed-expert MoE); XFP determines codebook size, outlier budget, and packing per layer automatically -- no Hessian, no calibration data, no manual bit-width selection. Each weight matrix is decomposed into a sparse fp16 outlier residual an]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出XFP，一种面向LLM推理的动态权重量化器，通过自适应码本量化和稀疏异常值分离，在Qwen3.5-122B上实现138 tok/s解码速度，比Marlin INT4快49%。</p>
+<h3>原始摘要</h3><p>We introduce XFP, a dynamic weight quantizer for LLM inference that inverts the conventional workflow: the operator specifies reconstruction quality floors on per-channel cosine similarity (one strict floor for attention and shared experts, one lazy floor for routed-expert MoE); XFP determines codebook size, outlier budget, and packing per layer automatically -- no Hessian, no calibration data, no manual bit-width selection. Each weight matrix is decomposed into a sparse fp16 outlier residual and a dense sub-byte index tensor into a per-group learned codebook. Two storage modes share one auto-select frontend and one fused decode kernel: V2 (per-channel Lloyd) and V2a (shared library of L=32 codebooks per layer). On Qwen3.5-122B-A10B under V2, XFP reaches 138 tok/s single-stream decode on workstation hardware (RTX PRO 6000 Blackwell, TP=2) at 94.49% GSM8K strict-match (3 seeds, n=3957), and is 49% faster than Marlin INT4 at TP=1. For models that do not fit in the target memory envelope, we present the H-Process: a quality-driven iteration over the two cosine thresholds that finds the operating point at which the model just fits while still producing sensible output. Three constraints define its search space: the operator-set thresholds, an OOM boundary at quantize-on-load, and a garbage boundary in generation (cosine similarity steers; benches verify). On Qwen3.5-397B-A17B (512 routed experts/layer), the H-Process fits the full expert population into 2x96 GB at ~3.4 effective bits and delivers 100.9 tok/s long-output decode at 66.72% GSM8K strict-match on the full 1319-problem set (single seed at submission; multi-seed evaluation in progress), exceeding INT4 with routed-expert pruning on memory, throughput, and accuracy simultaneously.</p>
+<p><strong>Categories:</strong> cs.LG, cs.AI</p>
+<p><strong>Relevance:</strong> 10/10</p>
+<p><a href="https://arxiv.org/pdf/2605.14844">PDF</a> | <a href="https://arxiv.org/abs/2605.14844">arXiv</a></p>]]></content>
+        <author>
+            <name>Thomas Witt</name>
+        </author>
+        <category label="cs.LG" term="cs.LG"/>
+        <category label="cs.AI" term="cs.AI"/>
+        <published>2026-05-14T13:52:31.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[SlimSpec: Low-Rank Draft LM-Head for Accelerated Speculative Decoding]]></title>
+        <id>https://arxiv.org/abs/2605.10453</id>
+        <link href="https://arxiv.org/abs/2605.10453"/>
+        <updated>2026-05-11T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Speculative decoding speeds up autoregressive generation in Large Language Models (LLMs) through a two-step procedure, where a lightweight draft model proposes tokens which the target model then verifies in a single forward pass. Although the drafter network is small in modern architectures, its LM-head still performs projection to a large vocabulary, becoming one of the major computational bottlenecks. In prior work this issue has been predominantly addressed via static or dynamic vocabulary tr]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出SlimSpec，对投机解码中草稿模型的LM头进行低秩参数化，压缩内部表示而非输出词汇，实现4-5倍加速，且保持全词汇支持。</p>
+<h3>原始摘要</h3><p>Speculative decoding speeds up autoregressive generation in Large Language Models (LLMs) through a two-step procedure, where a lightweight draft model proposes tokens which the target model then verifies in a single forward pass. Although the drafter network is small in modern architectures, its LM-head still performs projection to a large vocabulary, becoming one of the major computational bottlenecks. In prior work this issue has been predominantly addressed via static or dynamic vocabulary truncation. Yet mitigating the bottleneck, these methods bring in extra complexity, such as special vocabulary curation, sophisticated inference-time logic or modifications of the training setup. In this paper, we propose SlimSpec, a low-rank parameterization of the drafter's LM-head that compresses the inner representation rather than the output, preserving full vocabulary support. We evaluate our method with EAGLE-3 drafter across three target models and diverse benchmarks in both latency- and throughput-bound inference regimes. SlimSpec achieves 4-5times acceleration over the standard LM-head architecture while maintaining a competitive acceptance length, surpassing existing methods by up to 8-9% of the end-to-end speedup. Our method requires minimal adjustments of training and inference pipelines. Combined with the aforementioned speedup improvements, it makes SlimSpec a strong alternative across wide variety of draft LM-head architectures.</p>
+<p><strong>Relevance:</strong> 10/10</p>
+<p><a href="https://arxiv.org/pdf/2605.10453">PDF</a> | <a href="https://arxiv.org/abs/2605.10453">arXiv</a></p>]]></content>
+        <author>
+            <name>Anton Plaksin</name>
+        </author>
+        <author>
+            <name>Sergei Krutikov</name>
+        </author>
+        <author>
+            <name>Sergei Skvortsov</name>
+        </author>
+        <author>
+            <name>Alexander Samarin</name>
+        </author>
+        <published>2026-05-11T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[UniPrefill: Universal Long-Context Prefill Acceleration via Block-wise Dynamic Sparsification]]></title>
+        <id>https://arxiv.org/abs/2605.06221</id>
+        <link href="https://arxiv.org/abs/2605.06221"/>
+        <updated>2026-05-07T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[As large language models (LLMs) continue to advance rapidly, they are becoming increasingly capable while simultaneously demanding ever-longer context lengths. To improve the inference efficiency of long-context processing, several novel low-complexity hybrid architectures have recently been proposed, effectively alleviating the computational burden of long-context inference. However, existing research on long-context prefill acceleration remains predominantly focused on sparse attention mechani]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出UniPrefill，一种适用于任意模型架构的长上下文预填充加速框架，通过块级动态稀疏化实现高达2.1倍的首Token延迟加速，并集成到vLLM中。</p>
+<h3>原始摘要</h3><p>As large language models (LLMs) continue to advance rapidly, they are becoming increasingly capable while simultaneously demanding ever-longer context lengths. To improve the inference efficiency of long-context processing, several novel low-complexity hybrid architectures have recently been proposed, effectively alleviating the computational burden of long-context inference. However, existing research on long-context prefill acceleration remains predominantly focused on sparse attention mechanisms, which achieve their maximum speedup only on full-attention models. When transferred to emerging architectures--such as linear/full attention hybrids or sliding window/full attention hybrids--these prefill acceleration approaches suffer significant performance degradation. Furthermore, such methods are generally incompatible with continuous batching, making them difficult to integrate into modern inference engines such as vLLM. To this end, we propose UniPrefill, a prefill acceleration framework applicable to virtually any model architecture, which directly accelerates the model's computation at the token level. We further implement UniPrefill as a continuous batching operator and extend vLLM's scheduling strategy to natively support prefill-decode co-processing and tensor parallel for UniPrefill, enabling its seamless integration into vLLM. UniPrefill achieves up to 2.1x speedup in Time-To-First-Token (TTFT), with the acceleration becoming increasingly pronounced as the number of concurrent requests grows.</p>
+<p><strong>Relevance:</strong> 10/10</p>
+<p><a href="https://arxiv.org/pdf/2605.06221">PDF</a> | <a href="https://arxiv.org/abs/2605.06221">arXiv</a></p>]]></content>
+        <author>
+            <name>Qihang Fan</name>
+        </author>
+        <author>
+            <name>Huaibo Huang</name>
+        </author>
+        <author>
+            <name>Zhiying Wu</name>
+        </author>
+        <author>
+            <name>Bingning Wang</name>
+        </author>
+        <author>
+            <name>Ran He</name>
+        </author>
+        <published>2026-05-07T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[SANA-WM: Efficient Minute-Scale World Modeling with Hybrid Linear Diffusion Transformer]]></title>
+        <id>https://arxiv.org/abs/2605.15178</id>
+        <link href="https://arxiv.org/abs/2605.15178"/>
+        <updated>2026-05-14T17:58:03.000Z</updated>
+        <summary type="html"><![CDATA[We introduce SANA-WM, an efficient 2.6B-parameter open-source world model natively trained for one-minute generation, synthesizing high-fidelity, 720p, minute-scale videos with precise camera control. SANA-WM achieves visual quality comparable to large-scale industrial baselines such as LingBot-World and HY-WorldPlay, while significantly improving efficiency. Four core designs drive our architecture: (1) Hybrid Linear Attention combines frame-wise Gated DeltaNet (GDN) with softmax attention for ]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出SANA-WM，2.6B参数世界模型，采用混合线性注意力（Gated DeltaNet+softmax）实现长上下文高效建模，支持NVFP4量化在单卡RTX 5090上34秒生成60秒720p视频。</p>
+<h3>原始摘要</h3><p>We introduce SANA-WM, an efficient 2.6B-parameter open-source world model natively trained for one-minute generation, synthesizing high-fidelity, 720p, minute-scale videos with precise camera control. SANA-WM achieves visual quality comparable to large-scale industrial baselines such as LingBot-World and HY-WorldPlay, while significantly improving efficiency. Four core designs drive our architecture: (1) Hybrid Linear Attention combines frame-wise Gated DeltaNet (GDN) with softmax attention for memory-efficient long-context modeling. (2) Dual-Branch Camera Control ensures precise 6-DoF trajectory adherence. (3) Two-Stage Generation Pipeline applies a long-video refiner to stage-1 outputs, improving quality and consistency across sequences. (4) Robust Annotation Pipeline extracts accurate metric-scale 6-DoF camera poses from public videos to yield high-quality, spatiotemporally consistent action labels. Driven by these designs, SANA-WMdemonstrates remarkable efficiency across data, training compute, and inference hardware: it uses only $\sim$213K public video clips with metric-scale pose supervision, completes training in 15 days on 64 H100s, and generates each 60s clip on a single GPU; its distilled variant can be deployed on a single RTX 5090 with NVFP4 quantization to denoise a 60s 720p clip in 34s. On our one-minute world-model benchmark, SANA-WM demonstrates stronger action-following accuracy than prior open-source baselines and achieves comparable visual quality at $36\times$ higher throughput for scalable world modeling.</p>
+<p><strong>Categories:</strong> cs.CV</p>
+<p><strong>Relevance:</strong> 9/10</p>
+<p><a href="https://arxiv.org/pdf/2605.15178">PDF</a> | <a href="https://arxiv.org/abs/2605.15178">arXiv</a></p>]]></content>
+        <author>
+            <name>Haoyi Zhu</name>
+        </author>
+        <author>
+            <name>Haozhe Liu</name>
+        </author>
+        <author>
+            <name>Yuyang Zhao</name>
+        </author>
+        <author>
+            <name>Tian Ye</name>
+        </author>
+        <author>
+            <name>Junsong Chen</name>
+        </author>
+        <author>
+            <name>Jincheng Yu</name>
+        </author>
+        <author>
+            <name>Tong He</name>
+        </author>
+        <author>
+            <name>Song Han</name>
+        </author>
+        <author>
+            <name>Enze Xie</name>
+        </author>
+        <category label="cs.CV" term="cs.CV"/>
+        <published>2026-05-14T17:58:03.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Widening the Gap: Exploiting LLM Quantization via Outlier Injection]]></title>
+        <id>https://arxiv.org/abs/2605.15152</id>
+        <link href="https://arxiv.org/abs/2605.15152"/>
+        <updated>2026-05-14T17:50:39.000Z</updated>
+        <summary type="html"><![CDATA[LLM quantization has become essential for memory-efficient deployment. Recent work has shown that quantization schemes can pose critical security risks: an adversary may release a model that appears benign in full precision but exhibits malicious behavior once quantized by users. However, existing quantization-conditioned attacks have been limited to relatively simple quantization methods, where the attacker can estimate weight regions that remain invariant under the target quantization. Notably]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>LLM quantization has become essential for memory-efficient deployment. Recent work has shown that quantization schemes can pose critical security risks: an adversary may release a model that appears benign in full precision but exhibits malicious behavior once quantized by users. However, existing quantization-conditioned attacks have been limited to relatively simple quantization methods, where the attacker can estimate weight regions that remain invariant under the target quantization. Notably, prior attacks have consistently failed to compromise more popular and sophisticated schemes, limiting their practical impact. In this work, we introduce the first quantization-conditioned attack that consistently induces malicious behavior that can be triggered by a broad range of advanced quantization techniques, including AWQ, GPTQ, and GGUF I-quants. Our attack exploits a simple property shared by many modern quantization methods: large outliers can cause other weights to be rounded to zero. Consequently, by injecting outliers into specific weight blocks, an adversary can therefore induce a targeted, predictable weight collapse in the model. This effect can be used to craft seemingly benign full-precision models that exhibit a wide range of malicious behaviors after quantization. Through extensive evaluation across three attack scenarios and LLMs, we show that our attack achieves high success rates against a broad range of quantization methods on which prior attacks fail. Our results demonstrate, for the first time, that the security risks of quantization are not restricted to simpler schemes but are broadly relevant across complex, widely-used quantization methods.</p>
+<p><strong>Categories:</strong> cs.LG, cs.AI</p>
+<p><strong>Relevance:</strong> 9/10</p>
+<p><a href="https://arxiv.org/pdf/2605.15152">PDF</a> | <a href="https://arxiv.org/abs/2605.15152">arXiv</a></p>]]></content>
+        <author>
+            <name>Xiaohua Zhan</name>
+        </author>
+        <author>
+            <name>Kazuki Egashira</name>
+        </author>
+        <author>
+            <name>Robin Staab</name>
+        </author>
+        <author>
+            <name>Mark Vero</name>
+        </author>
+        <author>
+            <name>Martin Vechev</name>
+        </author>
+        <category label="cs.LG" term="cs.LG"/>
+        <category label="cs.AI" term="cs.AI"/>
+        <published>2026-05-14T17:50:39.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Causal Forcing++: Scalable Few-Step Autoregressive Diffusion Distillation for Real-Time Interactive Video Generation]]></title>
+        <id>https://arxiv.org/abs/2605.15141</id>
+        <link href="https://arxiv.org/abs/2605.15141"/>
+        <updated>2026-05-14T17:46:36.000Z</updated>
+        <summary type="html"><![CDATA[Real-time interactive video generation requires low-latency, streaming, and controllable rollout. Existing autoregressive (AR) diffusion distillation methods have achieved strong results in the chunk-wise 4-step regime by distilling bidirectional base models into few-step AR students, but they remain limited by coarse response granularity and non-negligible sampling latency. In this paper, we study a more aggressive setting: frame-wise autoregression with only 1--2 sampling steps. In this regime]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出Causal Forcing++，通过因果一致性蒸馏实现帧级1-2步自回归视频生成，减少采样步数和训练成本，延迟降低50%。</p>
+<h3>原始摘要</h3><p>Real-time interactive video generation requires low-latency, streaming, and controllable rollout. Existing autoregressive (AR) diffusion distillation methods have achieved strong results in the chunk-wise 4-step regime by distilling bidirectional base models into few-step AR students, but they remain limited by coarse response granularity and non-negligible sampling latency. In this paper, we study a more aggressive setting: frame-wise autoregression with only 1--2 sampling steps. In this regime, we identify the initialization of a few-step AR student as the key bottleneck: existing strategies are either target-misaligned, incapable of few-step generation, or too costly to scale. We propose \textbf{Causal Forcing++}, a principled and scalable pipeline that uses \emph{causal consistency distillation} (causal CD) for few-step AR initialization. The core idea is that causal CD learns the same AR-conditional flow map as causal ODE distillation, but obtains supervision from a single online teacher ODE step between adjacent timesteps, avoiding the need to precompute and store full PF-ODE trajectories. This makes the initialization both more efficient and easier to optimize. The resulting pipeline, \ours, surpasses the SOTA 4-step chunk-wise Causal Forcing under the \textit{\textbf{frame-wise 2-step setting}} by 0.1 in VBench Total, 0.3 in VBench Quality, and 0.335 in VisionReward, while reducing first-frame latency by 50\% and Stage 2 training cost by $\sim$$4\times$. We further extend the pipeline to action-conditioned world model generation in the spirit of Genie3. Project Page: https://github.com/thu-ml/Causal-Forcing and https://github.com/shengshu-ai/minWM .</p>
+<p><strong>Categories:</strong> cs.CV</p>
+<p><strong>Relevance:</strong> 9/10</p>
+<p><a href="https://arxiv.org/pdf/2605.15141">PDF</a> | <a href="https://arxiv.org/abs/2605.15141">arXiv</a></p>]]></content>
+        <author>
+            <name>Min Zhao</name>
+        </author>
+        <author>
+            <name>Hongzhou Zhu</name>
+        </author>
+        <author>
+            <name>Kaiwen Zheng</name>
+        </author>
+        <author>
+            <name>Zihan Zhou</name>
+        </author>
+        <author>
+            <name>Bokai Yan</name>
+        </author>
+        <author>
+            <name>Xinyuan Li</name>
+        </author>
+        <author>
+            <name>Xiao Yang</name>
+        </author>
+        <author>
+            <name>Chongxuan Li</name>
+        </author>
+        <author>
+            <name>Jun Zhu</name>
+        </author>
+        <category label="cs.CV" term="cs.CV"/>
+        <published>2026-05-14T17:46:36.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Performance-Driven Policy Optimization for Speculative Decoding with Adaptive Windowing]]></title>
+        <id>https://arxiv.org/abs/2605.14978</id>
+        <link href="https://arxiv.org/abs/2605.14978"/>
+        <updated>2026-05-14T15:41:57.000Z</updated>
+        <summary type="html"><![CDATA[Speculative decoding accelerates LLM inference by having a lightweight draft model propose speculative windows of candidate tokens for parallel verification by a larger target model. In practice, speculative efficiency is often bottlenecked by hard-to-draft positions, where an early mismatch truncates the accepted prefix and invalidates the rest of the speculative window. Most learning-based drafters are still optimized with token-level supervised objectives, even though speculative utility is i]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出PPOW框架，通过强化学习优化投机解码中的草稿模型，采用窗口级奖励和自适应窗口策略，在多个模型和基准上实现3.39-4.36倍加速。</p>
+<h3>原始摘要</h3><p>Speculative decoding accelerates LLM inference by having a lightweight draft model propose speculative windows of candidate tokens for parallel verification by a larger target model. In practice, speculative efficiency is often bottlenecked by hard-to-draft positions, where an early mismatch truncates the accepted prefix and invalidates the rest of the speculative window. Most learning-based drafters are still optimized with token-level supervised objectives, even though speculative utility is inherently window-level and prefix-sensitive. We propose PPOW (Performance-Driven Policy Optimization with Adaptive Windowing), a reinforcement learning framework that shifts drafter optimization from token-level imitation to window-level optimization. PPOW combines a Cost-Aware Speedup Reward, a Distribution-Based Proximity Reward, and Adaptive Divergence-Aware Windowing, which prioritizes informative windows with high confidence-weighted draft-target divergence. PPOW achieves average acceptance lengths of 6.29-6.52 and speedups of 3.39-4.36$\times$ across multiple model families and benchmarks under a unified decoding protocol. These results show that performance-driven window-level optimization is a practical approach to improving speculative decoding efficiency.</p>
+<p><strong>Categories:</strong> cs.CL</p>
+<p><strong>Relevance:</strong> 9/10</p>
+<p><a href="https://arxiv.org/pdf/2605.14978">PDF</a> | <a href="https://arxiv.org/abs/2605.14978">arXiv</a></p>]]></content>
+        <author>
+            <name>Jie Jiang</name>
+        </author>
+        <author>
+            <name>Xing Sun</name>
+        </author>
+        <category label="cs.CL" term="cs.CL"/>
+        <published>2026-05-14T15:41:57.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[A Hardware-Aware, Per-Layer Methodology for Post-Training Quantization of Large Language Models]]></title>
+        <id>https://arxiv.org/abs/2605.14929</id>
+        <link href="https://arxiv.org/abs/2605.14929"/>
+        <updated>2026-05-14T15:03:58.000Z</updated>
+        <summary type="html"><![CDATA[Scaled Outer Product (SOP) is a post-training quantization methodology for large language model weights, designed to deliver near-lossless fidelity at 4.5--6 bits per weight on hardware with per-layer LUT decode. The methodology combines per-layer search of fixed and dynamic codebook pairs selected by a per-block selection bit, signed per-block scales, activation-weighted cosine selection, and multiple-choice knapsack promotion of sensitive layers with outlier and sparse-residual correction. Fix]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出SOP量化方法，结合逐层搜索、动态码本和硬件高效LUT格式，在4.5-6比特权重下实现近无损精度，优于FP8基线。</p>
+<h3>原始摘要</h3><p>Scaled Outer Product (SOP) is a post-training quantization methodology for large language model weights, designed to deliver near-lossless fidelity at 4.5--6 bits per weight on hardware with per-layer LUT decode. The methodology combines per-layer search of fixed and dynamic codebook pairs selected by a per-block selection bit, signed per-block scales, activation-weighted cosine selection, and multiple-choice knapsack promotion of sensitive layers with outlier and sparse-residual correction. Fixed codebooks include NF4, BOF4, Split87, and SH4; per-layer optimized codebooks (DD4) are hosted in LUT SRAM. A new hardware-efficient LUT output format (HIF) is proposed to improve performance, energy, and cost. Across six open model families, the recommended FP6 operating point (E2M3sUE4M4, 6.5 bpw) achieves lower weight reconstruction error than the conventional per-layer-POT FP8 baseline (E4M3, 8.0 bpw) at 1.5 bpw lower storage cost, demonstrating that block-scaled small atoms with carefully chosen scale precision can replace conventionally-deployed FP8. Full evaluation across the 4.5--6 bpw range, including layer promotion and sparse residual correction, is reported in a companion paper.</p>
+<p><strong>Categories:</strong> cs.LG, cs.AR</p>
+<p><strong>Relevance:</strong> 9/10</p>
+<p><a href="https://arxiv.org/pdf/2605.14929">PDF</a> | <a href="https://arxiv.org/abs/2605.14929">arXiv</a></p>]]></content>
+        <author>
+            <name>Earl Killian</name>
+        </author>
+        <category label="cs.LG" term="cs.LG"/>
+        <category label="cs.AR" term="cs.AR"/>
+        <published>2026-05-14T15:03:58.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Representative Attention For Vision Transformers]]></title>
+        <id>https://arxiv.org/abs/2605.14913</id>
+        <link href="https://arxiv.org/abs/2605.14913"/>
+        <updated>2026-05-14T14:48:20.000Z</updated>
+        <summary type="html"><![CDATA[Linear attention has emerged as a promising direction for scaling Vision Transformers beyond the quadratic cost of dense self-attention. A prevalent strategy is to compress spatial tokens into a compact set of intermediate proxies that mediate global information exchange. However, existing methods typically derive these proxy tokens from predefined spatial layouts, causing token compression to remain anchored to image coordinates rather than the semantic organization of visual content. To overco]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Linear attention has emerged as a promising direction for scaling Vision Transformers beyond the quadratic cost of dense self-attention. A prevalent strategy is to compress spatial tokens into a compact set of intermediate proxies that mediate global information exchange. However, existing methods typically derive these proxy tokens from predefined spatial layouts, causing token compression to remain anchored to image coordinates rather than the semantic organization of visual content. To overcome this limitation, we propose Representative Attention (RPAttention), a linear global attention mechanism that performs token compression directly in representation space. Instead of constructing intermediate tokens from fixed spatial partitions, it dynamically forms a compact set of learned representative tokens to enable semantically related regions to communicate regardless of their spatial distance, by following a lightweight Gather-Interact-Distribute paradigm. Spatial tokens are first softly gathered into representative tokens through competitive similarity-based routing. The representatives then perform global interaction within a compact latent space, before broadcasting the refined information back to all spatial tokens via query-driven cross-attention. Via replacing coordinate-driven aggregation with representation-driven compression, RPAttention preserves global receptive fields while adaptively aligning token communication with the content structure of each input.RPAttention reduces the dominant token interaction complexity from quadratic to linear scaling with respect to the number of spatial tokens, while maintaining expressive global context modeling. Extensive experiments across diverse vision transformer backbones on image classification, object detection, and semantic segmentation demonstrate the effectiveness of our design.</p>
+<p><strong>Categories:</strong> cs.CV</p>
+<p><strong>Relevance:</strong> 9/10</p>
+<p><a href="https://arxiv.org/pdf/2605.14913">PDF</a> | <a href="https://arxiv.org/abs/2605.14913">arXiv</a></p>]]></content>
+        <author>
+            <name>Yuntong Li</name>
+        </author>
+        <author>
+            <name>Hainuo Wang</name>
+        </author>
+        <author>
+            <name>Hengxing Liu</name>
+        </author>
+        <author>
+            <name>Mingjia Li</name>
+        </author>
+        <author>
+            <name>Xiaojie Guo</name>
+        </author>
+        <category label="cs.CV" term="cs.CV"/>
+        <published>2026-05-14T14:48:20.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Long Context Pre-Training with Lighthouse Attention]]></title>
+        <id>https://arxiv.org/abs/2605.06554</id>
+        <link href="https://arxiv.org/abs/2605.06554"/>
+        <updated>2026-05-07T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Training causal transformers at extreme sequence lengths is bottlenecked by the quadratic time and memory of scaled dot-product attention (SDPA). In this work, we propose Lighthouse Attention, a training-only symmetrical selection-based hierarchical attention algorithm that wraps around ordinary SDPA and can be easily removed towards the end of the training. Our hierarchical selection is also gradient-free, which exempts us from dealing with a complicated and potentially inefficient backward pas]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出Lighthouse Attention，一种训练时对称选择层次注意力算法，通过自适应压缩和恢复序列实现次二次复杂度，加速长序列预训练。</p>
+<h3>原始摘要</h3><p>Training causal transformers at extreme sequence lengths is bottlenecked by the quadratic time and memory of scaled dot-product attention (SDPA). In this work, we propose Lighthouse Attention, a training-only symmetrical selection-based hierarchical attention algorithm that wraps around ordinary SDPA and can be easily removed towards the end of the training. Our hierarchical selection is also gradient-free, which exempts us from dealing with a complicated and potentially inefficient backward pass kernel. Our contribution is three-fold: (i) A subquadratic hierarchical pre- and post-processing step that does adaptive compression and decompression of the sequence. (ii) A symmetrical compression strategy that pools queries, keys and values at the same time, while preserving left-to-right causality, which greatly improves parallelism. (iii) A two stage training approach which we pre-train for the majority of the time with Lighthouse Attention and recover a full attention model at the end with a short training. We run preliminary small scale LLM pre-training experiments that show the effectiveness of our method compared to full attention training with all other settings matched, where we achieve a faster total training time and lower final loss after the recovery phase. Full code is available at: https://github.com/ighoshsubho/lighthouse-attention</p>
+<p><strong>Relevance:</strong> 9/10</p>
+<p><a href="https://arxiv.org/pdf/2605.06554">PDF</a> | <a href="https://arxiv.org/abs/2605.06554">arXiv</a></p>]]></content>
+        <author>
+            <name>Bowen Peng</name>
+        </author>
+        <author>
+            <name>Subho Ghosh</name>
+        </author>
+        <author>
+            <name>Jeffrey Quesnelle</name>
+        </author>
+        <published>2026-05-07T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Forcing-KV: Hybrid KV Cache Compression for Efficient Autoregressive Video Diffusion Models]]></title>
+        <id>https://arxiv.org/abs/2605.09681</id>
+        <link href="https://arxiv.org/abs/2605.09681"/>
+        <updated>2026-05-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Autoregressive (AR) video diffusion models adopt a streaming generation framework, enabling long-horizon video generation with real-time responsiveness, as exemplified by the Self Forcing training paradigm. However, existing AR video diffusion models still suffer from significant attention complexity and severe memory overhead due to the redundant key-value (KV) caches across historical frames, which limits scalability. In this paper, we tackle this challenge by introducing KV cache compression ]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出Forcing-KV混合KV缓存压缩策略，针对自回归视频扩散模型中的注意力头功能特化进行结构化剪枝，实现30%缓存减少和1.35-2.82倍加速。</p>
+<h3>原始摘要</h3><p>Autoregressive (AR) video diffusion models adopt a streaming generation framework, enabling long-horizon video generation with real-time responsiveness, as exemplified by the Self Forcing training paradigm. However, existing AR video diffusion models still suffer from significant attention complexity and severe memory overhead due to the redundant key-value (KV) caches across historical frames, which limits scalability. In this paper, we tackle this challenge by introducing KV cache compression into autoregressive video diffusion. We observe that attention heads in mainstream AR diffusion models exhibit markedly distinct attention patterns and functional roles that remain stable across samples and denoising steps. Building on our empirical study of head-wise functional specialization, we divide the attention heads into two categories: static heads, which focus on transitions across autoregressive chunks and intra-frame fidelity, and dynamic heads, which govern inter-frame motion and consistency. We then propose Forcing-KV, a hybrid KV cache compression strategy that performs structured static pruning for static heads and dynamic pruning based on segment-wise similarity for dynamic heads. While maintaining output quality, our method achieves a generation speed of over 29 frames per second on a single NVIDIA H200 GPU along with 30% cache memory reduction, delivering up to 1.35x and 1.50x speedups on LongLive and Self Forcing at 480P resolution, and further scaling to 2.82x speedup at 1080P resolution. Code and demo videos are provided at https://zju-jiyicheng.github.io/Forcing-KV-Page.</p>
+<p><strong>Relevance:</strong> 9/10</p>
+<p><a href="https://arxiv.org/pdf/2605.09681">PDF</a> | <a href="https://arxiv.org/abs/2605.09681">arXiv</a></p>]]></content>
+        <author>
+            <name>Yicheng Ji</name>
+        </author>
+        <author>
+            <name>Zhizhou Zhong</name>
+        </author>
+        <author>
+            <name>Jun Zhang</name>
+        </author>
+        <author>
+            <name>Qin Yang</name>
+        </author>
+        <author>
+            <name>XiTai Jin</name>
+        </author>
+        <author>
+            <name>Ying Qin</name>
+        </author>
+        <author>
+            <name>Wenhan Luo</name>
+        </author>
+        <author>
+            <name>Shuiyang Mao</name>
+        </author>
+        <author>
+            <name>Wei Liu</name>
+        </author>
+        <author>
+            <name>Huan Li</name>
+        </author>
+        <published>2026-05-10T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Orthrus: Memory-Efficient Parallel Token Generation via Dual-View Diffusion]]></title>
+        <id>https://arxiv.org/abs/2605.12825</id>
+        <link href="https://arxiv.org/abs/2605.12825"/>
+        <updated>2026-05-12T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[We introduce Orthrus, a simple and efficient dual-architecture framework that unifies the exact generation fidelity of autoregressive Large Language Models (LLMs) with the high-speed parallel token generation of diffusion models. The sequential nature of standard autoregressive decoding represents a fundamental bottleneck for high-throughput inference. While diffusion language models attempt to break this barrier via parallel generation, they suffer from significant performance degradation, high]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出Orthrus框架，通过融合自回归和扩散模型实现并行token生成，在保持无损推理的同时获得高达7.8倍加速，仅需O(1)内存缓存开销。</p>
+<h3>原始摘要</h3><p>We introduce Orthrus, a simple and efficient dual-architecture framework that unifies the exact generation fidelity of autoregressive Large Language Models (LLMs) with the high-speed parallel token generation of diffusion models. The sequential nature of standard autoregressive decoding represents a fundamental bottleneck for high-throughput inference. While diffusion language models attempt to break this barrier via parallel generation, they suffer from significant performance degradation, high training costs, and a lack of rigorous convergence guarantees. Orthrus resolves this dichotomy natively. Designed to seamlessly integrate into existing Transformers, the framework augments a frozen LLM with a lightweight, trainable module to create a parallel diffusion view alongside the standard autoregressive view. In this unified system, both views attend to the exact same high-fidelity Key-Value (KV) cache; the autoregressive head executes context pre-filling to construct accurate KV representations, while the diffusion head executes parallel generation. By employing an exact consensus mechanism between the two views, Orthrus guarantees lossless inference, delivering up to a 7.8x speedup with only an O(1) memory cache overhead and minimal parameter additions.</p>
+<p><strong>Relevance:</strong> 9/10</p>
+<p><a href="https://arxiv.org/pdf/2605.12825">PDF</a> | <a href="https://arxiv.org/abs/2605.12825">arXiv</a></p>]]></content>
+        <author>
+            <name>Chien Van Nguyen</name>
+        </author>
+        <author>
+            <name>Chaitra Hegde</name>
+        </author>
+        <author>
+            <name>Van Cuong Pham</name>
+        </author>
+        <author>
+            <name>Ryan A. Rossi</name>
+        </author>
+        <author>
+            <name>Franck Dernoncourt</name>
+        </author>
+        <author>
+            <name>Thien Huu Nguyen</name>
+        </author>
+        <published>2026-05-12T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Efficient Pre-Training with Token Superposition]]></title>
+        <id>https://arxiv.org/abs/2605.06546</id>
+        <link href="https://arxiv.org/abs/2605.06546"/>
+        <updated>2026-05-07T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Pre-training of Large Language Models is often prohibitively expensive and inefficient at scale, requiring complex and invasive modifications in order to achieve high data throughput. In this work, we present Token-Superposition Training (TST), a simple drop-in method that significantly improves the data throughput per FLOPs during pre-training without modifying the parallelism, optimizer, tokenizer, data, or model architecture. TST is done in two phases: (i) A highly efficient superposition pha]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Pre-training of Large Language Models is often prohibitively expensive and inefficient at scale, requiring complex and invasive modifications in order to achieve high data throughput. In this work, we present Token-Superposition Training (TST), a simple drop-in method that significantly improves the data throughput per FLOPs during pre-training without modifying the parallelism, optimizer, tokenizer, data, or model architecture. TST is done in two phases: (i) A highly efficient superposition phase where we combine many contiguous tokens into one bag and train using a multi-hot cross-entropy (MCE) objective, and (ii) a recovery phase where we revert back to standard training. We extensively evaluate TST on the scale of 270M and 600M parameters and validate on 3B and a 10B A1B mixture of experts model, demonstrating that it is highly robust in different settings. Ultimately, TST consistently outperforms baseline loss and downstream evaluations, and under equal-loss settings, TST yields up to a 2.5x reduction in total pre-training time at the 10B A1B scale.</p>
+<p><strong>Relevance:</strong> 9/10</p>
+<p><a href="https://arxiv.org/pdf/2605.06546">PDF</a> | <a href="https://arxiv.org/abs/2605.06546">arXiv</a></p>]]></content>
+        <author>
+            <name>Bowen Peng</name>
+        </author>
+        <author>
+            <name>Théo Gigant</name>
+        </author>
+        <author>
+            <name>Jeffrey Quesnelle</name>
+        </author>
+        <published>2026-05-07T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[A Single Layer to Explain Them All:Understanding Massive Activations in Large Language Models]]></title>
+        <id>https://arxiv.org/abs/2605.08504</id>
+        <link href="https://arxiv.org/abs/2605.08504"/>
+        <updated>2026-05-08T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[We investigate the origins of massive activations in large language models (LLMs) and identify a specific layer named the Massive Emergence Layer (ME Layer), that is consistently observed across model families, where massive activations first emerge and subsequently propagate to deeper layers through residual connections. We show that, within the ME Layer both the RMSNorm and the FFN parameters jointly contribute to the emergence of massive activations. Once formed, the massive activation token ]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>We investigate the origins of massive activations in large language models (LLMs) and identify a specific layer named the Massive Emergence Layer (ME Layer), that is consistently observed across model families, where massive activations first emerge and subsequently propagate to deeper layers through residual connections. We show that, within the ME Layer both the RMSNorm and the FFN parameters jointly contribute to the emergence of massive activations. Once formed, the massive activation token representation remains largely invariant across layers, reducing the diversity of hidden representations passed to the attention module. Motivated by this limitation, we propose a simple and effective method to reduce the rigidity of the massive activation token. Our approach consistently improves LLM performance across multiple tasks, including instruction following and math reasoning, in both training free and fine tuning settings. Moreover, we show that our method mitigates attention sinks by selectively weakening their influence, elucidating their origin at the hidden state level and shedding new light on principled mitigation strategies.</p>
+<p><strong>Relevance:</strong> 9/10</p>
+<p><a href="https://arxiv.org/pdf/2605.08504">PDF</a> | <a href="https://arxiv.org/abs/2605.08504">arXiv</a></p>]]></content>
+        <author>
+            <name>Zeru Shi</name>
+        </author>
+        <author>
+            <name>Zhenting Wang</name>
+        </author>
+        <author>
+            <name>Fan Yang</name>
+        </author>
+        <author>
+            <name>Qifan Wang</name>
+        </author>
+        <author>
+            <name>Ruixiang Tang</name>
+        </author>
+        <published>2026-05-08T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[LLaVA-UHD v4: What Makes Efficient Visual Encoding in MLLMs?]]></title>
+        <id>https://arxiv.org/abs/2605.08985</id>
+        <link href="https://arxiv.org/abs/2605.08985"/>
+        <updated>2026-05-09T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Visual encoding constitutes a major computational bottleneck in Multimodal Large Language Models (MLLMs), especially for high-resolution image inputs. The prevailing practice typically adopts global encoding followed by post-ViT compression. Global encoding produces massive token sequences, while post-ViT compression incurs the full quadratic attention cost of the ViT before any token reduction takes place. In this work, we revisit this convention along two dimensions: the encoding strategy and ]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出LLaVA-UHD v4，通过切片编码和ViT内部早期压缩，在保持性能的同时将视觉编码FLOPs降低55.8%，显著提升多模态大模型的高分辨率输入处理效率。</p>
+<h3>原始摘要</h3><p>Visual encoding constitutes a major computational bottleneck in Multimodal Large Language Models (MLLMs), especially for high-resolution image inputs. The prevailing practice typically adopts global encoding followed by post-ViT compression. Global encoding produces massive token sequences, while post-ViT compression incurs the full quadratic attention cost of the ViT before any token reduction takes place. In this work, we revisit this convention along two dimensions: the encoding strategy and visual token compression. First, controlled experiments show that slice-based encoding outperforms global encoding across benchmarks, suggesting that preserving local details through sliced views can be more beneficial than applying global attention for fine-grained perception. Second, we introduce intra-ViT early compression, which reduces tokens in shallow ViT layers and substantially lowers visual-encoding FLOPs while preserving downstream performance. By integrating intra-ViT compression into the slice-based encoding framework, we present LLaVA-UHD v4, an efficient and compute-controllable visual encoding scheme tailored for high-resolution inputs. Across a diverse set of benchmarks covering document understanding, OCR, and general VQA, LLaVA-UHD v4 reduces visual-encoding FLOPs by 55.8% while matching or even surpassing baseline performance. These results suggest that visual-encoding efficiency can be substantially improved without sacrificing downstream performance, providing a practical design direction for efficient high-resolution MLLMs. All model weights and code will be publicly released to support further research.</p>
+<p><strong>Relevance:</strong> 9/10</p>
+<p><a href="https://arxiv.org/pdf/2605.08985">PDF</a> | <a href="https://arxiv.org/abs/2605.08985">arXiv</a></p>]]></content>
+        <author>
+            <name>Kechen Fang</name>
+        </author>
+        <author>
+            <name>Yihua Qin</name>
+        </author>
+        <author>
+            <name>Chongyi Wang</name>
+        </author>
+        <author>
+            <name>Wenshuo Ma</name>
+        </author>
+        <author>
+            <name>Tianyu Yu</name>
+        </author>
+        <author>
+            <name>Yuan Yao</name>
+        </author>
+        <published>2026-05-09T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Make Each Token Count: Towards Improving Long-Context Performance with KV Cache Eviction]]></title>
+        <id>https://arxiv.org/abs/2605.09649</id>
+        <link href="https://arxiv.org/abs/2605.09649"/>
+        <updated>2026-05-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[The key-value (KV) cache is a major bottleneck in long-context inference, where memory and computation grow with sequence length. Existing KV eviction methods reduce this cost but typically degrade performance relative to full-cache inference. Our key insight is that full-cache attention is not always optimal: in long contexts, irrelevant tokens can dilute attention away from useful evidence, so selective, learnable eviction can improve generation rather than merely approximate the full cache. W]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出基于全局保留的KV缓存淘汰方法，通过学习每个token的未来效用，在统一内存预算下选择性保留有用token，减少内存占用并提升长上下文推理性能。</p>
+<h3>原始摘要</h3><p>The key-value (KV) cache is a major bottleneck in long-context inference, where memory and computation grow with sequence length. Existing KV eviction methods reduce this cost but typically degrade performance relative to full-cache inference. Our key insight is that full-cache attention is not always optimal: in long contexts, irrelevant tokens can dilute attention away from useful evidence, so selective, learnable eviction can improve generation rather than merely approximate the full cache. We introduce a global retention-based KV eviction method that learns each token's future utility under a unified memory budget. Lightweight retention gates assign utility scores to cached KV entries, and a shared final scoring projection calibrates these scores across all layers and heads. This enables a single global eviction policy in which tokens from different layers, heads, and modalities compete directly for cache capacity. We further provide theoretical analysis showing that preferentially retaining useful tokens reduces attention dilution, and we justify geometric retention as a query-agnostic proxy for future utility. Across diverse long-context language and vision-language reasoning, and multi-turn dialogue benchmarks, our method substantially reduces KV memory while matching or surpassing full-cache inference. These results suggest that learned, globally calibrated KV eviction is not only a compression technique, but also a mechanism for improving long-context reasoning.</p>
+<p><strong>Relevance:</strong> 9/10</p>
+<p><a href="https://arxiv.org/pdf/2605.09649">PDF</a> | <a href="https://arxiv.org/abs/2605.09649">arXiv</a></p>]]></content>
+        <author>
+            <name>Ngoc Bui</name>
+        </author>
+        <author>
+            <name>Hieu Trung Nguyen</name>
+        </author>
+        <author>
+            <name>Arman Cohan</name>
+        </author>
+        <author>
+            <name>Rex Ying</name>
+        </author>
+        <published>2026-05-10T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Rethinking State Tracking in Recurrent Models Through Error Control Dynamics]]></title>
+        <id>https://arxiv.org/abs/2605.07755</id>
+        <link href="https://arxiv.org/abs/2605.07755"/>
+        <updated>2026-05-08T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[The theory of state tracking in recurrent architectures has predominantly focused on expressive capacity: whether a fixed architecture can theoretically realize a set of symbolic transition rules. We argue that equally important is error control, the dynamics governing hidden-state drift along the directions that distinguish symbolic states. We prove that affine recurrent networks, a class of models encompassing State-Space Models and Linear Attention, cannot correct errors along state-separatin]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>The theory of state tracking in recurrent architectures has predominantly focused on expressive capacity: whether a fixed architecture can theoretically realize a set of symbolic transition rules. We argue that equally important is error control, the dynamics governing hidden-state drift along the directions that distinguish symbolic states. We prove that affine recurrent networks, a class of models encompassing State-Space Models and Linear Attention, cannot correct errors along state-separating subspaces once they preserve state representations. Consequently, practical affine trackers do not learn robust state tracking; rather, they learn finite horizon solutions governed by accumulated state-relevant error. We characterize the mechanics of this failure, showing that tracking remains readable only while the accumulating within-class spread remains small relative to the initial between-class separation. We demonstrate empirically on group state-tracking tasks that this breakdown is predictable: tracking collapses when the distinguishability ratio crosses the readability threshold of the trained decoder. Across trained models, the point of this crossing predicts the horizon at which downstream accuracy fails. These results establish that robust state tracking is determined not only by an architecture's theoretical expressivity but crucially by its error control.</p>
+<p><strong>Relevance:</strong> 9/10</p>
+<p><a href="https://arxiv.org/pdf/2605.07755">PDF</a> | <a href="https://arxiv.org/abs/2605.07755">arXiv</a></p>]]></content>
+        <author>
+            <name>Jiwan Chung</name>
+        </author>
+        <author>
+            <name>Heechan Choi</name>
+        </author>
+        <author>
+            <name>Seon Joo Kim</name>
+        </author>
+        <published>2026-05-08T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Fast Byte Latent Transformer]]></title>
+        <id>https://arxiv.org/abs/2605.08044</id>
+        <link href="https://arxiv.org/abs/2605.08044"/>
+        <updated>2026-05-08T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Recent byte-level language models (LMs) match the performance of token-level models without relying on subword vocabularies, yet their utility is limited by slow, byte-by-byte autoregressive generation. We address this bottleneck in the Byte Latent Transformer (BLT) through new training and generation techniques. First, we introduce BLT Diffusion (BLT-D), a new model and our fastest BLT variant, trained with an auxiliary block-wise diffusion objective alongside the standard next-byte prediction ]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Recent byte-level language models (LMs) match the performance of token-level models without relying on subword vocabularies, yet their utility is limited by slow, byte-by-byte autoregressive generation. We address this bottleneck in the Byte Latent Transformer (BLT) through new training and generation techniques. First, we introduce BLT Diffusion (BLT-D), a new model and our fastest BLT variant, trained with an auxiliary block-wise diffusion objective alongside the standard next-byte prediction loss. This enables an inference procedure that generates multiple bytes in parallel per decoding step, substantially reducing the number of forward passes required to generate a sequence. Second, we propose two extensions inspired by speculative decoding that trade some of this speed for higher generation quality: BLT Self-speculation (BLT-S), in which BLT's local decoder continues generating past its normal patch boundaries to draft bytes, which are then verified with a single full-model forward pass; and BLT Diffusion+Verification (BLT-DV), which augments BLT-D with an autoregressive verification step after diffusion-based generation. All methods may achieve an estimated memory-bandwidth cost over 50% lower than BLT on generation tasks. Each approach offers its own unique advantages, together removing key barriers to the practical use of byte-level LMs.</p>
+<p><strong>Relevance:</strong> 9/10</p>
+<p><a href="https://arxiv.org/pdf/2605.08044">PDF</a> | <a href="https://arxiv.org/abs/2605.08044">arXiv</a></p>]]></content>
+        <author>
+            <name>Julie Kallini</name>
+        </author>
+        <author>
+            <name>Artidoro Pagnoni</name>
+        </author>
+        <author>
+            <name>Tomasz Limisiewicz</name>
+        </author>
+        <author>
+            <name>Gargi Ghosh</name>
+        </author>
+        <author>
+            <name>Luke Zettlemoyer</name>
+        </author>
+        <author>
+            <name>Christopher Potts</name>
+        </author>
+        <author>
+            <name>Xiaochuang Han</name>
+        </author>
+        <author>
+            <name>Srinivasan Iyer</name>
+        </author>
+        <published>2026-05-08T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[MDN: Parallelizing Stepwise Momentum for Delta Linear Attention]]></title>
+        <id>https://arxiv.org/abs/2605.05838</id>
+        <link href="https://arxiv.org/abs/2605.05838"/>
+        <updated>2026-05-07T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Linear Attention (LA) offers a promising paradigm for scaling large language models (LLMs) to long sequences by avoiding the quadratic complexity of self-attention. Recent LA models such as Mamba2 and GDN interpret linear recurrences as closed-form online stochastic gradient descent (SGD), but naive SGD updates suffer from rapid information decay and suboptimal convergence in optimization. While momentum-based optimizers provide a natural remedy, they pose challenges in simultaneously achieving ]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出动量DeltaNet（MDN），通过分块并行算法实现带动量规则的线性注意力，利用Triton内核达到与Mamba2相当的训练吞吐，在长序列LLM中提升效率。</p>
+<h3>原始摘要</h3><p>Linear Attention (LA) offers a promising paradigm for scaling large language models (LLMs) to long sequences by avoiding the quadratic complexity of self-attention. Recent LA models such as Mamba2 and GDN interpret linear recurrences as closed-form online stochastic gradient descent (SGD), but naive SGD updates suffer from rapid information decay and suboptimal convergence in optimization. While momentum-based optimizers provide a natural remedy, they pose challenges in simultaneously achieving training efficiency and effectiveness. To address this, we develop a chunkwise parallel algorithm for LA with a stepwise momentum rule by geometrically reordering the update coefficients. Further, from a dynamical systems perspective, we analyze the momentum-based recurrence as a second-order system that introduces complex conjugate eigenvalues. This analysis guides the design of stable gating constraints. The resulting model, Momentum DeltaNet (MDN), leverages Triton kernels to achieve comparable training throughput with competitive linear models such as Mamba2 and KDA. Extensive experiments on the 400M and 1.3B parameter models demonstrate consistent performance improvements over strong baselines, including Transformers, Mamba2 and GDN, across diverse downstream evaluation benchmarks. Code: https://github.com/HuuYuLong/MomentumDeltaNet .</p>
+<p><strong>Relevance:</strong> 9/10</p>
+<p><a href="https://arxiv.org/pdf/2605.05838">PDF</a> | <a href="https://arxiv.org/abs/2605.05838">arXiv</a></p>]]></content>
+        <author>
+            <name>Yulong Huang</name>
+        </author>
+        <author>
+            <name>Xiang Liu</name>
+        </author>
+        <author>
+            <name>Hongxiang Huang</name>
+        </author>
+        <author>
+            <name>Xiaopeng Lin</name>
+        </author>
+        <author>
+            <name>Zunchang Liu</name>
+        </author>
+        <author>
+            <name>Xiaowen Chu</name>
+        </author>
+        <author>
+            <name>Zeke Xie</name>
+        </author>
+        <author>
+            <name>Bojun Cheng</name>
+        </author>
+        <published>2026-05-07T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[SpecBlock: Block-Iterative Speculative Decoding with Dynamic Tree Drafting]]></title>
+        <id>https://arxiv.org/abs/2605.07243</id>
+        <link href="https://arxiv.org/abs/2605.07243"/>
+        <updated>2026-05-08T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Speculative decoding accelerates LLM inference by drafting a tree of candidate continuations and verifying it in one target forward. Existing drafters fall into two camps with opposite weaknesses. Autoregressive drafters such as EAGLE-3 preserve dependence along each draft path but call the drafter once per tree depth, making drafting a non-trivial share of per-iteration latency. Parallel drafters cut drafter calls by predicting multiple future positions in one forward, but each position is pred]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Speculative decoding accelerates LLM inference by drafting a tree of candidate continuations and verifying it in one target forward. Existing drafters fall into two camps with opposite weaknesses. Autoregressive drafters such as EAGLE-3 preserve dependence along each draft path but call the drafter once per tree depth, making drafting a non-trivial share of per-iteration latency. Parallel drafters cut drafter calls by predicting multiple future positions in one forward, but each position is predicted without seeing the others, producing paths the verifier rejects. In this paper, we propose SpecBlock, a block-iterative drafter that combines path dependence with cheap drafting. Each drafter forward produces K dependent positions and we call this a block. The draft tree grows through repeated block expansions. Two mechanisms explicitly carry path dependence to keep later draft positions accurate. Within each block, a layer-wise shift carries the previous position's hidden state into every decoder layer. Across blocks, each new block can start from any position of the previous block, inheriting its hidden state to extend the path. To spend verifier budget where acceptance is likely, a co-trained rank head replaces the fixed top-k tree by allocating per-position branching during drafting. To avoid training the drafter on prefixes it never produces at inference, a valid-prefix mask drops the loss at later positions once an earlier one is wrong. Beyond static drafting, a cost-aware bandit at deployment uses free verifier feedback to update the drafter selectively, only when the expected throughput gain exceeds the update cost. Experiments show that SpecBlock improves mean speedup by 8-13% over EAGLE-3 at 44-52% of its drafting cost, and cost-aware adaptation extends this lead to 11-19%.</p>
+<p><strong>Relevance:</strong> 9/10</p>
+<p><a href="https://arxiv.org/pdf/2605.07243">PDF</a> | <a href="https://arxiv.org/abs/2605.07243">arXiv</a></p>]]></content>
+        <author>
+            <name>Weijie Shi</name>
+        </author>
+        <author>
+            <name>Qiang Xu</name>
+        </author>
+        <author>
+            <name>Fan Deng</name>
+        </author>
+        <author>
+            <name>Yaguang Wu</name>
+        </author>
+        <author>
+            <name>Jiarun Liu</name>
+        </author>
+        <author>
+            <name>Yehong Xu</name>
+        </author>
+        <author>
+            <name>Hao Chen</name>
+        </author>
+        <author>
+            <name>Jia Zhu</name>
+        </author>
+        <author>
+            <name>Jiajie Xu</name>
+        </author>
+        <author>
+            <name>Xiangjun Huang</name>
+        </author>
+        <author>
+            <name>Jian Yang</name>
+        </author>
+        <author>
+            <name>Xiaofang Zhou</name>
+        </author>
+        <published>2026-05-08T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Eradicating Negative Transfer in Multi-Physics Foundation Models via Sparse Mixture-of-Experts Routing]]></title>
+        <id>https://arxiv.org/abs/2605.15179</id>
+        <link href="https://arxiv.org/abs/2605.15179"/>
+        <updated>2026-05-14T17:58:15.000Z</updated>
+        <summary type="html"><![CDATA[Scaling Scientific Machine Learning (SciML) toward universal foundation models is bottlenecked by negative transfer: the simultaneous co-training of disparate partial differential equation (PDE) regimes can induce gradient conflict, unstable optimization, and plasticity loss in dense neural operators. In particular, broadband open-channel fluid dynamics and boundary-dominated porous media flows impose incompatible spectral and geometric demands on a single dense parameter path. We introduce Shod]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Scaling Scientific Machine Learning (SciML) toward universal foundation models is bottlenecked by negative transfer: the simultaneous co-training of disparate partial differential equation (PDE) regimes can induce gradient conflict, unstable optimization, and plasticity loss in dense neural operators. In particular, broadband open-channel fluid dynamics and boundary-dominated porous media flows impose incompatible spectral and geometric demands on a single dense parameter path. We introduce Shodh-MoE, a sparse-activated latent transformer architecture for multi-physics transport. Shodh-MoE operates on compressed 16^3 physical latents produced by a physics-informed autoencoder with an intra-tokenizer Helmholtz-style velocity parameterization, restricting decoded states to divergence-free velocity manifolds. The model guarantees exact mass conservation, achieving a physically verifiable velocity divergence of ~2.8 x 10^-10 (evaluated post-hoc in FP64) on 128^3 grids. A Top-1 soft-semantic router dynamically assigns localized latent patches to expert subnetworks, enabling specialized parameter paths for distinct physical mechanisms while preserving shared experts for universal symmetries. In a 20,000-step distributed pretraining run over mixed three-dimensional physical tensors, routing telemetry shows autonomous domain bifurcation: held-out validation tokens from the open-channel domain route exclusively to Expert 0, while porous-media tokens route exclusively to Expert 1. The model converges simultaneously across both regimes, achieving latent validation MSEs of 2.46 x 10^-5 and 9.76 x 10^-6, and decoded physical MSEs of 2.48 x 10^-6 and 1.76 x 10^-6. These results support sparse expert routing as a practical architectural mechanism for mitigating multi-physics interference in universal neural operators.</p>
+<p><strong>Categories:</strong> cs.LG, cs.AI, physics.comp-ph</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2605.15179">PDF</a> | <a href="https://arxiv.org/abs/2605.15179">arXiv</a></p>]]></content>
+        <author>
+            <name>Ellwil Sharma</name>
+        </author>
+        <author>
+            <name>Arastu Sharma</name>
+        </author>
+        <category label="cs.LG" term="cs.LG"/>
+        <category label="cs.AI" term="cs.AI"/>
+        <category label="physics.comp-ph" term="physics.comp-ph"/>
+        <published>2026-05-14T17:58:15.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[An Interpretable Latency Model for Speculative Decoding in LLM Serving]]></title>
+        <id>https://arxiv.org/abs/2605.15051</id>
+        <link href="https://arxiv.org/abs/2605.15051"/>
+        <updated>2026-05-14T16:45:28.000Z</updated>
+        <summary type="html"><![CDATA[Speculative decoding (SD) accelerates large language model (LLM) inference by using a smaller draft model to propose multiple tokens that are verified by a larger target model in parallel. While prior work demonstrates substantial speedups in isolated or fixed-batch settings, the behavior of SD in production serving systems remains poorly understood: request load varies over time, and effective batch size emerges from the serving system rather than being directly controlled or observed. In this ]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Speculative decoding (SD) accelerates large language model (LLM) inference by using a smaller draft model to propose multiple tokens that are verified by a larger target model in parallel. While prior work demonstrates substantial speedups in isolated or fixed-batch settings, the behavior of SD in production serving systems remains poorly understood: request load varies over time, and effective batch size emerges from the serving system rather than being directly controlled or observed. In this work, we develop a simple and interpretable latency model for SD in LLM serving. We infer effective batch size from request rate using Little's Law and decompose per-request demand into load-independent and load-dependent components for prefill, drafting, and verification. We validate our model using extensive measurements from vLLM across verifier and drafter model sizes, prefill and decode lengths, request rates, draft lengths, and acceptance probabilities. The model accurately describes observed latency, explains why speedups often diminish as server load increases, and characterizes how draft length, acceptance rate, and verifier-drafter size shape latency across serving conditions, with implications for configuring SD in deployed systems. We further show how the framework extends to mixture of experts models, where sparse expert activation changes the effective service costs across load regimes. Together, our results provide a structured framework for understanding SD in real LLM serving systems.</p>
+<p><strong>Categories:</strong> cs.LG, cs.PF</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2605.15051">PDF</a> | <a href="https://arxiv.org/abs/2605.15051">arXiv</a></p>]]></content>
+        <author>
+            <name>Linghao Kong</name>
+        </author>
+        <author>
+            <name>Megan Flynn</name>
+        </author>
+        <author>
+            <name>Michael Peng</name>
+        </author>
+        <author>
+            <name>Nir Shavit</name>
+        </author>
+        <author>
+            <name>Mark Kurtz</name>
+        </author>
+        <author>
+            <name>Alexandre Marques</name>
+        </author>
+        <category label="cs.LG" term="cs.LG"/>
+        <category label="cs.PF" term="cs.PF"/>
+        <published>2026-05-14T16:45:28.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Learning with Shallow Neural Networks on Cluster-Structured Features]]></title>
+        <id>https://arxiv.org/abs/2605.14927</id>
+        <link href="https://arxiv.org/abs/2605.14927"/>
+        <updated>2026-05-14T15:02:24.000Z</updated>
+        <summary type="html"><![CDATA[The success of deep learning in high-dimensional settings is often attributed to the presence of low-dimensional structure in real-world data. While standard theoretical models typically assume that this structure lies in the target function, projecting unstructured inputs onto a low-dimensional subspace, data such as images, text or genomic sequences exhibit strong spatial correlations within the input space itself. In this paper, we propose a tractable model to study how these correlations aff]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>The success of deep learning in high-dimensional settings is often attributed to the presence of low-dimensional structure in real-world data. While standard theoretical models typically assume that this structure lies in the target function, projecting unstructured inputs onto a low-dimensional subspace, data such as images, text or genomic sequences exhibit strong spatial correlations within the input space itself. In this paper, we propose a tractable model to study how these correlations affect the sample complexity of learning with gradient descent on shallow neural networks. Specifically, we consider targets that depend on a small number of latent Boolean variables, and input features grouped into clusters and correlated with the latent variables. Under an identifiability assumption, we show that for a layerwise gradient-descent variant, the sample complexity scales with the number of hidden variables and, when the signal-to-noise ratio is sufficiently high, is independent of the input dimension, up to logarithmic terms. We empirically test our theoretical findings on both synthetic and real data.</p>
+<p><strong>Categories:</strong> cs.LG</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2605.14927">PDF</a> | <a href="https://arxiv.org/abs/2605.14927">arXiv</a></p>]]></content>
+        <author>
+            <name>Elisabetta Cornacchia</name>
+        </author>
+        <author>
+            <name>Laurent Massoulié</name>
+        </author>
+        <category label="cs.LG" term="cs.LG"/>
+        <published>2026-05-14T15:02:24.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Your CLIP has 164 dimensions of noise: Exploring the embeddings covariance eigenspectrum of contrastively pretrained vision-language transformers]]></title>
+        <id>https://arxiv.org/abs/2605.14893</id>
+        <link href="https://arxiv.org/abs/2605.14893"/>
+        <updated>2026-05-14T14:37:50.000Z</updated>
+        <summary type="html"><![CDATA[Contrastively pre-trained Vision-Language Models (VLMs) serve as powerful feature extractors. Yet, their shared latent spaces are prone to structural anomalies and act as repositories for non-semantic, multi-modal noise. To address this phenomenon, we employ spectral decomposition of covariance matrices to decompose the VLM latent space into a multi-modal semantic signal component and a shared noise subspace. We observe that this noise geometry exhibits strong subgroup invariance across distinct]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Contrastively pre-trained Vision-Language Models (VLMs) serve as powerful feature extractors. Yet, their shared latent spaces are prone to structural anomalies and act as repositories for non-semantic, multi-modal noise. To address this phenomenon, we employ spectral decomposition of covariance matrices to decompose the VLM latent space into a multi-modal semantic signal component and a shared noise subspace. We observe that this noise geometry exhibits strong subgroup invariance across distinct data subsets. Crucially, pruning these shared noise dimensions is mainly harmless, preserving or actively improving downstream task performance. By isolating true semantic signals from artifactual noise, this work provides new mechanistic insights into the representational structure of modern VLMs, suggesting that a substantial fraction of their latent geometry is governed by shared, architecture-level noise rather than task-relevant semantics alone.</p>
+<p><strong>Categories:</strong> cs.CV, cs.AI, cs.LG</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2605.14893">PDF</a> | <a href="https://arxiv.org/abs/2605.14893">arXiv</a></p>]]></content>
+        <author>
+            <name>Jakub Grzywaczewski</name>
+        </author>
+        <author>
+            <name>Dawid Płudowski</name>
+        </author>
+        <author>
+            <name>Przemysław Biecek</name>
+        </author>
+        <category label="cs.CV" term="cs.CV"/>
+        <category label="cs.AI" term="cs.AI"/>
+        <category label="cs.LG" term="cs.LG"/>
+        <published>2026-05-14T14:37:50.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[HeatKV: Head-tuned KV-cache Compression for Visual Autoregressive Modeling]]></title>
+        <id>https://arxiv.org/abs/2605.14877</id>
+        <link href="https://arxiv.org/abs/2605.14877"/>
+        <updated>2026-05-14T14:22:34.000Z</updated>
+        <summary type="html"><![CDATA[Visual Autoregressive (VAR) models have recently demonstrated impressive image generation quality while maintaining low latency. However, they suffer from severe KV-cache memory constraints, often requiring gigabytes of memory per generated image. We introduce HeatKV, a novel compression method that adapts cache allocation in each head based on its attention to previously generated scales. Using a small offline calibration set, the attention heads are ranked according to their attention scores o]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出HeatKV，一种针对视觉自回归模型（VAR）的KV缓存压缩方法，通过基于注意力分数的头部特定缓存分配，在保持图像质量的同时实现2倍压缩比。</p>
+<h3>原始摘要</h3><p>Visual Autoregressive (VAR) models have recently demonstrated impressive image generation quality while maintaining low latency. However, they suffer from severe KV-cache memory constraints, often requiring gigabytes of memory per generated image. We introduce HeatKV, a novel compression method that adapts cache allocation in each head based on its attention to previously generated scales. Using a small offline calibration set, the attention heads are ranked according to their attention scores over prior scales. Based on this ranking, we construct a static pruning schedule tailored to a given memory budget. Applied to the Infinity-2B model, HeatKV achieves $2 \times$ higher compression ratio in memory allocation for KV cache compared to existing methods, while maintaining similar or better image fidelity, prompt alignment and human perception score. Our method achieves a new state-of-the-art (SOTA) for VAR model KV-cache compression, showcasing the effectiveness of fine-grained, head-specific cache allocation.</p>
+<p><strong>Categories:</strong> cs.CV</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2605.14877">PDF</a> | <a href="https://arxiv.org/abs/2605.14877">arXiv</a></p>]]></content>
+        <author>
+            <name>Jonathan Cederlund</name>
+        </author>
+        <author>
+            <name>Axel Berg</name>
+        </author>
+        <author>
+            <name>Durmus Alp Emre Acar</name>
+        </author>
+        <author>
+            <name>Chuteng Zhou</name>
+        </author>
+        <author>
+            <name>Pontus Giselsson</name>
+        </author>
+        <category label="cs.CV" term="cs.CV"/>
+        <published>2026-05-14T14:22:34.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[BEAM: Binary Expert Activation Masking for Dynamic Routing in MoE]]></title>
+        <id>https://arxiv.org/abs/2605.14438</id>
+        <link href="https://arxiv.org/abs/2605.14438"/>
+        <updated>2026-05-14T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Mixture-of-Experts (MoE) architectures enhance the efficiency of large language models by activating only a subset of experts per token. However, standard MoE employs a fixed Top-K routing strategy, leading to redundant computation and suboptimal inference latency. Existing acceleration methods either require costly retraining with architectural changes or suffer from severe performance drop at high sparsity due to train-inference mismatch. To address these limitations, we propose BEAM (Binary E]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Mixture-of-Experts (MoE) architectures enhance the efficiency of large language models by activating only a subset of experts per token. However, standard MoE employs a fixed Top-K routing strategy, leading to redundant computation and suboptimal inference latency. Existing acceleration methods either require costly retraining with architectural changes or suffer from severe performance drop at high sparsity due to train-inference mismatch. To address these limitations, we propose BEAM (Binary Expert Activation Masking), a novel method that learns token-adaptive expert selection via trainable binary masks. With a straight-through estimator and an auxiliary regularization loss, BEAM induces dynamic expert sparsity through end-to-end training while maintaining model capability. We further implement an efficient custom CUDA kernel for BEAM, ensuring seamless integration with the vLLM inference framework. Experiments show that BEAM retains over 98\% of the original model's performance while reducing MoE layer FLOPs by up to 85\%, achieving up to 2.5times faster decoding and 1.4times higher throughput, demonstrating its effectiveness as a practical, plug-and-play solution for efficient MoE inference.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2605.14438">PDF</a> | <a href="https://arxiv.org/abs/2605.14438">arXiv</a></p>]]></content>
+        <author>
+            <name>Juntong Wu</name>
+        </author>
+        <author>
+            <name>Jialiang Cheng</name>
+        </author>
+        <author>
+            <name>Qishen Yin</name>
+        </author>
+        <author>
+            <name>Yue Dai</name>
+        </author>
+        <author>
+            <name>Yuliang Yan</name>
+        </author>
+        <author>
+            <name>Fuyu Lv</name>
+        </author>
+        <author>
+            <name>Ou Dan</name>
+        </author>
+        <author>
+            <name>Li Yuan</name>
+        </author>
+        <published>2026-05-14T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[MinT: Managed Infrastructure for Training and Serving Millions of LLMs]]></title>
+        <id>https://arxiv.org/abs/2605.13779</id>
+        <link href="https://arxiv.org/abs/2605.13779"/>
+        <updated>2026-05-13T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[We present MindLab Toolkit (MinT), a managed infrastructure system for Low-Rank Adaptation (LoRA) post-training and online serving. MinT targets a setting where many trained policies are produced over a small number of expensive base-model deployments. Instead of materializing each policy as a merged full checkpoint, MinT keeps the base model resident and moves exported LoRA adapter revisions through rollout, update, export, evaluation, serving, and rollback, hiding distributed training, serving]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出MinT基础设施，管理百万级LoRA策略的训练和服务，通过适配器导出、分布式训练和调度优化，实现大规模高效部署。</p>
+<h3>原始摘要</h3><p>We present MindLab Toolkit (MinT), a managed infrastructure system for Low-Rank Adaptation (LoRA) post-training and online serving. MinT targets a setting where many trained policies are produced over a small number of expensive base-model deployments. Instead of materializing each policy as a merged full checkpoint, MinT keeps the base model resident and moves exported LoRA adapter revisions through rollout, update, export, evaluation, serving, and rollback, hiding distributed training, serving, scheduling, and data movement behind a service interface. MinT scales this path along three axes. Scale Up extends LoRA RL to frontier-scale dense and MoE architectures, including MLA and DSA attention paths, with training and serving validated beyond 1T total parameters. Scale Down moves only the exported LoRA adapter, which can be under 1% of base-model size in rank-1 settings; adapter-only handoff reduces the measured step by 18.3x on a 4B dense model and 2.85x on a 30B MoE, while concurrent multi-policy GRPO shortens wall time by 1.77x and 1.45x without raising peak memory. Scale Out separates durable policy addressability from CPU/GPU working sets: a tensor-parallel deployment supports 10^6-scale addressable catalogs (measured single-engine sweeps through 100K) and thousand-adapter active waves at cluster scale, with cold loading treated as scheduled service work and packed MoE LoRA tensors improving live engine loading by 8.5-8.7x. MinT thus manages million-scale LoRA policy catalogs while training and serving selected adapter revisions over shared 1T-class base models.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2605.13779">PDF</a> | <a href="https://arxiv.org/abs/2605.13779">arXiv</a></p>]]></content>
+        <author>
+            <name>Mind Lab</name>
+        </author>
+        <author>
+            <name>Song Cao</name>
+        </author>
+        <author>
+            <name>Vic Cao</name>
+        </author>
+        <author>
+            <name>Andrew Chen</name>
+        </author>
+        <author>
+            <name>Kaijie Chen</name>
+        </author>
+        <author>
+            <name>Cleon Cheng</name>
+        </author>
+        <author>
+            <name>Steven Chiang</name>
+        </author>
+        <author>
+            <name>Kaixuan Fan</name>
+        </author>
+        <author>
+            <name>Hera Feng</name>
+        </author>
+        <author>
+            <name>Huan Feng</name>
+        </author>
+        <author>
+            <name>Arthur Fu</name>
+        </author>
+        <author>
+            <name>Jun Gao</name>
+        </author>
+        <author>
+            <name>Hongquan Gu</name>
+        </author>
+        <author>
+            <name>Aaron Guan</name>
+        </author>
+        <author>
+            <name>Nolan Ho</name>
+        </author>
+        <author>
+            <name>Mutian Hong</name>
+        </author>
+        <author>
+            <name>Hailee Hou</name>
+        </author>
+        <author>
+            <name>Peixuan Hua</name>
+        </author>
+        <author>
+            <name>Charles Huang</name>
+        </author>
+        <author>
+            <name>Miles Jiang</name>
+        </author>
+        <author>
+            <name>Nora Jiang</name>
+        </author>
+        <author>
+            <name>Yuyi Jiang</name>
+        </author>
+        <author>
+            <name>Qiuyu Jin</name>
+        </author>
+        <author>
+            <name>Fancy Kong</name>
+        </author>
+        <author>
+            <name>Andrew Lei</name>
+        </author>
+        <author>
+            <name>Kyrie Lei</name>
+        </author>
+        <author>
+            <name>Alexy Li</name>
+        </author>
+        <author>
+            <name>Lucian Li</name>
+        </author>
+        <author>
+            <name>Ray Li</name>
+        </author>
+        <author>
+            <name>Theo Li</name>
+        </author>
+        <author>
+            <name>Zhihui Li</name>
+        </author>
+        <author>
+            <name>Jiayi Lin</name>
+        </author>
+        <author>
+            <name>Kairus Liu</name>
+        </author>
+        <author>
+            <name>Kieran Liu</name>
+        </author>
+        <author>
+            <name>Logan Liu</name>
+        </author>
+        <author>
+            <name>Xiang Liu</name>
+        </author>
+        <author>
+            <name>Irvine Lu</name>
+        </author>
+        <author>
+            <name>Maeve Luo</name>
+        </author>
+        <author>
+            <name>Runze Lv</name>
+        </author>
+        <author>
+            <name>Pony Ma</name>
+        </author>
+        <author>
+            <name>Verity Niu</name>
+        </author>
+        <author>
+            <name>Anson Qiu</name>
+        </author>
+        <author>
+            <name>Vincent Wang</name>
+        </author>
+        <author>
+            <name>Rio Yang</name>
+        </author>
+        <author>
+            <name>Maxwell Yao</name>
+        </author>
+        <author>
+            <name>Carrie Ye</name>
+        </author>
+        <author>
+            <name>Regis Ye</name>
+        </author>
+        <author>
+            <name>Wenlin Ye</name>
+        </author>
+        <author>
+            <name>Josh Ying</name>
+        </author>
+        <author>
+            <name>Danney Zeng</name>
+        </author>
+        <author>
+            <name>Yuhan Zhan</name>
+        </author>
+        <author>
+            <name>Anya Zhang</name>
+        </author>
+        <author>
+            <name>Di Zhang</name>
+        </author>
+        <author>
+            <name>Ruijia Zhang</name>
+        </author>
+        <author>
+            <name>Sueky Zhang</name>
+        </author>
+        <author>
+            <name>Ya Zhang</name>
+        </author>
+        <author>
+            <name>Wei Zhao</name>
+        </author>
+        <author>
+            <name>Ada Zhou</name>
+        </author>
+        <author>
+            <name>Changhai Zhou</name>
+        </author>
+        <author>
+            <name>Yuhua Zhou</name>
+        </author>
+        <author>
+            <name>Xinyue Zhu</name>
+        </author>
+        <author>
+            <name>Murphy Zhuang</name>
+        </author>
+        <published>2026-05-13T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[AnyFlow: Any-Step Video Diffusion Model with On-Policy Flow Map Distillation]]></title>
+        <id>https://arxiv.org/abs/2605.13724</id>
+        <link href="https://arxiv.org/abs/2605.13724"/>
+        <updated>2026-05-13T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Few-step video generation has been significantly advanced by consistency distillation. However, the performance of consistency-distilled models often degrades as more sampling steps are allocated at test time, limiting their effectiveness for any-step video diffusion. This limitation arises because consistency distillation replaces the original probability-flow ODE trajectory with a consistency-sampling trajectory, weakening the desirable test-time scaling behavior of ODE sampling. To address th]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出AnyFlow，基于流映射的任意步视频扩散蒸馏框架，通过流映射反向模拟实现高效在线策略蒸馏，在少步和任意步采样中均提升性能。</p>
+<h3>原始摘要</h3><p>Few-step video generation has been significantly advanced by consistency distillation. However, the performance of consistency-distilled models often degrades as more sampling steps are allocated at test time, limiting their effectiveness for any-step video diffusion. This limitation arises because consistency distillation replaces the original probability-flow ODE trajectory with a consistency-sampling trajectory, weakening the desirable test-time scaling behavior of ODE sampling. To address this limitation, we introduce AnyFlow, the first any-step video diffusion distillation framework based on flow maps. Instead of distilling a model for only a few fixed sampling steps, AnyFlow optimizes the full ODE sampling trajectory. To this end, we shift the distillation target from endpoint consistency mapping (z_{t}rightarrow z_{0}) to flow-map transition learning (z_{t}rightarrow z_{r}) over arbitrary time intervals. We further propose Flow Map Backward Simulation, which decomposes a full Euler rollout into shortcut flow-map transitions, enabling efficient on-policy distillation that reduces test-time errors (i.e., discretization error in few-step sampling and exposure bias in causal generation). Extensive experiments across both bidirectional and causal architectures, at scales ranging from 1.3B to 14B parameters, demonstrate that AnyFlow achieves performance matches or surpasses consistency-based counterparts in the few-step regime, while scaling with sampling step budgets.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2605.13724">PDF</a> | <a href="https://arxiv.org/abs/2605.13724">arXiv</a></p>]]></content>
+        <author>
+            <name>Yuchao Gu</name>
+        </author>
+        <author>
+            <name>Guian Fang</name>
+        </author>
+        <author>
+            <name>Yuxin Jiang</name>
+        </author>
+        <author>
+            <name>Weijia Mao</name>
+        </author>
+        <author>
+            <name>Song Han</name>
+        </author>
+        <author>
+            <name>Han Cai</name>
+        </author>
+        <author>
+            <name>Mike Zheng Shou</name>
+        </author>
+        <published>2026-05-13T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Context Training with Active Information Seeking]]></title>
+        <id>https://arxiv.org/abs/2605.13050</id>
+        <link href="https://arxiv.org/abs/2605.13050"/>
+        <updated>2026-05-13T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Most existing large language models (LLMs) are expensive to adapt after deployment, especially when a task requires newly produced information or niche domain knowledge. Recent work has shown that, by manipulating and optimizing their context, LLMs can be tailored to downstream tasks without updating their weights. However, most existing methods remain closed-loop, relying solely on the model's intrinsic knowledge. In this paper, we equip these context optimizers with Wikipedia search and browse]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Most existing large language models (LLMs) are expensive to adapt after deployment, especially when a task requires newly produced information or niche domain knowledge. Recent work has shown that, by manipulating and optimizing their context, LLMs can be tailored to downstream tasks without updating their weights. However, most existing methods remain closed-loop, relying solely on the model's intrinsic knowledge. In this paper, we equip these context optimizers with Wikipedia search and browser tools for active information seeking. We show that naively adding these tools to a standard sequential context optimization pipeline can actually degrade performance compared to baselines. However, when paired with a search-based training procedure that maintains and prunes multiple candidate contexts, active information seeking delivers consistent and substantial gains. We demonstrate these improvements across diverse domains, including low-resource translation (Flores+), health scenarios (HealthBench), and reasoning-heavy tasks (LiveCodeBench and Humanity's Last Exam). Furthermore, our method proves to be data-efficient, robust across different hyperparameters, and capable of generating effective textual contexts that generalize well across different models.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2605.13050">PDF</a> | <a href="https://arxiv.org/abs/2605.13050">arXiv</a></p>]]></content>
+        <author>
+            <name>Zeyu Huang</name>
+        </author>
+        <author>
+            <name>Adhiguna Kuncoro</name>
+        </author>
+        <author>
+            <name>Qixuan Feng</name>
+        </author>
+        <author>
+            <name>Jiajun Shen</name>
+        </author>
+        <author>
+            <name>Lucio Dery</name>
+        </author>
+        <author>
+            <name>Arthur Szlam</name>
+        </author>
+        <author>
+            <name>Marc'Aurelio Ranzato</name>
+        </author>
+        <published>2026-05-13T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[LoopUS: Recasting Pretrained LLMs into Looped Latent Refinement Models]]></title>
+        <id>https://arxiv.org/abs/2605.11011</id>
+        <link href="https://arxiv.org/abs/2605.11011"/>
+        <updated>2026-05-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Looped computation shows promise in improving the reasoning-oriented performance of LLMs by scaling test-time compute. However, existing approaches typically require either training recurrent models from scratch or applying disruptive retrofits, which involve substantial computational costs and may compromise pretrained capabilities. To address these limitations, we introduce Looped Depth Up-Scaling (LoopUS), a post-training framework that converts a standard pretrained LLM into a looped archite]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出LoopUS后训练框架，将标准LLM转换为循环架构，通过块分解、选择性门控和深度监督实现稳定循环推理，提升推理性能而不增加生成长度。</p>
+<h3>原始摘要</h3><p>Looped computation shows promise in improving the reasoning-oriented performance of LLMs by scaling test-time compute. However, existing approaches typically require either training recurrent models from scratch or applying disruptive retrofits, which involve substantial computational costs and may compromise pretrained capabilities. To address these limitations, we introduce Looped Depth Up-Scaling (LoopUS), a post-training framework that converts a standard pretrained LLM into a looped architecture. As a key technical contribution, LoopUS recasts the pretrained LLM into an encoder, a looped reasoning block, and a decoder. It operationalizes this latent-refinement architecture through four core components: (1) block decomposition, guided by staged representation dynamics; (2) an input-dependent selective gate to mitigate hidden-state drift; (3) random deep supervision for memory-efficient learning over long recursive horizons; and (4) a confidence head for adaptive early exiting. Collectively, these mechanisms transform a standard non-looped model into a looped form while stabilizing it against both computational bottlenecks and representation collapse. Through stable latent looping, LoopUS improves reasoning-oriented performance without extending the generated traces or requiring recurrent training from scratch. For more details, see https://thrillcrazyer.github.io/LoopUS</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2605.11011">PDF</a> | <a href="https://arxiv.org/abs/2605.11011">arXiv</a></p>]]></content>
+        <author>
+            <name>Taekhyun Park</name>
+        </author>
+        <author>
+            <name>Yongjae Lee</name>
+        </author>
+        <author>
+            <name>Dohee Kim</name>
+        </author>
+        <author>
+            <name>Hyerim Bae</name>
+        </author>
+        <published>2026-05-10T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Solve the Loop: Attractor Models for Language and Reasoning]]></title>
+        <id>https://arxiv.org/abs/2605.12466</id>
+        <link href="https://arxiv.org/abs/2605.12466"/>
+        <updated>2026-05-12T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Looped Transformers offer a promising alternative to purely feed-forward computation by iteratively refining latent representations, improving language modeling and reasoning. Yet recurrent architectures remain unstable to train, costly to optimize and deploy, and constrained to small, fixed recurrence depths. We introduce Attractor Models, in which a backbone module first proposes output embeddings, then an attractor module refines them by solving for the fixed point, with gradients obtained th]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出吸引子模型，通过隐式微分求解不动点，实现训练内存与有效深度无关，自适应迭代次数，在语言建模中取得帕累托改进，770M模型超越1.3B Transformer。</p>
+<h3>原始摘要</h3><p>Looped Transformers offer a promising alternative to purely feed-forward computation by iteratively refining latent representations, improving language modeling and reasoning. Yet recurrent architectures remain unstable to train, costly to optimize and deploy, and constrained to small, fixed recurrence depths. We introduce Attractor Models, in which a backbone module first proposes output embeddings, then an attractor module refines them by solving for the fixed point, with gradients obtained through implicit differentiation. Thus, training memory remains constant in effective depth, and iterations are chosen adaptively by convergence. Empirically, Attractor Models outperform existing models across two regimes, large-scale language-model pretraining and reasoning with tiny models. In language modeling, Attractor Models deliver a Pareto improvement over standard Transformers and stable looped models across sizes, improving perplexity by up to 46.6% and downstream accuracy by up to 19.7% while reducing training cost. Notably, a 770M Attractor Model outperforms a 1.3B Transformer trained on twice as many tokens. On challenging reasoning tasks, we show that our model with only 27M parameters and approximately 1000 examples achieves 91.4% accuracy on Sudoku-Extreme and 93.1% on Maze-Hard, scaling favorably where frontier models like Claude and GPT o3, fail completely, and specialized recursive reasoners collapse at larger sizes. Lastly, we show that Attractor Models exhibit a novel phenomenon, which we call equilibrium internalization: fixed-point training places the model's initial output embedding near equilibrium, allowing the solver to be removed at inference time with little degradation. Together, these results suggest that Attractor Models make iterative refinement scalable by turning recurrence into a computation the model can learn to internalize.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2605.12466">PDF</a> | <a href="https://arxiv.org/abs/2605.12466">arXiv</a></p>]]></content>
+        <author>
+            <name>Jacob Fein-Ashley</name>
+        </author>
+        <author>
+            <name>Paria Rashidinejad</name>
+        </author>
+        <published>2026-05-12T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Memory-Efficient Looped Transformer: Decoupling Compute from Memory in Looped Language Models]]></title>
+        <id>https://arxiv.org/abs/2605.07721</id>
+        <link href="https://arxiv.org/abs/2605.07721"/>
+        <updated>2026-05-08T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Recurrent LLM architectures have emerged as a promising approach for improving reasoning, as they enable multi-step computation in the embedding space without generating intermediate tokens. Models such as Ouro perform reasoning by iteratively updating internal representations while retaining a standard Key-Value (KV) cache across iterations, causing memory consumption to grow linearly with reasoning depth. Consequently, increasing the number of reasoning iterations can lead to prohibitive memor]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Recurrent LLM architectures have emerged as a promising approach for improving reasoning, as they enable multi-step computation in the embedding space without generating intermediate tokens. Models such as Ouro perform reasoning by iteratively updating internal representations while retaining a standard Key-Value (KV) cache across iterations, causing memory consumption to grow linearly with reasoning depth. Consequently, increasing the number of reasoning iterations can lead to prohibitive memory usage, limiting the practical scalability of such architectures. In this work, we propose Memory-Efficient Looped Transformer (MELT), a novel architecture that decouples reasoning depth from memory consumption. Instead of using a standard KV cache per layer and loop, MELT maintains a single KV cache per layer that is shared across reasoning loops. This cache is updated over time via a learnable gating mechanism. To enable stable and efficient training under this architecture, we propose to train MELT using chunk-wise training in a two phase procedure: interpolated transition, followed by attention-aligned distillation, both from the LoopLM starting model to MELT. Empirically, we show that MELT models fine-tuned from pretrained Ouro parameters outperform standard LLMs of comparable size, while maintaining a memory footprint comparable to those models and dramatically smaller than Ouro's. Overall, MELT achieves constant-memory iterative reasoning without sacrificing LoopLM performance, using only a lightweight post-training procedure.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2605.07721">PDF</a> | <a href="https://arxiv.org/abs/2605.07721">arXiv</a></p>]]></content>
+        <author>
+            <name>Victor Conchello Vendrell</name>
+        </author>
+        <author>
+            <name>Arnau Padres Masdemont</name>
+        </author>
+        <author>
+            <name>Niccolò Grillo</name>
+        </author>
+        <author>
+            <name>Jordi Ros-Giralt</name>
+        </author>
+        <author>
+            <name>Arash Behboodi</name>
+        </author>
+        <author>
+            <name>Fabio Valerio Massoli</name>
+        </author>
+        <published>2026-05-08T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Key-Value Means]]></title>
+        <id>https://arxiv.org/abs/2605.09877</id>
+        <link href="https://arxiv.org/abs/2605.09877"/>
+        <updated>2026-05-11T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[We present Key-Value Means ("KVM"), a novel block-recurrence for attention that can accommodate either fixed-size or growing state. Equipping a strong transformer baseline with fixed-size KVM attention layers yields a strong O(N) chunked RNN, while adding only an insignificant number of new parameters. We train a transformer with a growable KVM cache and show it performs competitively on long-context tests with only subquadratic prefill time and sublinear state growth. KVM is implementable with ]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>We present Key-Value Means (&quot;KVM&quot;), a novel block-recurrence for attention that can accommodate either fixed-size or growing state. Equipping a strong transformer baseline with fixed-size KVM attention layers yields a strong O(N) chunked RNN, while adding only an insignificant number of new parameters. We train a transformer with a growable KVM cache and show it performs competitively on long-context tests with only subquadratic prefill time and sublinear state growth. KVM is implementable with standard operations and without custom kernels, and supports chunk-wise parallelizable training and prefill. It provides many of the benefits of both traditional transformers (expandable context memory, chunk-wise parallelizable training and prefill) and linear RNNs in a single unified package. It can be used on every layer, saving KV-cache memory, and allowing a continuous range of choices of prefill time complexity between O(N) and O(N^2). It can also be implemented in a hybrid solution in tandem with LRNN layers in place of traditional attention, to supplement the LRNN with improved sublinear memory growth context length usage and long context decoding. We release our code at https://github.com/recursal/KVM-paper and trained models at https://huggingface.co/collections/recursal/key-value-means under the Apache 2.0 license.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2605.09877">PDF</a> | <a href="https://arxiv.org/abs/2605.09877">arXiv</a></p>]]></content>
+        <author>
+            <name>Daniel Goldstein</name>
+        </author>
+        <author>
+            <name>Eugene Cheah</name>
+        </author>
+        <published>2026-05-11T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[SlimQwen: Exploring the Pruning and Distillation in Large MoE Model Pre-training]]></title>
+        <id>https://arxiv.org/abs/2605.08738</id>
+        <link href="https://arxiv.org/abs/2605.08738"/>
+        <updated>2026-05-09T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Structured pruning and knowledge distillation (KD) are typical techniques for compressing large language models, but it remains unclear how they should be applied at pretraining scale, especially to recent mixture-of-experts (MoE) models. In this work, we systematically study MoE compression in large-scale pretraining, focusing on three key questions: whether pruning provides a better initialization than training from scratch, how expert compression choices affect the final model after continued]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Structured pruning and knowledge distillation (KD) are typical techniques for compressing large language models, but it remains unclear how they should be applied at pretraining scale, especially to recent mixture-of-experts (MoE) models. In this work, we systematically study MoE compression in large-scale pretraining, focusing on three key questions: whether pruning provides a better initialization than training from scratch, how expert compression choices affect the final model after continued training, and which training strategy is most effective. We have the following findings: First, across depth, width, and expert compression, pruning a pretrained MoE consistently outperforms training the target architecture from scratch under the same training budget. Second, different one-shot expert compression methods converge to similar final performance after large-scale continual pretraining. Motivated by this, we introduce a simple partial-preservation expert merging strategy that improves downstream performance across most benchmarks. Third, combining KD with the language modeling loss outperforms KD alone, particularly on knowledge-intensive tasks. We further propose multi-token prediction (MTP) distillation, which yields consistent gains. Finally, given the same training tokens, progressive pruning schedules outperform one-shot compression, suggesting that gradual architecture transitions lead to better optimization trajectories. Putting it all together, we compress Qwen3-Next-80A3B to a 23A2B model that retains competitive performance. These results offer practical guidance for efficient MoE compression at scale.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2605.08738">PDF</a> | <a href="https://arxiv.org/abs/2605.08738">arXiv</a></p>]]></content>
+        <author>
+            <name>Shengkun Tang</name>
+        </author>
+        <author>
+            <name>Zekun Wang</name>
+        </author>
+        <author>
+            <name>Bo Zheng</name>
+        </author>
+        <author>
+            <name>Liangyu Wang</name>
+        </author>
+        <author>
+            <name>Rui Men</name>
+        </author>
+        <author>
+            <name>Siqi Zhang</name>
+        </author>
+        <author>
+            <name>Xiulong Yuan</name>
+        </author>
+        <author>
+            <name>Zihan Qiu</name>
+        </author>
+        <author>
+            <name>Zhiqiang Shen</name>
+        </author>
+        <author>
+            <name>Dayiheng Liu</name>
+        </author>
+        <published>2026-05-09T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[GridProbe: Posterior-Probing for Adaptive Test-Time Compute in Long-Video VLMs]]></title>
+        <id>https://arxiv.org/abs/2605.10762</id>
+        <link href="https://arxiv.org/abs/2605.10762"/>
+        <updated>2026-05-11T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Long-video understanding in VLMs is bottlenecked by a single monolithic forward pass over thousands of frames at quadratic attention cost. A common mitigation is to first select a small subset of informative frames before the forward pass; common for training-free selectors via auxiliary encoder-space similarities. Such signals are capped by contrastive pretraining, which usually fails on reasoning-heavy queries (negation, cross-frame counting, holistic summarization). We propose GridProbe, an e]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出GridProbe，一种训练自由的后验探测推理范式，通过自适应选择关键帧减少长视频VLM的计算量，实现3.36倍FLOPs降低且精度损失小。</p>
+<h3>原始摘要</h3><p>Long-video understanding in VLMs is bottlenecked by a single monolithic forward pass over thousands of frames at quadratic attention cost. A common mitigation is to first select a small subset of informative frames before the forward pass; common for training-free selectors via auxiliary encoder-space similarities. Such signals are capped by contrastive pretraining, which usually fails on reasoning-heavy queries (negation, cross-frame counting, holistic summarization). We propose GridProbe, an efficient training-free posterior-probing inference paradigm that scores evidence in answer space using a frozen VLM's own reasoning and then selects question-relevant frames adaptively, resulting in sub-quadratic attention cost with little to no accuracy loss. We arrange frames on a K{times}K grid and run lightweight row R and column C probes, where each probe reads its peak posterior as a query-conditioned confidence. The outer product of R and C yields an interpretable importance map whose skewness and kurtosis drive Shape-Adaptive Selection, a closed-form rule that reliably replaces the fixed frame budget M with a per-question M_{eff}. We show empirically that M_{eff} tracks intrinsic question difficulty without ever seeing the answer, a sign of test-time adaptive compute. On Video-MME-v2, GridProbe matches the monolithic baseline within 1.6 pp Avg Acc at 3.36times TFLOPs reduction, while on LongVideoBench it Pareto-dominates the baseline (+0.9 pp at 0.35times compute). Because the selector and QA models can be decoupled, pairing a small 2B selector with a stronger 4B or 8B QA is strictly Pareto-dominant over the 2B monolithic baseline (up to +4.0 pp at 0.52times compute, on average), with no retraining. Finally, the interpretability of the importance maps opens future avenues for behavioral diagnostics, grounding, and frame-selection distillation.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2605.10762">PDF</a> | <a href="https://arxiv.org/abs/2605.10762">arXiv</a></p>]]></content>
+        <author>
+            <name>Mohamed Eltahir</name>
+        </author>
+        <author>
+            <name>Lama Ayash</name>
+        </author>
+        <author>
+            <name>Ali Habibullah</name>
+        </author>
+        <author>
+            <name>Tanveer Hussain</name>
+        </author>
+        <author>
+            <name>Naeemullah Khan</name>
+        </author>
+        <published>2026-05-11T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[DECO: Sparse Mixture-of-Experts with Dense-Comparable Performance on End-Side Devices]]></title>
+        <id>https://arxiv.org/abs/2605.10933</id>
+        <link href="https://arxiv.org/abs/2605.10933"/>
+        <updated>2026-05-11T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[While Mixture-of-Experts (MoE) scales model capacity without proportionally increasing computation, its massive total parameter footprint creates significant storage and memory-access bottlenecks, which hinder efficient end-side deployment that simultaneously requires high performance, low computational cost, and small storage overhead. To achieve these properties, we present DECO, a sparse MoE architecture designed to match the performance of dense Transformers under identical total parameter b]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>While Mixture-of-Experts (MoE) scales model capacity without proportionally increasing computation, its massive total parameter footprint creates significant storage and memory-access bottlenecks, which hinder efficient end-side deployment that simultaneously requires high performance, low computational cost, and small storage overhead. To achieve these properties, we present DECO, a sparse MoE architecture designed to match the performance of dense Transformers under identical total parameter budgets and training tokens. DECO utilizes the differentiable and flexible ReLU-based routing enhanced by learnable expert-wise scaling, which adaptively balances the contributions of routed and shared experts. Furthermore, we introduce NormSiLU, an activation function that normalizes inputs prior to SiLU operators, producing a more stable trend of routed-expert activation ratio and a higher intrinsic sparsity level. We also identify an empirical advantage in using non-gated MLP experts with ReLU-based routing, indicating the possibility of MoE architecture simplification. Experiments demonstrate that DECO, activating only 20% of experts, matches dense performance and outperforms established MoE baselines. Our specialized acceleration kernel delivers a 3.00times speedup on real hardware compared with dense inference. Codes and checkpoints will be released.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2605.10933">PDF</a> | <a href="https://arxiv.org/abs/2605.10933">arXiv</a></p>]]></content>
+        <author>
+            <name>Chenyang Song</name>
+        </author>
+        <author>
+            <name>Weilin Zhao</name>
+        </author>
+        <author>
+            <name>Xu Han</name>
+        </author>
+        <author>
+            <name>Chaojun Xiao</name>
+        </author>
+        <author>
+            <name>Yingfa Chen</name>
+        </author>
+        <author>
+            <name>Zhiyuan Liu</name>
+        </author>
+        <published>2026-05-11T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mean Mode Screaming: Mean--Variance Split Residuals for 1000-Layer Diffusion Transformers]]></title>
+        <id>https://arxiv.org/abs/2605.06169</id>
+        <link href="https://arxiv.org/abs/2605.06169"/>
+        <updated>2026-05-07T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Scaling Diffusion Transformers (DiTs) to hundreds of layers introduces a structural vulnerability: networks can enter a silent, mean-dominated collapse state that homogenizes token representations and suppresses centered variation. Through mechanistic auditing, we isolate the trigger event of this collapse as Mean Mode Screaming (MMS). MMS can occur even when training appears stable, with a mean-coherent backward shock on residual writers that opens deep residual branches and drives the network ]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Scaling Diffusion Transformers (DiTs) to hundreds of layers introduces a structural vulnerability: networks can enter a silent, mean-dominated collapse state that homogenizes token representations and suppresses centered variation. Through mechanistic auditing, we isolate the trigger event of this collapse as Mean Mode Screaming (MMS). MMS can occur even when training appears stable, with a mean-coherent backward shock on residual writers that opens deep residual branches and drives the network into a mean-dominated state. We show this behavior is driven by an exact decomposition of these gradients into mean-coherent and centered components, compounded by the structural suppression of attention-logit gradients through the null space of the Softmax Jacobian once values homogenize.
+  To address this, we propose Mean-Variance Split (MV-Split) Residuals, which combine a separately gained centered residual update with a leaky trunk-mean replacement. On a 400-layer single-stream DiT, MV-Split prevents the divergent collapse that crashes the un-stabilized baseline; it tracks close to the baseline's pre-crash trajectory while remaining substantially better than token-isotropic gating methods such as LayerScale across the full schedule. Finally, we present a 1000-layer DiT as a scale-validation run at boundary scales, establishing that the architecture remains stably trainable at extreme depth.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2605.06169">PDF</a> | <a href="https://arxiv.org/abs/2605.06169">arXiv</a></p>]]></content>
+        <author>
+            <name>Pengqi Lu</name>
+        </author>
+        <published>2026-05-07T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Normalizing Trajectory Models]]></title>
+        <id>https://arxiv.org/abs/2605.08078</id>
+        <link href="https://arxiv.org/abs/2605.08078"/>
+        <updated>2026-05-08T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Diffusion-based models decompose sampling into many small Gaussian denoising steps -- an assumption that breaks down when generation is compressed to a few coarse transitions. Existing few-step methods address this through distillation, consistency training, or adversarial objectives, but sacrifice the likelihood framework in the process. We introduce Normalizing Trajectory Models (NTM), which models each reverse step as an expressive conditional normalizing flow with exact likelihood training. ]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出归一化轨迹模型（NTM），使用条件归一化流实现少步生成，支持自蒸馏，在文本到图像生成中四步达到高质量，显著加速扩散模型采样。</p>
+<h3>原始摘要</h3><p>Diffusion-based models decompose sampling into many small Gaussian denoising steps -- an assumption that breaks down when generation is compressed to a few coarse transitions. Existing few-step methods address this through distillation, consistency training, or adversarial objectives, but sacrifice the likelihood framework in the process. We introduce Normalizing Trajectory Models (NTM), which models each reverse step as an expressive conditional normalizing flow with exact likelihood training. Architecturally, NTM combines shallow invertible blocks within each step with a deep parallel predictor across the trajectory, forming an end-to-end network trainable from scratch or initializable from pretrained flow-matching models. Its exact trajectory likelihood further enables self-distillation: a lightweight denoiser trained on the model's own score produces high-quality samples in four steps. On text-to-image benchmarks, NTM matches or outperforms strong image generation baselines in just four sampling steps while uniquely retaining exact likelihood over the generative trajectory.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2605.08078">PDF</a> | <a href="https://arxiv.org/abs/2605.08078">arXiv</a></p>]]></content>
+        <author>
+            <name>Jiatao Gu</name>
+        </author>
+        <author>
+            <name>Tianrong Chen</name>
+        </author>
+        <author>
+            <name>Ying Shen</name>
+        </author>
+        <author>
+            <name>David Berthelot</name>
+        </author>
+        <author>
+            <name>Shuangfei Zhai</name>
+        </author>
+        <author>
+            <name>Josh Susskind</name>
+        </author>
+        <published>2026-05-08T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[MISA: Mixture of Indexer Sparse Attention for Long-Context LLM Inference]]></title>
+        <id>https://arxiv.org/abs/2605.07363</id>
+        <link href="https://arxiv.org/abs/2605.07363"/>
+        <updated>2026-05-08T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[DeepSeek Sparse Attention (DSA) sets the state of the art for fine-grained inference-time sparse attention by introducing a learned token-wise indexer that scores every prefix token and selects the most relevant ones for the main attention. To remain expressive, the indexer uses many query heads (for example, 64 on DeepSeek-V3.2) that share the same selected token set; this multi-head design is precisely what makes the indexer the dominant cost on long contexts. We propose MISA (Mixture of Index]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>DeepSeek Sparse Attention (DSA) sets the state of the art for fine-grained inference-time sparse attention by introducing a learned token-wise indexer that scores every prefix token and selects the most relevant ones for the main attention. To remain expressive, the indexer uses many query heads (for example, 64 on DeepSeek-V3.2) that share the same selected token set; this multi-head design is precisely what makes the indexer the dominant cost on long contexts. We propose MISA (Mixture of Indexer Sparse Attention), a drop-in replacement for the DSA indexer that treats its indexer heads as a pool of mixture-of-experts. A lightweight router uses cheap block-level statistics to pick a query-dependent subset of only a few active heads, and only those heads run the heavy token-level scoring. This preserves the diversity of the original indexer pool while reducing the per-query cost from scoring every prefix token with every head to scoring it with only a handful of routed heads, plus a negligible router term computed on a small set of pooled keys. We further introduce a hierarchical variant of MISA that uses the routed pass to keep an enlarged candidate set and then re-ranks it with the original DSA indexer to recover the final selected tokens almost exactly. With only eight active heads and no additional training, MISA matches the dense DSA indexer on LongBench across DeepSeek-V3.2 and GLM-5 while running with eight and four times fewer indexer heads respectively, and outperforms HISA on average. It also preserves fully green Needle-in-a-Haystack heatmaps up to a 128K-token context and recovers more than 92% of the tokens selected by the DSA indexer per layer. Our TileLang kernel delivers roughly a 3.82 times speedup over DSA's original indexer kernel on a single NVIDIA H200 GPU.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2605.07363">PDF</a> | <a href="https://arxiv.org/abs/2605.07363">arXiv</a></p>]]></content>
+        <author>
+            <name>Ruijie Zhou</name>
+        </author>
+        <author>
+            <name>Fanxu Meng</name>
+        </author>
+        <author>
+            <name>Yufei Xu</name>
+        </author>
+        <author>
+            <name>Tongxuan Liu</name>
+        </author>
+        <author>
+            <name>Guangming Lu</name>
+        </author>
+        <author>
+            <name>Muhan Zhang</name>
+        </author>
+        <author>
+            <name>Wenjie Pei</name>
+        </author>
+        <published>2026-05-08T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Forgetting That Sticks: Quantization-Permanent Unlearning via Circuit Attribution]]></title>
+        <id>https://arxiv.org/abs/2605.15138</id>
+        <link href="https://arxiv.org/abs/2605.15138"/>
+        <updated>2026-05-14T17:44:10.000Z</updated>
+        <summary type="html"><![CDATA[Standard unlearning evaluations measure behavioral suppression in full precision, immediately after training, despite every deployed language model being quantized first. Recent work has shown that 4-bit post-training quantization can reverse machine unlearning; we show this is not a tuning artefact but a systematic dual failure: gradient-based methods that achieve meaningful forgetting lose it under compression, while methods that survive quantization barely change the model. Both failures trac]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出MANSU方法，通过因果电路归因和零空间投影实现量化后遗忘持久性，解决量化导致遗忘失效问题。</p>
+<h3>原始摘要</h3><p>Standard unlearning evaluations measure behavioral suppression in full precision, immediately after training, despite every deployed language model being quantized first. Recent work has shown that 4-bit post-training quantization can reverse machine unlearning; we show this is not a tuning artefact but a systematic dual failure: gradient-based methods that achieve meaningful forgetting lose it under compression, while methods that survive quantization barely change the model. Both failures trace to the same root cause: across all baselines, per-parameter updates lie 47-828x below the NF4 quantization bin width; updates diffused across billions of parameters cannot clear quantization bin boundaries, a consequence we formalize as a sparsity-permanence tradeoff. We present MANSU (Mechanistic-Aligned Null-Space Unlearning), which resolves both modes by combining causal circuit attribution to isolate the minimal forget-set subgraph, circuit-restricted null-space projection with a diagonal-Fisher retain bound, and a per-parameter magnitude floor guaranteeing quantization survival by construction. We additionally introduce Circuit Attribution Divergence (CAD), a mechanistic verification metric distinguishing structural erasure from behavioral suppression, a distinction existing metrics cannot make. Across multiple model families and hazard benchmarks, MANSU is the first method to jointly satisfy all four properties with margin on each (meaningful forgetting, retain preservation, non-positive PTQ gap, and structural erasure), while gradient-based baselines recover up to +0.05 accuracy under compression.</p>
+<p><strong>Categories:</strong> cs.LG, cs.CL, cs.ET</p>
+<p><strong>Relevance:</strong> 7/10</p>
+<p><a href="https://arxiv.org/pdf/2605.15138">PDF</a> | <a href="https://arxiv.org/abs/2605.15138">arXiv</a></p>]]></content>
+        <author>
+            <name>Saisab Sadhu</name>
+        </author>
+        <author>
+            <name>Pratinav Seth</name>
+        </author>
+        <author>
+            <name>Vinay Kumar Sankarapu</name>
+        </author>
+        <category label="cs.LG" term="cs.LG"/>
+        <category label="cs.CL" term="cs.CL"/>
+        <category label="cs.ET" term="cs.ET"/>
+        <published>2026-05-14T17:44:10.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Dual-Dimensional Consistency: Balancing Budget and Quality in Adaptive Inference-Time Scaling]]></title>
+        <id>https://arxiv.org/abs/2605.15100</id>
+        <link href="https://arxiv.org/abs/2605.15100"/>
+        <updated>2026-05-14T17:19:37.000Z</updated>
+        <summary type="html"><![CDATA[Large Language Models (LLMs) have demonstrated remarkable abilities in reasoning. However, maximizing their potential through inference-time scaling faces challenges in trade-off between sampling budget and reasoning quality. Current strategies remain inefficient as they typically treat sampling width and depth as orthogonal objectives, where width consensus methods risk reinforcing hallucinations, while depth pruning mechanisms prematurely truncate complex yet valid reasoning chains. Therefore,]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出双维度一致性（DDC）框架，通过置信度加权贝叶斯协议和趋势感知分层剪枝，在保持准确率的同时减少10倍以上token消耗。</p>
+<h3>原始摘要</h3><p>Large Language Models (LLMs) have demonstrated remarkable abilities in reasoning. However, maximizing their potential through inference-time scaling faces challenges in trade-off between sampling budget and reasoning quality. Current strategies remain inefficient as they typically treat sampling width and depth as orthogonal objectives, where width consensus methods risk reinforcing hallucinations, while depth pruning mechanisms prematurely truncate complex yet valid reasoning chains. Therefore, we propose Dual-Dimensional Consistency (DDC), a unified framework that bridges path quality with adaptive termination. By coupling Confidence-Weighted Bayesian protocol with a Trend-Aware Stratified Pruning, our method ensures that computational resources are concentrated on high quality reasoning paths, filtering hallucinations while accelerating consensus. Evaluations across five benchmarks demonstrate that this approach reduces token consumption by over 10 times while maintaining or exceeding the accuracy of strong baselines across various LLMs.</p>
+<p><strong>Categories:</strong> cs.AI</p>
+<p><strong>Relevance:</strong> 7/10</p>
+<p><a href="https://arxiv.org/pdf/2605.15100">PDF</a> | <a href="https://arxiv.org/abs/2605.15100">arXiv</a></p>]]></content>
+        <author>
+            <name>Rongman Xu</name>
+        </author>
+        <author>
+            <name>Yifei Li</name>
+        </author>
+        <author>
+            <name>Tianzhe Zhao</name>
+        </author>
+        <author>
+            <name>Yanrui Wu</name>
+        </author>
+        <author>
+            <name>Bo Li</name>
+        </author>
+        <author>
+            <name>Hang Yan</name>
+        </author>
+        <category label="cs.AI" term="cs.AI"/>
+        <published>2026-05-14T17:19:37.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[GPart: End-to-End Isometric Fine-Tuning via Global Parameter Partitioning]]></title>
+        <id>https://arxiv.org/abs/2605.14841</id>
+        <link href="https://arxiv.org/abs/2605.14841"/>
+        <updated>2026-05-14T13:46:04.000Z</updated>
+        <summary type="html"><![CDATA[Low-rank adaptation (LoRA) has become the dominant paradigm for parameter-efficient fine-tuning (PEFT) of large language models (LLMs). However, its bilinear structure introduces a critical limitation: the mapping from trainable parameters to weight updates is not distance-preserving, distorting the optimization landscape. Methods that project a low-dimensional vector into LoRA's parameter space, such as Uni-LoRA, improve parameter efficiency, but the subsequent bilinear LoRA map breaks end-to-e]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出GPart，一种全局参数分区微调方法，通过等距映射将可训练参数直接映射到全权重空间，实现极低参数存储成本，在自然语言理解和计算机视觉任务上达到SOTA。</p>
+<h3>原始摘要</h3><p>Low-rank adaptation (LoRA) has become the dominant paradigm for parameter-efficient fine-tuning (PEFT) of large language models (LLMs). However, its bilinear structure introduces a critical limitation: the mapping from trainable parameters to weight updates is not distance-preserving, distorting the optimization landscape. Methods that project a low-dimensional vector into LoRA's parameter space, such as Uni-LoRA, improve parameter efficiency, but the subsequent bilinear LoRA map breaks end-to-end isometry, leaving the core distance-preservation problem unresolved. We propose GPart (Global Partition fine-tuning), a highly parameter-efficient fine-tuning method which removes the low-rank bottleneck entirely. Our method uses a single isometric partition matrix to map a $d$-dimensional trainable vector directly into the full weight space of the model. The result is an extremely minimal fine-tuning pipeline: one random projection, end-to-end isometric, with a single clean hyperparameter ($d$) and storage cost of $d+1$ values (the trainable vector plus a random seed). GPart builds on the theoretical premise that effective fine-tuning can emerge from random low-dimensional subspaces of the full weight space, without imposing low-rank matrix structure. We empirically demonstrate the superior or comparable performance of GPart to existing PEFT methods on natural language understanding, computer vision tasks, and mathematical reasoning. Overall, GPart achieves state-of-the-art efficiency and performance by removing structural constraints, offering a straightforward and elegant path to PEFT.</p>
+<p><strong>Categories:</strong> cs.LG, cs.AI</p>
+<p><strong>Relevance:</strong> 7/10</p>
+<p><a href="https://arxiv.org/pdf/2605.14841">PDF</a> | <a href="https://arxiv.org/abs/2605.14841">arXiv</a></p>]]></content>
+        <author>
+            <name>Paolo Mandica</name>
+        </author>
+        <author>
+            <name>Michał Brzozowski</name>
+        </author>
+        <author>
+            <name>Zuzanna Dubanowska</name>
+        </author>
+        <author>
+            <name>Neo Christopher Chung</name>
+        </author>
+        <category label="cs.LG" term="cs.LG"/>
+        <category label="cs.AI" term="cs.AI"/>
+        <published>2026-05-14T13:46:04.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Position: LLM Inference Should Be Evaluated as Energy-to-Token Production]]></title>
+        <id>https://arxiv.org/abs/2605.11733</id>
+        <link href="https://arxiv.org/abs/2605.11733"/>
+        <updated>2026-05-12T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[LLM inference is still evaluated mainly as a model or software problem: accuracy, latency, throughput, and hardware utilization. This is incomplete. At deployment scale, the relevant output is a quality-conditioned token produced under joint constraints from effective compute, delivered data-center power, cooling capacity, PUE, and utilization.
+  We argue that the ML community should treat inference as energy-to-token production. We formalize this view with a dimensionally consistent Token Produ]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出将LLM推理视为能量到token的生产过程，呼吁报告Joules/token等效率指标，强调系统优化（如KV缓存压缩、量化）对能效的影响。</p>
+<h3>原始摘要</h3><p>LLM inference is still evaluated mainly as a model or software problem: accuracy, latency, throughput, and hardware utilization. This is incomplete. At deployment scale, the relevant output is a quality-conditioned token produced under joint constraints from effective compute, delivered data-center power, cooling capacity, PUE, and utilization.
+  We argue that the ML community should treat inference as energy-to-token production. We formalize this view with a dimensionally consistent Token Production Function in which token rate is bounded by both compute-per-token and energy-per-token ceilings. Listed API prices vary by over an order of magnitude across providers, but we use price dispersion only as directional motivation, not as causal evidence of marginal cost. The core physical question is instead: under fixed quality and service targets, when does the binding constraint move from theoretical peak compute toward delivered power, cooling, and operational efficiency?
+  Under this framing, system optimizations -- latent KV-cache compression, sparse or heavily compressed attention, quantization, routing, and difficulty-adaptive reasoning -- are not merely local engineering tricks. They are energy-to-token levers because they reduce FLOPs/token, joules/token, memory traffic, or utilization losses under fixed (q^{*},s^{*}). We therefore call for inference papers and benchmarks to report Joules/token, active binding constraint, PUE-adjusted delivered power, and utilization-adjusted token output alongside accuracy and latency.</p>
+<p><strong>Relevance:</strong> 7/10</p>
+<p><a href="https://arxiv.org/pdf/2605.11733">PDF</a> | <a href="https://arxiv.org/abs/2605.11733">arXiv</a></p>]]></content>
+        <author>
+            <name>Xiang Liu</name>
+        </author>
+        <author>
+            <name>Shimiao Yuan</name>
+        </author>
+        <author>
+            <name>Zhenheng Tang</name>
+        </author>
+        <author>
+            <name>Peijie Dong</name>
+        </author>
+        <author>
+            <name>Kaiyong Zhao</name>
+        </author>
+        <author>
+            <name>Qiang Wang</name>
+        </author>
+        <author>
+            <name>Bo Li</name>
+        </author>
+        <author>
+            <name>Xiaowen Chu</name>
+        </author>
+        <published>2026-05-12T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[FAAST: Forward-Only Associative Learning via Closed-Form Fast Weights for Test-Time Supervised Adaptation]]></title>
+        <id>https://arxiv.org/abs/2605.04651</id>
+        <link href="https://arxiv.org/abs/2605.04651"/>
+        <updated>2026-05-08T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Adapting pretrained models typically involves a trade-off between the high training costs of backpropagation and the heavy inference overhead of memory-based or in-context learning. We propose FAAST, a forward-only associative adaptation method that analytically compiles labeled examples into fast weights in a single pass. By eliminating memory or context dependence, FAAST achieves constant-time inference and decouples task adaptation from pretrained representation. Across image classification a]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出FAAST前向关联学习方法，通过闭式快速权重实现单次前向适应，减少90%适应时间和95%内存占用，适用于资源受限场景。</p>
+<h3>原始摘要</h3><p>Adapting pretrained models typically involves a trade-off between the high training costs of backpropagation and the heavy inference overhead of memory-based or in-context learning. We propose FAAST, a forward-only associative adaptation method that analytically compiles labeled examples into fast weights in a single pass. By eliminating memory or context dependence, FAAST achieves constant-time inference and decouples task adaptation from pretrained representation. Across image classification and language modeling benchmarks, FAAST matches or exceeds backprop-based adaptation while reducing adaptation time by over 90% and is competitive to memory/context-based adaptation while saving memory usage by up to 95%. These results demonstrate FAAST as a highly efficient, scalable solution for supervised task adaptation, particularly for resource-constrained models. We release the code and models at https://github.com/baoguangsheng/faast.</p>
+<p><strong>Relevance:</strong> 7/10</p>
+<p><a href="https://arxiv.org/pdf/2605.04651">PDF</a> | <a href="https://arxiv.org/abs/2605.04651">arXiv</a></p>]]></content>
+        <author>
+            <name>Guangsheng Bao</name>
+        </author>
+        <author>
+            <name>Hongbo Zhang</name>
+        </author>
+        <author>
+            <name>Han Cui</name>
+        </author>
+        <author>
+            <name>Ke Sun</name>
+        </author>
+        <author>
+            <name>Yanbin Zhao</name>
+        </author>
+        <author>
+            <name>Juncai He</name>
+        </author>
+        <author>
+            <name>Yue Zhang</name>
+        </author>
+        <published>2026-05-08T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Pion: A Spectrum-Preserving Optimizer via Orthogonal Equivalence Transformation]]></title>
+        <id>https://arxiv.org/abs/2605.12492</id>
+        <link href="https://arxiv.org/abs/2605.12492"/>
+        <updated>2026-05-12T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[We introduce Pion, a spectrum-preserving optimizer for large language model (LLM) training based on orthogonal equivalence transformation. Unlike additive optimizers such as Adam and Muon, Pion updates each weight matrix through left and right orthogonal transformations, preserving its singular values throughout training. This yields an optimization mechanism that modulates the geometry of weight matrices while keeping their spectral norm fixed. We derive the Pion update rule, systematically exa]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出Pion优化器，通过正交等价变换保持权重矩阵奇异值不变，在LLM预训练和微调中提供稳定且具有竞争力的替代方案，提升训练效率。</p>
+<h3>原始摘要</h3><p>We introduce Pion, a spectrum-preserving optimizer for large language model (LLM) training based on orthogonal equivalence transformation. Unlike additive optimizers such as Adam and Muon, Pion updates each weight matrix through left and right orthogonal transformations, preserving its singular values throughout training. This yields an optimization mechanism that modulates the geometry of weight matrices while keeping their spectral norm fixed. We derive the Pion update rule, systematically examine its design choices, and analyze its convergence behavior along with several key properties. Empirical results show that Pion offers a stable and competitive alternative to standard optimizers for both LLM pretraining and finetuning.</p>
+<p><strong>Relevance:</strong> 7/10</p>
+<p><a href="https://arxiv.org/pdf/2605.12492">PDF</a> | <a href="https://arxiv.org/abs/2605.12492">arXiv</a></p>]]></content>
+        <author>
+            <name>Kexuan Shi</name>
+        </author>
+        <author>
+            <name>Hanxuan Li</name>
+        </author>
+        <author>
+            <name>Zeju Qiu</name>
+        </author>
+        <author>
+            <name>Yandong Wen</name>
+        </author>
+        <author>
+            <name>Simon Buchholz</name>
+        </author>
+        <author>
+            <name>Weiyang Liu</name>
+        </author>
+        <published>2026-05-12T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[STARFlow2: Bridging Language Models and Normalizing Flows for Unified Multimodal Generation]]></title>
+        <id>https://arxiv.org/abs/2605.08029</id>
+        <link href="https://arxiv.org/abs/2605.08029"/>
+        <updated>2026-05-08T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Deep generative models have advanced rapidly across text and vision, motivating unified multimodal systems that can understand, reason over, and generate interleaved text-image sequences. Most existing approaches combine autoregressive language modeling with diffusion-based image generators, inheriting a structural mismatch between causal text generation and iterative visual denoising. We observe that autoregressive normalizing flows are autoregressive Transformers--sharing the same causal mask,]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出STARFlow2，利用自回归归一化流实现文本与图像的统一生成，共享因果掩码和KV缓存，支持缓存友好的交错生成，提升多模态生成效率。</p>
+<h3>原始摘要</h3><p>Deep generative models have advanced rapidly across text and vision, motivating unified multimodal systems that can understand, reason over, and generate interleaved text-image sequences. Most existing approaches combine autoregressive language modeling with diffusion-based image generators, inheriting a structural mismatch between causal text generation and iterative visual denoising. We observe that autoregressive normalizing flows are autoregressive Transformers--sharing the same causal mask, KV-cache mechanism, and left-to-right structure as LLMs--making them the most natural paradigm for true unified multimodal generation. We present STARFlow2, built on the Pretzel architecture that vertically interleaves a pretrained VLM stream with a TarFlow stream via residual skip connections, both operating under the same causal mask. Combined with a deep-shallow flow design and a unified FAE latent space, STARFlow2 enables cache-friendly interleaved generation where both text and visual outputs directly enter the KV-cache without re-encoding. Experiments demonstrate strong performance across image generation and multimodal understanding benchmarks, validating autoregressive flows as a viable foundation for unified multimodal modeling.</p>
+<p><strong>Relevance:</strong> 7/10</p>
+<p><a href="https://arxiv.org/pdf/2605.08029">PDF</a> | <a href="https://arxiv.org/abs/2605.08029">arXiv</a></p>]]></content>
+        <author>
+            <name>Ying Shen</name>
+        </author>
+        <author>
+            <name>Tianrong Chen</name>
+        </author>
+        <author>
+            <name>Yuan Gao</name>
+        </author>
+        <author>
+            <name>Yizhe Zhang</name>
+        </author>
+        <author>
+            <name>Yuyang Wang</name>
+        </author>
+        <author>
+            <name>Miguel Ángel Bautista</name>
+        </author>
+        <author>
+            <name>Shuangfei Zhai</name>
+        </author>
+        <author>
+            <name>Joshua M. Susskind</name>
+        </author>
+        <author>
+            <name>Jiatao Gu</name>
+        </author>
+        <published>2026-05-08T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[RAVEN: Real-time Autoregressive Video Extrapolation with Consistency-model GRPO]]></title>
+        <id>https://arxiv.org/abs/2605.15190</id>
+        <link href="https://arxiv.org/abs/2605.15190"/>
+        <updated>2026-05-14T17:59:30.000Z</updated>
+        <summary type="html"><![CDATA[Causal autoregressive video diffusion models support real-time streaming generation by extrapolating future chunks from previously generated content. Distilling such generators from high-fidelity bidirectional teachers yields competitive few-step models, yet a persistent gap between the history distributions encountered during training and those arising at inference constrains generation quality over long horizons. We introduce the Real-time Autoregressive Video Extrapolation Network (RAVEN), a ]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出RAVEN框架，通过一致性模型GRPO实现实时自回归视频外推，减少采样步数，提升长时生成质量。</p>
+<h3>原始摘要</h3><p>Causal autoregressive video diffusion models support real-time streaming generation by extrapolating future chunks from previously generated content. Distilling such generators from high-fidelity bidirectional teachers yields competitive few-step models, yet a persistent gap between the history distributions encountered during training and those arising at inference constrains generation quality over long horizons. We introduce the Real-time Autoregressive Video Extrapolation Network (RAVEN), a training-time test framework that repacks each self rollout into an interleaved sequence of clean historical endpoints and noisy denoising states. This formulation aligns training attention with inference-time extrapolation and allows downstream chunk losses to supervise the history representations on which future predictions depend. We further propose Consistency-model Group Relative Policy Optimization (CM-GRPO), which reformulates a consistency sampling step as a conditional Gaussian transition and applies online Reinforcement Learning (RL) directly to this kernel, avoiding the Euler-Maruyama auxiliary process adopted in prior flow-model RL formulations. Experiments demonstrate that RAVEN surpasses recent causal video distillation baselines across quality, semantic, and dynamic degree evaluations, and that CM-GRPO provides further gains when combined with RAVEN.</p>
+<p><strong>Categories:</strong> cs.CV</p>
+<p><strong>Relevance:</strong> 6/10</p>
+<p><a href="https://arxiv.org/pdf/2605.15190">PDF</a> | <a href="https://arxiv.org/abs/2605.15190">arXiv</a></p>]]></content>
+        <author>
+            <name>Yanzuo Lu</name>
+        </author>
+        <author>
+            <name>Ronglai Zuo</name>
+        </author>
+        <author>
+            <name>Jiankang Deng</name>
+        </author>
+        <category label="cs.CV" term="cs.CV"/>
+        <published>2026-05-14T17:59:30.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[DiffusionOPD: A Unified Perspective of On-Policy Distillation in Diffusion Models]]></title>
+        <id>https://arxiv.org/abs/2605.15055</id>
+        <link href="https://arxiv.org/abs/2605.15055"/>
+        <updated>2026-05-14T16:49:09.000Z</updated>
+        <summary type="html"><![CDATA[Reinforcement learning has emerged as a powerful tool for improving diffusion-based text-to-image models, but existing methods are largely limited to single-task optimization. Extending RL to multiple tasks is challenging: joint optimization suffers from cross-task interference and imbalance, while cascade RL is cumbersome and prone to catastrophic forgetting. We propose DiffusionOPD, a new multi-task training paradigm for diffusion models based on Online Policy Distillation (OPD). DiffusionOPD ]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出DiffusionOPD，通过在线策略蒸馏实现扩散模型多任务训练，推导闭式KL目标，提升训练效率和最终性能。</p>
+<h3>原始摘要</h3><p>Reinforcement learning has emerged as a powerful tool for improving diffusion-based text-to-image models, but existing methods are largely limited to single-task optimization. Extending RL to multiple tasks is challenging: joint optimization suffers from cross-task interference and imbalance, while cascade RL is cumbersome and prone to catastrophic forgetting. We propose DiffusionOPD, a new multi-task training paradigm for diffusion models based on Online Policy Distillation (OPD). DiffusionOPD first trains task-specific teachers independently, then distills their capabilities into a unified student along the student own rollout trajectories. This decouples single-task exploration from multi-task integration and avoids the optimization burden of solving all tasks jointly from scratch. Theoretically, we lift the OPD framework from discrete tokens to continuous-state Markov processes, deriving a closed-form per-step KL objective that unifies both stochastic SDE and deterministic ODE refinement via mean-matching. We formally and empirically demonstrate that this analytic gradient provides lower variance and better generality compared to conventional PPO-style policy gradients. Extensive experiments show that DiffusionOPD consistently surpasses both multi-reward RL and cascade RL baselines in training efficiency and final performance, while achieving state-of-the-art results on all evaluated benchmarks.</p>
+<p><strong>Categories:</strong> cs.LG, cs.CV</p>
+<p><strong>Relevance:</strong> 6/10</p>
+<p><a href="https://arxiv.org/pdf/2605.15055">PDF</a> | <a href="https://arxiv.org/abs/2605.15055">arXiv</a></p>]]></content>
+        <author>
+            <name>Quanhao Li</name>
+        </author>
+        <author>
+            <name>Junqiu Yu</name>
+        </author>
+        <author>
+            <name>Kaixun Jiang</name>
+        </author>
+        <author>
+            <name>Yujie Wei</name>
+        </author>
+        <author>
+            <name>Zhen Xing</name>
+        </author>
+        <author>
+            <name>Pandeng Li</name>
+        </author>
+        <author>
+            <name>Ruihang Chu</name>
+        </author>
+        <author>
+            <name>Shiwei Zhang</name>
+        </author>
+        <author>
+            <name>Yu Liu</name>
+        </author>
+        <author>
+            <name>Zuxuan Wu</name>
+        </author>
+        <category label="cs.LG" term="cs.LG"/>
+        <category label="cs.CV" term="cs.CV"/>
+        <published>2026-05-14T16:49:09.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Unlocking Complex Visual Generation via Closed-Loop Verified Reasoning]]></title>
+        <id>https://arxiv.org/abs/2605.14876</id>
+        <link href="https://arxiv.org/abs/2605.14876"/>
+        <updated>2026-05-14T14:22:25.000Z</updated>
+        <summary type="html"><![CDATA[Despite rapid advancements, current text-to-image (T2I) models predominantly rely on a single-step generation paradigm, which struggles with complex semantics and faces diminishing returns from parameter scaling. While recent multi-step reasoning approaches show promise, they are hindered by ungrounded planning hallucinations lacking verification, monolithic post-hoc reflection, long-context optimization instabilities, and prohibitive inference latency. To overcome these bottlenecks, we propose ]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出CLVR框架，包含Δ-Space Weight Merge方法，将扩散模型的推理步数降至4步，无需重新蒸馏，加速图像生成。</p>
+<h3>原始摘要</h3><p>Despite rapid advancements, current text-to-image (T2I) models predominantly rely on a single-step generation paradigm, which struggles with complex semantics and faces diminishing returns from parameter scaling. While recent multi-step reasoning approaches show promise, they are hindered by ungrounded planning hallucinations lacking verification, monolithic post-hoc reflection, long-context optimization instabilities, and prohibitive inference latency. To overcome these bottlenecks, we propose the Closed-Loop Visual Reasoning (CLVR) framework, a comprehensive system that deeply couples visual-language logical planning with pixel-level diffusion generation. CLVR introduces an automated data engine with step-level visual verification to synthesize reliable reasoning trajectories, and proposes Proxy Prompt Reinforcement Learning (PPRL) to resolve long-context optimization instabilities by distilling interleaved multimodal histories into explicit reward signals for accurate causal attribution. Furthermore, to mitigate the severe latency bottleneck caused by iterative denoising, we propose $Δ$-Space Weight Merge (DSWM), a theoretically grounded method that fuses alignment weights with off-the-shelf distillation priors, reducing the per-step inference cost to just 4 NFEs without requiring expensive re-distillation. Extensive experiments demonstrate that CLVR outperforms existing open-source baselines across multiple benchmarks and approaches the performance of proprietary commercial models, unlocking general test-time scaling capabilities for complex visual generation.</p>
+<p><strong>Categories:</strong> cs.CV, cs.AI</p>
+<p><strong>Relevance:</strong> 6/10</p>
+<p><a href="https://arxiv.org/pdf/2605.14876">PDF</a> | <a href="https://arxiv.org/abs/2605.14876">arXiv</a></p>]]></content>
+        <author>
+            <name>Hanbo Cheng</name>
+        </author>
+        <author>
+            <name>Limin Lin</name>
+        </author>
+        <author>
+            <name>Ruo Zhang</name>
+        </author>
+        <author>
+            <name>Yicheng Pan</name>
+        </author>
+        <author>
+            <name>Jun Du</name>
+        </author>
+        <category label="cs.CV" term="cs.CV"/>
+        <category label="cs.AI" term="cs.AI"/>
+        <published>2026-05-14T14:22:25.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Compositional Sparsity as an Inductive Bias for Neural Architecture Design]]></title>
+        <id>https://arxiv.org/abs/2605.14764</id>
+        <link href="https://arxiv.org/abs/2605.14764"/>
+        <updated>2026-05-14T12:26:50.000Z</updated>
+        <summary type="html"><![CDATA[Identifying the structural priors that enable Deep Neural Networks (DNNs) to overcome the curse of dimensionality is a fundamental challenge in machine learning theory. Existing literature suggests that effective high-dimensional learning is driven by compositional sparsity, where target functions decompose into constituents supported on low-dimensional variable subsets. To investigate this hypothesis, we combine Information Filtering Networks (IFNs), which extract sparse dependency structures v]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出基于组合稀疏性的神经网络架构设计方法，通过信息过滤网络和同调神经网络构建稀疏图结构，在保持性能的同时大幅减少参数量，属于高效架构设计。</p>
+<h3>原始摘要</h3><p>Identifying the structural priors that enable Deep Neural Networks (DNNs) to overcome the curse of dimensionality is a fundamental challenge in machine learning theory. Existing literature suggests that effective high-dimensional learning is driven by compositional sparsity, where target functions decompose into constituents supported on low-dimensional variable subsets. To investigate this hypothesis, we combine Information Filtering Networks (IFNs), which extract sparse dependency structures via constrained information maximisation, with Homological Neural Networks (HNNs), which map the inferred topology into fixed-wiring sparse neural graphs. We formalise the design principles underlying this construction and present an interpretable pipeline in which abstraction emerges through hierarchical composition. HNNs are orders of magnitude sparser than standard DNNs and require only minimal hyperparameter tuning. On synthetic tasks with known sparse hierarchies, HNNs recover the underlying compositional structure and remain stable in regimes where dense alternatives degrade as dimensionality increases. Across a broad suite of real-world datasets, HNNs consistently match or outperform dense baselines while using far fewer parameters, exhibiting lower variance and showing reduced sensitivity to hyperparameters.</p>
+<p><strong>Categories:</strong> cs.LG, cs.AI</p>
+<p><strong>Relevance:</strong> 6/10</p>
+<p><a href="https://arxiv.org/pdf/2605.14764">PDF</a> | <a href="https://arxiv.org/abs/2605.14764">arXiv</a></p>]]></content>
+        <author>
+            <name>Hongyu Lin</name>
+        </author>
+        <author>
+            <name>Antonio Briola</name>
+        </author>
+        <author>
+            <name>Yuanrong Wang</name>
+        </author>
+        <author>
+            <name>Tomaso Aste</name>
+        </author>
+        <category label="cs.LG" term="cs.LG"/>
+        <category label="cs.AI" term="cs.AI"/>
+        <published>2026-05-14T12:26:50.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Multi-Stream LLMs: Unblocking Language Models with Parallel Streams of Thoughts, Inputs and Outputs]]></title>
+        <id>https://arxiv.org/abs/2605.12460</id>
+        <link href="https://arxiv.org/abs/2605.12460"/>
+        <updated>2026-05-12T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[The continued improvements in language model capability have unlocked their widespread use as drivers of autonomous agents, for example in coding or computer use applications. However, the core of these systems has not changed much since early instruction-tuned models like ChatGPT. Even advanced AI agents function on message exchange formats, successively exchanging messages with users, systems, with itself (i.e. chain-of-thought) and tools in a single stream of computation. This bottleneck to a]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出多流LLM架构，通过并行输入输出流实现同时读写和思考，提升模型效率和安全性，改善推理并行化。</p>
+<h3>原始摘要</h3><p>The continued improvements in language model capability have unlocked their widespread use as drivers of autonomous agents, for example in coding or computer use applications. However, the core of these systems has not changed much since early instruction-tuned models like ChatGPT. Even advanced AI agents function on message exchange formats, successively exchanging messages with users, systems, with itself (i.e. chain-of-thought) and tools in a single stream of computation. This bottleneck to a single stream in chat models leads to a number of limitations: the agent cannot act (generate output) while reading, and in reverse, cannot react to new information while writing. Similarly, the agent cannot act while thinking and cannot think while reading or acting on information.
+  In this work, we show that models can be unblocked by switching from instruction-tuning for sequential message formats to instruction-tuning for multiple, parallel streams of computation, splitting each role into a separate stream. Every forward pass of the language model then simultaneously reads from multiple input streams and generates tokens in multiple output streams, all of which causally depend on earlier timesteps. We argue that this data-driven change remedies a number of usability limitations as outlined above, improves model efficiency through parallelization, improves model security through better separation of concerns and can further improve model monitorability.</p>
+<p><strong>Relevance:</strong> 6/10</p>
+<p><a href="https://arxiv.org/pdf/2605.12460">PDF</a> | <a href="https://arxiv.org/abs/2605.12460">arXiv</a></p>]]></content>
+        <author>
+            <name>Guinan Su</name>
+        </author>
+        <author>
+            <name>Yanwu Yang</name>
+        </author>
+        <author>
+            <name>Xueyan Li</name>
+        </author>
+        <author>
+            <name>Jonas Geiping</name>
+        </author>
+        <published>2026-05-12T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[UniSD: Towards a Unified Self-Distillation Framework for Large Language Models]]></title>
+        <id>https://arxiv.org/abs/2605.06597</id>
+        <link href="https://arxiv.org/abs/2605.06597"/>
+        <updated>2026-05-07T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Self-distillation (SD) offers a promising path for adapting large language models (LLMs) without relying on stronger external teachers. However, SD in autoregressive LLMs remains challenging because self-generated trajectories are free-form, correctness is task-dependent, and plausible rationales can still provide unstable or unreliable supervision. Existing methods mainly examine isolated design choices, leaving their effectiveness, roles, and interactions unclear. In this paper, we propose Uni]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出UniSD统一自蒸馏框架，通过多教师一致性、EMA教师稳定化、对比学习等机制提升LLM性能，无需外部教师模型，属于模型效率优化但非直接加速。</p>
+<h3>原始摘要</h3><p>Self-distillation (SD) offers a promising path for adapting large language models (LLMs) without relying on stronger external teachers. However, SD in autoregressive LLMs remains challenging because self-generated trajectories are free-form, correctness is task-dependent, and plausible rationales can still provide unstable or unreliable supervision. Existing methods mainly examine isolated design choices, leaving their effectiveness, roles, and interactions unclear. In this paper, we propose UniSD, a unified framework to systematically study self-distillation. UniSD integrates complementary mechanisms that address supervision reliability, representation alignment, and training stability, including multi-teacher agreement, EMA teacher stabilization, token-level contrastive learning, feature matching, and divergence clipping. Across six benchmarks and six models from three model families, UniSD reveals when self-distillation improves over static imitation, which components drive the gains, and how these components interact across tasks. Guided by these insights, we construct UniSDfull, an integrated pipeline that combines complementary components and achieves the strongest overall performance, improving over the base model by +5.4 points and the strongest baseline by +2.8 points. Extensive evaluation highlights self-distillation as a practical and steerable approach for efficient LLM adaptation without stronger external teachers.</p>
+<p><strong>Relevance:</strong> 6/10</p>
+<p><a href="https://arxiv.org/pdf/2605.06597">PDF</a> | <a href="https://arxiv.org/abs/2605.06597">arXiv</a></p>]]></content>
+        <author>
+            <name>Yiqiao Jin</name>
+        </author>
+        <author>
+            <name>Yiyang Wang</name>
+        </author>
+        <author>
+            <name>Lucheng Fu</name>
+        </author>
+        <author>
+            <name>Yijia Xiao</name>
+        </author>
+        <author>
+            <name>Yinyi Luo</name>
+        </author>
+        <author>
+            <name>Haoxin Liu</name>
+        </author>
+        <author>
+            <name>B. Aditya Prakash</name>
+        </author>
+        <author>
+            <name>Josiah Hester</name>
+        </author>
+        <author>
+            <name>Jindong Wang</name>
+        </author>
+        <author>
+            <name>Srijan Kumar</name>
+        </author>
+        <published>2026-05-07T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[DiffRetriever: Parallel Representative Tokens for Retrieval with Diffusion Language Models]]></title>
+        <id>https://arxiv.org/abs/2605.07210</id>
+        <link href="https://arxiv.org/abs/2605.07210"/>
+        <updated>2026-05-08T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[PromptReps showed that an autoregressive language model can be used directly as a retriever by prompting it to generate dense and sparse representations of a query or passage. Extending this to multiple representatives is inefficient for autoregressive models, since tokens must be generated sequentially, and prior multi-token variants did not reliably improve over single-token decoding.
+  We show that the bottleneck is sequential generation, not the multi-token idea itself. DiffRetriever is a re]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出DiffRetriever，利用扩散语言模型并行生成多个代表token进行检索，相比自回归模型降低延迟，但主要应用于检索任务。</p>
+<h3>原始摘要</h3><p>PromptReps showed that an autoregressive language model can be used directly as a retriever by prompting it to generate dense and sparse representations of a query or passage. Extending this to multiple representatives is inefficient for autoregressive models, since tokens must be generated sequentially, and prior multi-token variants did not reliably improve over single-token decoding.
+  We show that the bottleneck is sequential generation, not the multi-token idea itself. DiffRetriever is a representative-token retriever for diffusion language models: it appends K masked positions to the prompt and reads all K in a single bidirectional forward pass. Across in-domain and out-of-domain evaluation, multi-token DiffRetriever substantially improves over single-token on every diffusion backbone we test, while autoregressive multi-token is flat or negative and pays a latency cost that scales with K where diffusion does not. After supervised fine-tuning, DiffRetriever on Dream is the strongest BEIR-7 retriever in our comparison, ahead of PromptReps, the encoder-style DiffEmbed baseline on the same diffusion backbones, and the contrastively fine-tuned single-vector RepLLaMA. A per-query oracle on the frozen base model exceeds contrastive fine-tuning at the same fixed budget, pointing to adaptive budget selection as future work. Code is available at https://github.com/ielab/diffretriever.</p>
+<p><strong>Relevance:</strong> 6/10</p>
+<p><a href="https://arxiv.org/pdf/2605.07210">PDF</a> | <a href="https://arxiv.org/abs/2605.07210">arXiv</a></p>]]></content>
+        <author>
+            <name>Shuai Wang</name>
+        </author>
+        <author>
+            <name>Yin Yu</name>
+        </author>
+        <author>
+            <name>Shengyao Zhuang</name>
+        </author>
+        <author>
+            <name>Bevan Koopman</name>
+        </author>
+        <author>
+            <name>Guido Zuccon</name>
+        </author>
+        <published>2026-05-08T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[TFGN: Task-Free, Replay-Free Continual Pre-Training Without Catastrophic Forgetting at LLM Scale]]></title>
+        <id>https://arxiv.org/abs/2605.15053</id>
+        <link href="https://arxiv.org/abs/2605.15053"/>
+        <updated>2026-05-14T16:46:26.000Z</updated>
+        <summary type="html"><![CDATA[Continually pre-training a large language model on heterogeneous text domains, without replay or task labels, has remained an unsolved architectural problem at LLM scale. Existing methods rely on replay buffers, task identifiers, regularization penalties that scale poorly, or sentence-classification-scale evaluation. We introduce TFGN, an architectural overlay for transformer language models that produces input-conditioned, parameter-efficient updates while leaving the rest of the transformer un]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出TFGN架构，通过输入条件参数高效更新实现无重放持续预训练，在LLaMA 8B上达到低遗忘和高正交梯度分离。</p>
+<h3>原始摘要</h3><p>Continually pre-training a large language model on heterogeneous text domains, without replay or task labels, has remained an unsolved architectural problem at LLM scale. Existing methods rely on replay buffers, task identifiers, regularization penalties that scale poorly, or sentence-classification-scale evaluation. We introduce TFGN, an architectural overlay for transformer language models that produces input-conditioned, parameter-efficient updates while leaving the rest of the transformer unchanged. On six heterogeneous text domains (Prose, Python, Math, Biomedical, Chinese, JavaScript) at 1B tokens per phase across three model scales (~398M, ~739M, ~9B) and two regimes (From-Scratch and Retrofit), TFGN achieves backward transfer of -0.007 at LLaMA 3.1 8B Retrofit, HellaSwag retention 0.506/0.504/0.510, and &gt;=99.59% L2-orthogonal gradient separation between domain pairs - with no replay, no task IDs, no Fisher penalty. The same matrices show positive cross-domain forward transfer: held-out JavaScript PPL drops 26.8% at LLaMA-8B Retrofit and 62.0% at GPT-2 Medium From-Scratch purely from Python training. Two extensions on the same substrate close further open problems. A closed-loop meta-control layer (Extension A) reduces forgetting by an additional 81% at ~398M, mapping onto the System A and System M roles of Dupoux et al. (arXiv:2603.15381). An operator-level plan vector (Extension B) reshapes forward-pass behavior at 99.96% cosine fidelity over 30 source-&gt;target pairs. The architectural insight is a Read/Write decomposition: the forward pass is fully dense, while cross-domain parameter updates are structured so prior-domain subspaces are not written to. To our knowledge, TFGN is the first architecture that simultaneously closes catastrophic forgetting at LLM scale, realizes a closed-loop autonomous-learning meta-controller, and carries an operator-level latent planner.</p>
+<p><strong>Categories:</strong> cs.LG, cs.AI</p>
+<p><strong>Relevance:</strong> 5/10</p>
+<p><a href="https://arxiv.org/pdf/2605.15053">PDF</a> | <a href="https://arxiv.org/abs/2605.15053">arXiv</a></p>]]></content>
+        <author>
+            <name>Anurup Ganguli</name>
+        </author>
+        <category label="cs.LG" term="cs.LG"/>
+        <category label="cs.AI" term="cs.AI"/>
+        <published>2026-05-14T16:46:26.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[InfoSFT: Learn More and Forget Less with Information-Aware Token Weighting]]></title>
+        <id>https://arxiv.org/abs/2605.14967</id>
+        <link href="https://arxiv.org/abs/2605.14967"/>
+        <updated>2026-05-14T15:32:37.000Z</updated>
+        <summary type="html"><![CDATA[Supervised fine-tuning (SFT) provides the standard approach for teaching LLMs new behaviors from offline expert demonstrations. However, standard SFT uniformly fits all samples -- including those with low likelihood under the base model -- which can disproportionately drive training updates toward overfitting specific samples rather than learning the target behavior. Moreover, adapting to these unlikely samples induces substantial policy shifts that degrade prior capabilities. Existing methods m]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出InfoSFT，通过信息感知的token加权改进监督微调，减少过拟合并保留已有能力，但主要提升学习效果而非速度。</p>
+<h3>原始摘要</h3><p>Supervised fine-tuning (SFT) provides the standard approach for teaching LLMs new behaviors from offline expert demonstrations. However, standard SFT uniformly fits all samples -- including those with low likelihood under the base model -- which can disproportionately drive training updates toward overfitting specific samples rather than learning the target behavior. Moreover, adapting to these unlikely samples induces substantial policy shifts that degrade prior capabilities. Existing methods mitigate this by filtering, regenerating, or down-weighting low-likelihood data. In doing so, they often suppress precisely the novel behaviors the base model has yet to learn. We propose InfoSFT, a principled weighting scheme for the SFT objective that concentrates learning signals on maximally informative, medium-confidence tokens -- those neither overly familiar to the base model nor too unlikely to cause instability. Requiring only a one-line modification to the standard token-wise loss, InfoSFT demonstrably improves generalization over vanilla SFT and likelihood-weighted baselines across math, code, and chain-of-thought tasks with diverse model families, while better preserving pre-existing capabilities.</p>
+<p><strong>Categories:</strong> cs.LG, stat.ML</p>
+<p><strong>Relevance:</strong> 5/10</p>
+<p><a href="https://arxiv.org/pdf/2605.14967">PDF</a> | <a href="https://arxiv.org/abs/2605.14967">arXiv</a></p>]]></content>
+        <author>
+            <name>Mahdi Sabbaghi</name>
+        </author>
+        <author>
+            <name>George Pappas</name>
+        </author>
+        <author>
+            <name>Adel Javanmard</name>
+        </author>
+        <author>
+            <name>Hamed Hassani</name>
+        </author>
+        <category label="cs.LG" term="cs.LG"/>
+        <category label="stat.ML" term="stat.ML"/>
+        <published>2026-05-14T15:32:37.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Darwin Family: MRI-Trust-Weighted Evolutionary Merging for Training-Free Scaling of Language-Model Reasoning]]></title>
+        <id>https://arxiv.org/abs/2605.14386</id>
+        <link href="https://arxiv.org/abs/2605.14386"/>
+        <updated>2026-05-14T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[We present Darwin Family, a framework for training-free evolutionary merging of large language models via gradient-free weight-space recombination. We ask whether frontier-level reasoning performance can be improved without additional training, by reorganizing latent capabilities already encoded in existing checkpoints. Darwin introduces three key ideas: (i) a 14-dimensional adaptive merge genome enabling fine-grained component- and block-level recombination; (ii) MRI-Trust Fusion, which adaptiv]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出无需训练的进化式模型合并框架Darwin Family，通过权重空间重组提升推理性能，无需额外训练，属于模型效率优化。</p>
+<h3>原始摘要</h3><p>We present Darwin Family, a framework for training-free evolutionary merging of large language models via gradient-free weight-space recombination. We ask whether frontier-level reasoning performance can be improved without additional training, by reorganizing latent capabilities already encoded in existing checkpoints. Darwin introduces three key ideas: (i) a 14-dimensional adaptive merge genome enabling fine-grained component- and block-level recombination; (ii) MRI-Trust Fusion, which adaptively balances diagnostic layer-importance signals with evolutionary search through a learnable trust parameter; and (iii) an Architecture Mapper that enables cross-architecture breeding between heterogeneous model families. Empirically, the flagship Darwin-27B-Opus achieves 86.9% on GPQA Diamond, ranking #6 among 1,252 evaluated models, and outperforming its fully trained foundation model without any gradient-based training. Across scales from 4B to 35B parameters, Darwin models consistently improve over their parents, support recursive multi-generation evolution, and enable a training-free evolutionary merge that combines Transformer- and Mamba-based components. Together, the Darwin Family demonstrates that diagnostic-guided evolutionary merging is a practical and reproducible alternative to costly post-training pipelines for reasoning-centric language models.</p>
+<p><strong>Relevance:</strong> 5/10</p>
+<p><a href="https://arxiv.org/pdf/2605.14386">PDF</a> | <a href="https://arxiv.org/abs/2605.14386">arXiv</a></p>]]></content>
+        <author>
+            <name>Taebong Kim</name>
+        </author>
+        <author>
+            <name>Youngsik Hong</name>
+        </author>
+        <author>
+            <name>Minsik Kim</name>
+        </author>
+        <author>
+            <name>Sunyoung Choi</name>
+        </author>
+        <author>
+            <name>Jaewon Jang</name>
+        </author>
+        <author>
+            <name>Junghoon Shin</name>
+        </author>
+        <author>
+            <name>Minseo Kim</name>
+        </author>
+        <published>2026-05-14T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[KL for a KL: On-Policy Distillation with Control Variate Baseline]]></title>
+        <id>https://arxiv.org/abs/2605.07865</id>
+        <link href="https://arxiv.org/abs/2605.07865"/>
+        <updated>2026-05-08T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[On-Policy Distillation (OPD) has emerged as a dominant post-training paradigm for large language models, especially for reasoning domains. However, OPD remains unstable in practice due to the high gradient variance of its single-sample Monte Carlo estimator, and recipes for stable training are still immature. We propose vOPD (On-Policy Distillation with a control variate baseline), which casts OPD as policy-gradient RL and stabilizes it by introducing a control variate baseline-canonically a val]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出vOPD，通过控制变量基线降低在线策略蒸馏的梯度方差，稳定训练过程，属于训练效率优化。</p>
+<h3>原始摘要</h3><p>On-Policy Distillation (OPD) has emerged as a dominant post-training paradigm for large language models, especially for reasoning domains. However, OPD remains unstable in practice due to the high gradient variance of its single-sample Monte Carlo estimator, and recipes for stable training are still immature. We propose vOPD (On-Policy Distillation with a control variate baseline), which casts OPD as policy-gradient RL and stabilizes it by introducing a control variate baseline-canonically a value function -- from the RL literature. We show that the OPD value function admits a closed form as the per-token negative reverse KL divergence between the student and the teacher, available directly from the already-computed forward pass with no additional critic or inference. Existing stabilization methods either compute the full token-level reverse KL over the entire vocabulary, adding significant overhead, or restrict it to a top-k support, biasing the objective. vOPD instead preserves the lightweight single-sample estimator, subtracting the value function as a detached baseline to keep the gradient unbiased while reducing variance. Furthermore, we show that a top-k approximation of the baseline further lowers cost without compromising performance. Across mathematical and scientific reasoning benchmarks, vOPD consistently outperforms vanilla OPD and matches the most expensive full-vocabulary baseline, offering an efficient stabilization of On-Policy Distillation through principled RL variance reduction.</p>
+<p><strong>Relevance:</strong> 5/10</p>
+<p><a href="https://arxiv.org/pdf/2605.07865">PDF</a> | <a href="https://arxiv.org/abs/2605.07865">arXiv</a></p>]]></content>
+        <author>
+            <name>Minjae Oh</name>
+        </author>
+        <author>
+            <name>Sangjun Song</name>
+        </author>
+        <author>
+            <name>Gyubin Choi</name>
+        </author>
+        <author>
+            <name>Yunho Choi</name>
+        </author>
+        <author>
+            <name>Yohan Jo</name>
+        </author>
+        <published>2026-05-08T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[ELF: Embedded Language Flows]]></title>
+        <id>https://arxiv.org/abs/2605.10938</id>
+        <link href="https://arxiv.org/abs/2605.10938"/>
+        <updated>2026-05-11T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Diffusion and flow-based models have become the de facto approaches for generating continuous data, e.g., in domains such as images and videos. Their success has attracted growing interest in applying them to language modeling. Unlike their image-domain counterparts, today's leading diffusion language models (DLMs) primarily operate over discrete tokens. In this paper, we show that continuous DLMs can be made effective with minimal adaptation to the discrete domain. We propose Embedded Language ]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出ELF，一种基于连续流匹配的扩散语言模型，在连续嵌入空间操作，用更少采样步骤达到更优生成质量，加速文本生成。</p>
+<h3>原始摘要</h3><p>Diffusion and flow-based models have become the de facto approaches for generating continuous data, e.g., in domains such as images and videos. Their success has attracted growing interest in applying them to language modeling. Unlike their image-domain counterparts, today's leading diffusion language models (DLMs) primarily operate over discrete tokens. In this paper, we show that continuous DLMs can be made effective with minimal adaptation to the discrete domain. We propose Embedded Language Flows (ELF), a class of diffusion models in continuous embedding space based on continuous-time Flow Matching. Unlike existing DLMs, ELF predominantly stays within the continuous embedding space until the final time step, where it maps to discrete tokens using a shared-weight network. This formulation makes it straightforward to adapt established techniques from image-domain diffusion models, e.g., classifier-free guidance (CFG). Experiments show that ELF substantially outperforms leading discrete and continuous DLMs, achieving better generation quality with fewer sampling steps. These results suggest that ELF offers a promising path toward effective continuous DLMs.</p>
+<p><strong>Relevance:</strong> 5/10</p>
+<p><a href="https://arxiv.org/pdf/2605.10938">PDF</a> | <a href="https://arxiv.org/abs/2605.10938">arXiv</a></p>]]></content>
+        <author>
+            <name>Keya Hu</name>
+        </author>
+        <author>
+            <name>Linlu Qiu</name>
+        </author>
+        <author>
+            <name>Yiyang Lu</name>
+        </author>
+        <author>
+            <name>Hanhong Zhao</name>
+        </author>
+        <author>
+            <name>Tianhong Li</name>
+        </author>
+        <author>
+            <name>Yoon Kim</name>
+        </author>
+        <author>
+            <name>Jacob Andreas</name>
+        </author>
+        <author>
+            <name>Kaiming He</name>
+        </author>
+        <published>2026-05-11T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[FlashEvolve: Accelerating Agent Self-Evolution with Asynchronous Stage Orchestration]]></title>
+        <id>https://arxiv.org/abs/2605.08520</id>
+        <link href="https://arxiv.org/abs/2605.08520"/>
+        <updated>2026-05-08T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[LLM-based evolution has emerged as a promising way to improve agents by refining non-parametric artifacts, but its wall-clock cost remains a major bottleneck. We identify that this cost comes from synchronized stage execution and imbalance inside each LLM-heavy stage. We present FlashEvolve, an efficient framework that replaces synchronized execution with asynchronous workers and queues, allowing different stages and steps to overlap. To handle data staleness introduced by asynchrony, FlashEvolv]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出FlashEvolve，通过异步阶段编排和版本管理加速LLM智能体自我进化，在vLLM上实现3.5倍提案吞吐提升。</p>
+<h3>原始摘要</h3><p>LLM-based evolution has emerged as a promising way to improve agents by refining non-parametric artifacts, but its wall-clock cost remains a major bottleneck. We identify that this cost comes from synchronized stage execution and imbalance inside each LLM-heavy stage. We present FlashEvolve, an efficient framework that replaces synchronized execution with asynchronous workers and queues, allowing different stages and steps to overlap. To handle data staleness introduced by asynchrony, FlashEvolve tracks artifact versions and applies different policies to update, discard, or patch stale artifacts. Unlike weight-space staleness in asynchronous RL, language-space staleness is inspectable and repairable: a stale artifact is not just delayed work, but readable evidence that the LLM can reflect on, revise, and turn into useful evolution signal. FlashEvolve further improves throughput and token efficiency with speculative stage completion and adaptive workflow control. On GEPA workloads, FlashEvolve improves proposal throughput by 3.5times on local vLLM and 4.9times on API serving over synchronous GEPA. The same design also applies to ACE and Meta-Harness.</p>
+<p><strong>Relevance:</strong> 5/10</p>
+<p><a href="https://arxiv.org/pdf/2605.08520">PDF</a> | <a href="https://arxiv.org/abs/2605.08520">arXiv</a></p>]]></content>
+        <author>
+            <name>Zhengding Hu</name>
+        </author>
+        <author>
+            <name>Mingge Lu</name>
+        </author>
+        <author>
+            <name>Zhen Wang</name>
+        </author>
+        <author>
+            <name>Jixuan Ruan</name>
+        </author>
+        <author>
+            <name>Chang Chen</name>
+        </author>
+        <author>
+            <name>Zaifeng Pan</name>
+        </author>
+        <author>
+            <name>Yue Guan</name>
+        </author>
+        <author>
+            <name>Ruiyi Wang</name>
+        </author>
+        <author>
+            <name>Zhongkai Yu</name>
+        </author>
+        <author>
+            <name>Chao Zhang</name>
+        </author>
+        <author>
+            <name>Yufei Ding</name>
+        </author>
+        <published>2026-05-08T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Queryable LoRA: Instruction-Regularized Routing Over Shared Low-Rank Update Atoms]]></title>
+        <id>https://arxiv.org/abs/2605.08423</id>
+        <link href="https://arxiv.org/abs/2605.08423"/>
+        <updated>2026-05-08T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[We present a data-adaptive method for parameter-efficient fine-tuning of large neural networks. Standard low-rank adaptation methods improve efficiency by restricting each layer update to a fixed low-rank form, but this static parameterization can be too rigid when the appropriate correction depends on the input and on the evolving depth-wise computation of the network. Our approach replaces a purely layer-local adapter with a shared queryable memory of low-rank update atoms. For each block of l]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出Queryable LoRA，通过可查询的共享低秩更新原子实现数据自适应的参数高效微调，在保持效率的同时支持动态上下文敏感更新。</p>
+<h3>原始摘要</h3><p>We present a data-adaptive method for parameter-efficient fine-tuning of large neural networks. Standard low-rank adaptation methods improve efficiency by restricting each layer update to a fixed low-rank form, but this static parameterization can be too rigid when the appropriate correction depends on the input and on the evolving depth-wise computation of the network. Our approach replaces a purely layer-local adapter with a shared queryable memory of low-rank update atoms. For each block of layers, the model forms a query from the current low-rank state and a running summary of previous blocks, uses this query to retrieve a content-dependent combination of shared update components via attention, and applies the resulting routed operator within the low-rank bottleneck. In this way, the method retains the efficiency and scalability of low-rank adaptation while allowing the effective update to vary across inputs and to share reusable structure across layers. The resulting architecture provides a principled middle ground between static LoRA-style updates and fully generated parameter updates: it remains compact and parameter-efficient while supporting dynamic, context-sensitive adaptation. Further, we incorporate instruction-regularization by augmenting routing logits with a language-induced prior over update atoms, thereby biasing the selection of low-rank transformations toward semantically relevant directions without generating unconstrained parameter updates. Experiments on noisy non-linear regression tasks and LLM fine-tuning suggest that this queryable update-memory formulation can improve final test performance and training stability compared to standard low-rank adaptation, while using a comparable number of trainable parameters.</p>
+<p><strong>Relevance:</strong> 5/10</p>
+<p><a href="https://arxiv.org/pdf/2605.08423">PDF</a> | <a href="https://arxiv.org/abs/2605.08423">arXiv</a></p>]]></content>
+        <author>
+            <name>Omatharv Bharat Vaidya</name>
+        </author>
+        <author>
+            <name>Connor T. Jerzak</name>
+        </author>
+        <author>
+            <name>Nhat Ho</name>
+        </author>
+        <author>
+            <name>Chandrajit Bajaj</name>
+        </author>
+        <published>2026-05-08T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Flow-OPD: On-Policy Distillation for Flow Matching Models]]></title>
+        <id>https://arxiv.org/abs/2605.08063</id>
+        <link href="https://arxiv.org/abs/2605.08063"/>
+        <updated>2026-05-08T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Existing Flow Matching (FM) text-to-image models suffer from two critical bottlenecks under multi-task alignment: the reward sparsity induced by scalar-valued rewards, and the gradient interference arising from jointly optimizing heterogeneous objectives, which together give rise to a 'seesaw effect' of competing metrics and pervasive reward hacking. Inspired by the success of On-Policy Distillation (OPD) in the large language model community, we propose Flow-OPD, the first unified post-training]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出Flow-OPD，将在线策略蒸馏引入流匹配模型，通过两阶段对齐策略提升文本到图像生成质量，但主要贡献在质量而非速度。</p>
+<h3>原始摘要</h3><p>Existing Flow Matching (FM) text-to-image models suffer from two critical bottlenecks under multi-task alignment: the reward sparsity induced by scalar-valued rewards, and the gradient interference arising from jointly optimizing heterogeneous objectives, which together give rise to a 'seesaw effect' of competing metrics and pervasive reward hacking. Inspired by the success of On-Policy Distillation (OPD) in the large language model community, we propose Flow-OPD, the first unified post-training framework that integrates on-policy distillation into Flow Matching models. Flow-OPD adopts a two-stage alignment strategy: it first cultivates domain-specialized teacher models via single-reward GRPO fine-tuning, allowing each expert to reach its performance ceiling in isolation; it then establishes a robust initial policy through a Flow-based Cold-Start scheme and seamlessly consolidates heterogeneous expertise into a single student via a three-step orchestration of on-policy sampling, task-routing labeling, and dense trajectory-level supervision. We further introduce Manifold Anchor Regularization (MAR), which leverages a task-agnostic teacher to provide full-data supervision that anchors generation to a high-quality manifold, effectively mitigating the aesthetic degradation commonly observed in purely RL-driven alignment. Built upon Stable Diffusion 3.5 Medium, Flow-OPD raises the GenEval score from 63 to 92 and the OCR accuracy from 59 to 94, yielding an overall improvement of roughly 10 points over vanilla GRPO, while preserving image fidelity and human-preference alignment and exhibiting an emergent 'teacher-surpassing' effect. These results establish Flow-OPD as a scalable alignment paradigm for building generalist text-to-image models.</p>
+<p><strong>Relevance:</strong> 5/10</p>
+<p><a href="https://arxiv.org/pdf/2605.08063">PDF</a> | <a href="https://arxiv.org/abs/2605.08063">arXiv</a></p>]]></content>
+        <author>
+            <name>Zhen Fang</name>
+        </author>
+        <author>
+            <name>Wenxuan Huang</name>
+        </author>
+        <author>
+            <name>Yu Zeng</name>
+        </author>
+        <author>
+            <name>Yiming Zhao</name>
+        </author>
+        <author>
+            <name>Shuang Chen</name>
+        </author>
+        <author>
+            <name>Kaituo Feng</name>
+        </author>
+        <author>
+            <name>Yunlong Lin</name>
+        </author>
+        <author>
+            <name>Lin Chen</name>
+        </author>
+        <author>
+            <name>Zehui Chen</name>
+        </author>
+        <author>
+            <name>Shaosheng Cao</name>
+        </author>
+        <author>
+            <name>Feng Zhao</name>
+        </author>
+        <published>2026-05-08T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Scaling Continual Learning to 300+ Tasks with Bi-Level Routing Mixture-of-Experts]]></title>
+        <id>https://arxiv.org/abs/2602.03473</id>
+        <link href="https://arxiv.org/abs/2602.03473"/>
+        <updated>2026-05-08T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Continual learning, especially class-incremental learning (CIL), on the basis of a pre-trained model (PTM) has garnered substantial research interest in recent years. However, how to effectively learn both discriminative and comprehensive feature representations while maintaining stability and plasticity over very long task sequences remains an open problem. We propose CaRE, a scalable {C}ontinual Le{a}rner with efficient Bi-Level {R}outing Mixture-of-{E}xperts (BR-MoE). The core idea of BR-MoE ]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出CaRE框架，采用双层路由MoE（BR-MoE）实现大规模持续学习，可扩展至300+任务，但主要贡献在持续学习而非模型加速。</p>
+<h3>原始摘要</h3><p>Continual learning, especially class-incremental learning (CIL), on the basis of a pre-trained model (PTM) has garnered substantial research interest in recent years. However, how to effectively learn both discriminative and comprehensive feature representations while maintaining stability and plasticity over very long task sequences remains an open problem. We propose CaRE, a scalable {C}ontinual Le{a}rner with efficient Bi-Level {R}outing Mixture-of-{E}xperts (BR-MoE). The core idea of BR-MoE is a bi-level routing mechanism: a router selection stage that dynamically activates relevant task-specific routers, followed by an expert routing phase that dynamically activates and aggregates experts, aiming to inject discriminative and comprehensive representations into every intermediate network layer. On the other hand, we introduce a challenging dataset, OmniBenchmark-1K, for CIL performance evaluation on very long task sequences with hundreds of tasks. Extensive experiments show that CaRE demonstrates leading performance across a variety of datasets and task settings, including commonly used CIL datasets with classical CIL settings (e.g., 5-20 tasks). To the best of our knowledge, CaRE is the first continual learner that scales to very long task sequences (ranging from 100 to over 300 non-overlapping tasks), while outperforming all baselines by a large margin on such task sequences. We hope that this work will inspire further research into continual learning over extremely long task sequences. Code and dataset are publicly released at https://github.com/LMMMEng/CaRE.</p>
+<p><strong>Relevance:</strong> 5/10</p>
+<p><a href="https://arxiv.org/pdf/2602.03473">PDF</a> | <a href="https://arxiv.org/abs/2602.03473">arXiv</a></p>]]></content>
+        <author>
+            <name>Meng Lou</name>
+        </author>
+        <author>
+            <name>Yunxiang Fu</name>
+        </author>
+        <author>
+            <name>Yizhou Yu</name>
+        </author>
+        <published>2026-05-08T00:00:00.000Z</published>
+    </entry>
+</feed>
