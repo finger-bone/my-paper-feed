@@ -1,8 +1,9 @@
 import { loadConfig, type Config, type Paper } from "./types";
 import { fetchArxivPapers } from "./sources/arxiv";
 import { fetchHuggingFacePapers } from "./sources/huggingface";
-import { analyzePapers, applyJudgments } from "./llm";
+import { keywordFilter, analyzeUncertainPapers, applyJudgments } from "./llm";
 import { generateRssFeed } from "./rss";
+import { loadCache, saveCache, updateCache } from "./cache";
 
 async function main() {
   console.log("=".repeat(60));
@@ -13,53 +14,82 @@ async function main() {
   validateConfig(config);
 
   // Phase 1: Fetch papers from all sources
-  console.log("\n📥 Phase 1: Fetching papers...");
+  console.log("\n[1/5] Fetching papers...");
   const allPapers = await fetchAllSources(config);
-  console.log(`Total papers fetched: ${allPapers.length}`);
+  console.log(`  Total papers fetched: ${allPapers.length}`);
 
   if (allPapers.length === 0) {
-    console.log("No papers found. Exiting.");
+    console.log("  No papers found. Exiting.");
     return;
   }
 
-  // Phase 2: Analyze with DeepSeek
-  console.log("\n🤖 Phase 2: Analyzing with DeepSeek...");
-  const judgments = await analyzePapers(allPapers, config);
+  // Phase 2: Keyword pre-filter (lenient — prefers LLM over premature exclusion)
+  console.log("\n[2/5] Keyword pre-filtering...");
+  const { decided, uncertain } = keywordFilter(allPapers, {
+    autoInclude: config.filterAutoInclude,
+    autoExclude: config.filterAutoExclude,
+  });
+  const allJudgments = new Map(decided);
 
-  // Phase 3: Filter and sort
-  console.log("\n📋 Phase 3: Filtering by relevance...");
-  const relevantPapers = applyJudgments(allPapers, judgments, config.minRelevanceScore);
+  // Load cache
+  const cache = loadCache();
+
+  // Phase 3: LLM analysis for uncertain papers
+  console.log("\n[3/5] LLM analysis (uncertain papers only)...");
+  const llmJudgments = await analyzeUncertainPapers(uncertain, config, cache);
+
+  // Merge LLM results and update cache
+  updateCache(cache, llmJudgments);
+  for (const [id, j] of llmJudgments) {
+    allJudgments.set(id, j);
+  }
+
+  // Persist updated cache
+  saveCache(cache);
+
+  // Phase 4: Filter and sort
+  console.log("\n[4/5] Filtering by relevance...");
+  const relevantPapers = applyJudgments(allPapers, allJudgments, config.minRelevanceScore);
 
   if (relevantPapers.length === 0) {
-    console.log("No relevant papers found. Generating empty feed.");
+    console.log("  No relevant papers found. Generating empty feed.");
   } else {
-    console.log(`\n📄 Relevant papers (score >= ${config.minRelevanceScore}):`);
+    console.log(`  Relevant papers (score >= ${config.minRelevanceScore}):`);
     for (const p of relevantPapers) {
       console.log(`  [${p.relevanceScore}/10] ${p.title}`);
-      console.log(`         ${p.aiSummary.slice(0, 120)}...`);
+      if (p.aiSummary) {
+        console.log(`         ${p.aiSummary.slice(0, 120)}...`);
+      }
       console.log(`         ${p.link}`);
       console.log();
     }
   }
 
-  // Phase 4: Generate RSS
-  console.log("\n📰 Phase 4: Generating RSS feed...");
+  // Phase 5: Generate RSS
+  console.log("\n[5/5] Generating RSS feed...");
   generateRssFeed(relevantPapers, config);
 
-  // Phase 5: Print summary
+  // Summary
+  const autoIncluded = [...decided.values()].filter((j) => j.relevanceScore >= config.filterAutoInclude).length;
+  const autoExcluded = [...decided.values()].filter((j) => j.relevanceScore <= config.filterAutoExclude).length;
+
   console.log("\n" + "=".repeat(60));
-  console.log("✅ Done!");
-  console.log(`   Total papers fetched: ${allPapers.length}`);
-  console.log(`   Relevant papers: ${relevantPapers.length}`);
+  console.log("Done!");
+  console.log(`  Papers fetched:      ${allPapers.length}`);
+  console.log(`  Keyword auto-include: ${autoIncluded}`);
+  console.log(`  Keyword auto-exclude: ${autoExcluded}`);
+  console.log(`  LLM analyzed:        ${llmJudgments.size}`);
+  console.log(`  Relevant (in RSS):   ${relevantPapers.length}`);
   if (relevantPapers.length > 0) {
     console.log(
-      `   Average relevance: ${(
+      `  Avg relevance:       ${(
         relevantPapers.reduce((s, p) => s + p.relevanceScore, 0) /
         relevantPapers.length
       ).toFixed(1)}/10`,
     );
   }
-  console.log(`   Output: ${config.outputPath}`);
+  console.log(`  Cache entries:       ${cache.size}`);
+  console.log(`  Output:              ${config.outputPath}`);
   console.log("=".repeat(60));
 }
 
@@ -87,9 +117,9 @@ async function fetchAllSources(config: Config): Promise<Paper[]> {
           papers.push(paper);
         }
       }
-      console.log(`[fetch] ${sourceName}: ${result.value.length} papers`);
+      console.log(`  ${sourceName}: ${result.value.length} papers`);
     } else {
-      console.error(`[fetch] ${sourceName} failed:`, result.reason);
+      console.error(`  ${sourceName} failed:`, result.reason);
     }
   }
 
@@ -99,24 +129,34 @@ async function fetchAllSources(config: Config): Promise<Paper[]> {
 function validateConfig(config: Config): void {
   if (!config.deepseekApiKey) {
     console.error(
-      "❌ DEEPSEEK_API_KEY environment variable is required.\n" +
+      "DEEPSEEK_API_KEY environment variable is required.\n" +
         "   Set it in GitHub Secrets or your local .env file.",
     );
     process.exit(1);
   }
 
   if (config.lookbackDays < 1 || config.lookbackDays > 30) {
-    console.warn("⚠️  LOOKBACK_DAYS should be between 1 and 30. Using 7.");
+    console.warn("  LOOKBACK_DAYS should be between 1 and 30. Using 7.");
     config.lookbackDays = 7;
   }
 
   if (config.minRelevanceScore < 0 || config.minRelevanceScore > 10) {
-    console.warn("⚠️  MIN_RELEVANCE_SCORE should be 0-10. Using 5.");
+    console.warn("  MIN_RELEVANCE_SCORE should be 0-10. Using 5.");
     config.minRelevanceScore = 5;
+  }
+
+  if (config.filterAutoInclude < 1 || config.filterAutoInclude > 10) {
+    console.warn("  FILTER_AUTO_INCLUDE should be 1-10. Using 7.");
+    config.filterAutoInclude = 7;
+  }
+
+  if (config.filterAutoExclude < 0 || config.filterAutoExclude > 5) {
+    console.warn("  FILTER_AUTO_EXCLUDE should be 0-5. Using 2.");
+    config.filterAutoExclude = 2;
   }
 }
 
 main().catch((err) => {
-  console.error("❌ Fatal error:", err);
+  console.error("Fatal error:", err);
   process.exit(1);
 });

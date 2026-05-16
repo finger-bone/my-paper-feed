@@ -28,6 +28,10 @@ export interface Config {
   lookbackDays: number;
   /** Minimum relevance score (0-10) to include in RSS */
   minRelevanceScore: number;
+  /** Keyword filter: auto-include threshold (default 7) */
+  filterAutoInclude: number;
+  /** Keyword filter: auto-exclude threshold (default 2) */
+  filterAutoExclude: number;
   /** Output path for the RSS feed file */
   outputPath: string;
   /** RSS feed metadata */
@@ -41,14 +45,16 @@ export function loadConfig(): Config {
     deepseekApiKey: process.env.DEEPSEEK_API_KEY || "",
     deepseekBaseUrl: process.env.DEEPSEEK_BASE_URL || "https://api.deepseek.com",
     deepseekModel: process.env.DEEPSEEK_MODEL || "deepseek-chat",
-    arxivMaxResults: parseInt(process.env.ARXIV_MAX_RESULTS || "200", 10),
+    arxivMaxResults: parseInt(process.env.ARXIV_MAX_RESULTS || "300", 10),
     lookbackDays: parseInt(process.env.LOOKBACK_DAYS || "7", 10),
     minRelevanceScore: parseInt(process.env.MIN_RELEVANCE_SCORE || "5", 10),
+    filterAutoInclude: parseInt(process.env.FILTER_AUTO_INCLUDE || "7", 10),
+    filterAutoExclude: parseInt(process.env.FILTER_AUTO_EXCLUDE || "2", 10),
     outputPath: process.env.OUTPUT_PATH || "feed.xml",
-    feedTitle: process.env.FEED_TITLE || "LLM Acceleration Papers Daily",
+    feedTitle: process.env.FEED_TITLE || "LLM Acceleration Papers Weekly",
     feedDescription:
       process.env.FEED_DESCRIPTION ||
-      "Curated papers on large model (LLM, VLM, world model) inference/training acceleration",
+      "每周精选大模型(LLM/VLM/视频模型/世界模型)推理与训练加速相关论文",
     feedLink: process.env.FEED_LINK || "https://arxiv.org",
   };
 }

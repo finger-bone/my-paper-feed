@@ -4,65 +4,39 @@ import type { Paper } from "../types";
 const ARXIV_API = "https://export.arxiv.org/api/query";
 const USER_AGENT = "PaperFeed/1.0 (mailto:example@example.com)";
 
-/** Build the arXiv search query URL */
-function buildQueryUrl(keywords: string[], maxResults: number, daysBack: number): string {
-  const now = new Date();
-  const past = new Date();
-  past.setDate(past.getDate() - daysBack);
-
-  const toDate = formatArxivDate(now);
-  const fromDate = formatArxivDate(past);
-
-  const categories = ["cs.CL", "cs.CV", "cs.LG", "cs.AI", "cs.MM"];
-  const catQuery = categories.map((c) => `cat:${c}`).join("+OR+");
-
-  const kwQuery = keywords
-    .map((k) => `abs:${k}`)
-    .join("+OR+");
-
-  const query = `search_query=(${catQuery})+AND+(${kwQuery})`;
-  const params = `${query}&sortBy=submittedDate&sortOrder=descending&max_results=${maxResults}`;
-
-  return `${ARXIV_API}?${params}`;
+/** Retry a fetch up to `retries` times with exponential backoff */
+async function fetchWithRetry(url: string, retries = 3): Promise<Response> {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    const resp = await fetch(url, {
+      headers: { "User-Agent": USER_AGENT },
+      signal: AbortSignal.timeout(30_000),
+    });
+    if (resp.ok) return resp;
+    if (attempt < retries) {
+      const delay = 2 ** attempt * 1000;
+      console.warn(`[arxiv] Retry ${attempt}/${retries} after ${delay}ms (HTTP ${resp.status})`);
+      await new Promise((r) => setTimeout(r, delay));
+    } else {
+      throw new Error(`arXiv API returned ${resp.status} after ${retries} retries`);
+    }
+  }
+  throw new Error("unreachable");
 }
 
-/** Fetch papers from arXiv */
+/** Fetch recent papers from arXiv by category (no keyword filter — let the local filter handle it) */
 export async function fetchArxivPapers(
   maxResults: number,
-  daysBack: number,
+  _daysBack: number,
 ): Promise<Paper[]> {
-  const keywords = [
-    "efficient",
-    "acceleration",
-    "inference",
-    "training",
-    "distillation",
-    "quantization",
-    "pruning",
-    "speculative",
-    "parallelism",
-    "compression",
-    "low-rank",
-    "attention",
-    "KV cache",
-    "mixture of experts",
-    "MoE",
-    "diffusion",
-    "autoregressive",
-    "generation",
-  ];
+  // Broader query: fetch latest papers from target categories without keyword filtering
+  // The keyword + LLM pipeline will do the fine-grained filtering locally.
+  const categories = ["cs.CL", "cs.CV", "cs.LG", "cs.AI", "cs.MM"];
+  const catQuery = categories.map((c) => `cat:${c}`).join("+OR+");
+  const url = `${ARXIV_API}?search_query=(${catQuery})&sortBy=submittedDate&sortOrder=descending&max_results=${maxResults}`;
 
-  const url = buildQueryUrl(keywords, maxResults, daysBack);
-  console.log(`[arxiv] Fetching: ${url}`);
+  console.log(`[arxiv] Fetching latest ${maxResults} papers from [${categories.join(", ")}]`);
 
-  const resp = await fetch(url, {
-    headers: { "User-Agent": USER_AGENT },
-  });
-
-  if (!resp.ok) {
-    throw new Error(`arXiv API returned ${resp.status}: ${await resp.text()}`);
-  }
-
+  const resp = await fetchWithRetry(url);
   const xml = await resp.text();
   return parseArxivResponse(xml);
 }
@@ -83,6 +57,9 @@ function parseArxivResponse(xml: string): Paper[] {
   const papers: Paper[] = [];
 
   for (const entry of entries) {
+    // Skip error entries
+    if (entry.id?.includes("/api/errors")) continue;
+
     const id = entry.id || "";
     const arxivId = id.replace(/^https?:\/\/arxiv\.org\/abs\//, "").replace(/v\d+$/, "");
 

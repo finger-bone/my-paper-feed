@@ -2,25 +2,67 @@ import type { Paper } from "../types";
 
 const HF_DAILY_PAPERS = "https://huggingface.co/api/daily_papers";
 
-/** Fetch daily papers from HuggingFace for the last N days */
+/** Retry a fetch up to `retries` times */
+async function fetchWithRetry(url: string, retries = 3): Promise<Response> {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const resp = await fetch(url, {
+        headers: { Accept: "application/json" },
+        signal: AbortSignal.timeout(15_000),
+      });
+      // 404 means no papers for that day — not an error
+      if (resp.status === 404) return resp;
+      if (resp.ok) return resp;
+      if (attempt < retries) {
+        const delay = 2 ** attempt * 1000;
+        console.warn(`[huggingface] Retry ${attempt}/${retries} after ${delay}ms (HTTP ${resp.status})`);
+        await new Promise((r) => setTimeout(r, delay));
+      } else {
+        throw new Error(`HuggingFace API returned ${resp.status}`);
+      }
+    } catch (err) {
+      if (attempt < retries && !(err instanceof Error && err.message.includes("returned"))) {
+        const delay = 2 ** attempt * 1000;
+        console.warn(`[huggingface] Retry ${attempt}/${retries} after ${delay}ms:`, err);
+        await new Promise((r) => setTimeout(r, delay));
+      } else {
+        throw err;
+      }
+    }
+  }
+  throw new Error("unreachable");
+}
+
+/** Fetch daily papers from HuggingFace for the last N days (in parallel) */
 export async function fetchHuggingFacePapers(
   _maxResults: number,
   daysBack: number,
 ): Promise<Paper[]> {
-  const allPapers: Paper[] = [];
-
-  // Fetch papers for each day
+  const dates: string[] = [];
   for (let i = 0; i < daysBack; i++) {
     const date = new Date();
     date.setDate(date.getDate() - i);
-    const dateStr = date.toISOString().slice(0, 10);
+    dates.push(date.toISOString().slice(0, 10));
+  }
 
-    try {
+  // Fetch all days in parallel
+  const results = await Promise.allSettled(
+    dates.map(async (dateStr) => {
       const papers = await fetchDailyPapers(dateStr);
+      return { dateStr, papers };
+    }),
+  );
+
+  const allPapers: Paper[] = [];
+  for (const result of results) {
+    if (result.status === "fulfilled") {
+      const { dateStr, papers } = result.value;
+      if (papers.length > 0) {
+        console.log(`[huggingface] ${dateStr}: ${papers.length} papers`);
+      }
       allPapers.push(...papers);
-      console.log(`[huggingface] ${dateStr}: ${papers.length} papers`);
-    } catch (err) {
-      console.warn(`[huggingface] Failed to fetch ${dateStr}:`, err);
+    } else {
+      console.warn(`[huggingface] A day fetch failed:`, result.reason);
     }
   }
 
@@ -40,17 +82,9 @@ export async function fetchHuggingFacePapers(
 
 async function fetchDailyPapers(date: string): Promise<Paper[]> {
   const url = `${HF_DAILY_PAPERS}?date=${date}&limit=50`;
-  const resp = await fetch(url, {
-    headers: { Accept: "application/json" },
-    signal: AbortSignal.timeout(15000),
-  });
+  const resp = await fetchWithRetry(url);
 
-  if (!resp.ok) {
-    // 404 means no papers for that day
-    if (resp.status === 404) return [];
-    throw new Error(`HuggingFace API returned ${resp.status}`);
-  }
-
+  if (resp.status === 404) return [];
   const data = await resp.json();
   return parseHfResponse(data);
 }
@@ -116,7 +150,6 @@ function parseHfResponse(data: unknown): Paper[] {
 }
 
 function extractArxivId(id: string): string | null {
-  // HF paper IDs can be like "arxiv:2501.00001" or just "2501.00001"
   const match = id.match(/(?:arxiv:)?(\d{4}\.\d{4,5})(?:v\d+)?/i);
   return (match?.[1] as string) || null;
 }
