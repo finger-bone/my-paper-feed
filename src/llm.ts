@@ -12,11 +12,11 @@ import type { Config, Paper } from "./types";
  *   - everything in between → LLM judges relevance + writes summary
  *
  *   score ≥ 7  → auto-include (obvious acceleration)
- *   score ≤ 2  → auto-exclude (irrelevant domain/application)
- *   3 ≤ score ≤ 6 → uncertain → LLM
+ *   score ≤ 3  → auto-exclude (irrelevant domain/application)
+ *   4 ≤ score ≤ 6 → uncertain → LLM
  *
- * LOW_SIGNAL penalties are only applied when score < autoInclude AND
- * ≥ 2 rule groups match, capped at -4 total.
+ * LOW_SIGNAL penalties are applied when ANY group matches (≥1),
+ * capped at -3 total penalty.
  */
 
 interface KeywordRule {
@@ -115,12 +115,9 @@ const HIGH_SIGNAL: KeywordRule[] = [
 
   // ── 扩散 / 视频模型加速 ──
   { include: ["diffusion acceleration", "diffusion distillation", "step distillation"], score: 9 },
-  { include: ["consistency model", "consistency distillation", "latent propagation"], score: 9 },
-  { include: ["efficient video", "video transformer acceleration", "video diffusion acceleration"], score: 8 },
   { include: ["world model acceleration", "latent world model", "efficient world model"], score: 8 },
   { include: ["progressive distillation", "denoising acceleration", "ddim", "dpm-solver"], score: 8 },
   { include: ["diffusion transformer", "dit acceleration", "flow matching acceleration"], score: 9 },
-  { include: ["video generation acceleration", "latent video diffusion", "video latent propagation"], score: 8 },
 
   // ── 长上下文加速 ──
   { include: ["long context inference", "long context acceleration", "efficient long context"], score: 9 },
@@ -131,8 +128,7 @@ const HIGH_SIGNAL: KeywordRule[] = [
 
 /**
  * "应用/平台" — Keywords suggesting IRRELEVANCE (application, platform, etc.)
- * Only applied when ≥ 2 different rule groups match.
- * Penalty is capped at -4 to avoid totally tanking score.
+ * Applied when ANY group matches (≥1 group → -1 per group, cap -3).
  */
 const LOW_SIGNAL: KeywordRule[] = [
   // ── 纯评测/数据/综述 ──
@@ -176,7 +172,22 @@ const LOW_SIGNAL: KeywordRule[] = [
   { include: ["customer service", "customer support", "helpdesk"], score: -2 },
 
   // ── 教育 ──
-  { include: ["tutoring", "educational", "course", "learning system"], score: -2 },
+  { include: ["tutoring", "educational", "course", "learning system", "assessment", "curriculum", "educational assessment", "assessment design"], score: -2 },
+
+  // ── 视觉推理 / VLM ──
+  { include: ["visual reasoning", "visual question", "visual understanding", "visual recognition", "visual representation"], score: -2 },
+
+  // ── 视频生成（非加速）──
+  { include: ["video generation", "video synthesis", "video extrapolation", "video prediction", "video diffusion"], score: -3 },
+
+  // ── 材料科学 ──
+  { include: ["crystal", "materials science", "material generation", "chemistry", "molecular"], score: -3 },
+
+  // ── RL 训练方法（非加速相关）──
+  { include: ["grpo", "group relative policy optimization", "ppo", "proximal policy"], score: -2 },
+
+  // ── 搜索/信息检索应用 ──
+  { include: ["grep", "vector retrieval", "information access"], score: -2 },
 
   // ── 内容生成应用 ──
   { include: ["text-to-image", "text-to-video", "text-to-speech", "tts"], score: -2 },
@@ -205,15 +216,15 @@ export interface FilterThresholds {
 
 const DEFAULT_THRESHOLDS: FilterThresholds = {
   autoInclude: 7,   // only obvious acceleration keywords auto-include
-  autoExclude: 2,   // broader exclusion for application/platform papers
+  autoExclude: 3,   // broader exclusion for application/platform papers
 };
 
 /**
  * Phase 1: Keyword-based pre-filtering.
  *
  *   score ≥ 7  → auto-include (obvious acceleration keywords matched)
- *   score ≤ 2  → auto-exclude (irrelevant domain/application)
- *   3 ≤ score ≤ 6 → uncertain → LLM
+ *   score ≤ 3  → auto-exclude (irrelevant domain/application)
+ *   4 ≤ score ≤ 6 → uncertain → LLM
  */
 export function keywordFilter(
   papers: Paper[],
@@ -237,7 +248,7 @@ export function keywordFilter(
     }
 
     // 2) Low-signal: penalty when score hasn't reached auto-include
-    //    AND at least 2 different rule groups match
+    //    ANY matching group → -1 per group (cap -3)
     if (score < thresholds.autoInclude) {
       let lowMatchCount = 0;
       for (const rule of LOW_SIGNAL) {
@@ -248,10 +259,10 @@ export function keywordFilter(
           }
         }
       }
-      if (lowMatchCount >= 2) {
-        // Penalty capped at -4: 2 groups → -2, 3 groups → -3, 4+ → -4
-        const penalty = Math.min(lowMatchCount * -1, -4);
-        score = Math.max(score + penalty, 0);
+      if (lowMatchCount >= 1) {
+        // -1 per group, cap at -3
+        const penalty = Math.min(lowMatchCount, 3);
+        score = Math.max(score - penalty, 0);
       }
     }
 
@@ -295,22 +306,28 @@ export function keywordFilter(
 const SYSTEM_PROMPT = `You are a research assistant specializing in large model (LLM, VLM, video model, world model) inference/training acceleration.
 Your task is to evaluate research papers and determine if they are relevant to accelerating large models.
 
-**Relevance criteria** — papers MUST be about at least ONE of:
-1. LLM inference acceleration (e.g., speculative decoding, KV cache optimization, quantization, pruning, attention optimization, parallel decoding, model compilation, vLLM, TensorRT-LLM)
-2. LLM/VLM training acceleration (e.g., distributed training, gradient checkpointing, mixed-precision training, parallelism strategies, ZeRO, offloading, efficient fine-tuning, gradient compression)
-3. Efficient architectures for large models (e.g., MoE routing optimization, linear attention, state space models, efficient transformer variants, grouped-query/multi-query attention)
-4. Video/diffusion model acceleration (e.g., step distillation, consistency models, flow matching acceleration, diffusion transformer acceleration, latent propagation)
-5. General model efficiency (e.g., model compression, knowledge distillation, low-rank methods, efficient deployment, inference serving, long-context optimization)
+**CRITICAL: Be VERY strict. Default to EXCLUDING papers unless they clearly focus on acceleration.**
 
-Papers NOT relevant:
-- Pure application papers that just use standard LLMs (e.g., "LLM for X")
-- Dataset curation or benchmark papers without efficiency contributions
-- Typical fine-tuning of existing models for a downstream task
+**Relevance criteria** — papers MUST be clearly about at least ONE of:
+1. LLM inference acceleration (e.g., speculative decoding, KV cache optimization, quantization, pruning, attention optimization, parallel decoding, model compilation, vLLM, TensorRT-LLM)
+2. LLM/VLM training acceleration (e.g., distributed training, gradient checkpointing, mixed-precision training, parallelism strategies, ZeRO, offloading, gradient compression)
+3. Efficient architectures for large models (e.g., MoE routing optimization, linear attention, state space models, efficient transformer variants, grouped-query/multi-query attention)
+4. Video/diffusion model acceleration (e.g., step distillation, flow matching acceleration, diffusion transformer acceleration)
+5. General model efficiency (e.g., model compression, knowledge distillation, low-rank methods, inference serving, long-context optimization)
+
+Papers ABSOLUTELY NOT relevant (score 0-2):
+- Visual reasoning, visual question answering, or image/video generation papers that merely USE a model (no acceleration contribution)
+- Papers about RL training methods (PPO, GRPO, RLHF) unless specifically applied to model efficiency
+- Materials science, crystal generation, drug discovery, or other domain science
+- Educational applications, assessment design, tutoring systems
+- Agent/tool-use/search frameworks (e.g., "agentic search", "grep vs RAG")
+- Benchmark/dataset papers without efficiency contributions
 - Pure RLHF/alignment/safety work
-- Purely theoretical work with no demonstrated efficiency benefit
-- Agent/tool-use frameworks
-- NLP applications like translation, sentiment, QA without efficiency focus
-- Platform/framework papers describing systems without acceleration contributions
+- NLP applications like translation, sentiment analysis, QA without efficiency focus
+- Platform/framework papers describing software systems without acceleration contributions
+- Video generation, image generation papers unless they explicitly propose acceleration techniques
+- Purely theoretical work with no demonstrated or claimed efficiency benefit
+- Domain-specific fine-tuning of existing models for a vertical application
 
 **Output format:** Return a JSON object with a "papers" array:
 {
@@ -327,7 +344,7 @@ Papers NOT relevant:
 - relevanceScore: 0 = completely irrelevant, 10 = perfectly relevant
 - summary: MUST be written in Chinese (中文), focus on the technical contribution
 - Include ALL papers in the output array, even irrelevant ones (score 0-4 can have empty summary)
-- Be critical — not every paper mentioning "efficient" is actually about model acceleration`;
+- Be very critical — err on the side of exclusion`;
 
 /**
  * Phase 2: Send uncertain papers to DeepSeek for relevance analysis + summary.

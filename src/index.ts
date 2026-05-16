@@ -161,7 +161,7 @@ function validateConfig(config: Config): void {
 
   if (config.filterAutoExclude < 0 || config.filterAutoExclude > 5) {
     console.warn("  FILTER_AUTO_EXCLUDE should be 0-5. Using 1.");
-    config.filterAutoExclude = 2;
+    config.filterAutoExclude = 3;
   }
 }
 

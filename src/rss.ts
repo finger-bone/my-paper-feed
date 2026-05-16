@@ -51,7 +51,7 @@ export function generateRssFeed(papers: Paper[], config: Config): void {
       title: paper.title,
       id: paper.link,
       link: paper.link,
-      description: paper.aiSummary || paper.abstract.slice(0, 300) + "...",
+      description: paper.abstract.slice(0, 500),
       content: contentParts.join("\n"),
       author: paper.authors.map((name) => ({ name })),
       date: paper.published,

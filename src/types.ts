@@ -30,7 +30,7 @@ export interface Config {
   minRelevanceScore: number;
   /** Keyword filter: auto-include threshold (default 7) */
   filterAutoInclude: number;
-  /** Keyword filter: auto-exclude threshold (default 2) */
+  /** Keyword filter: auto-exclude threshold (default 3) */
   filterAutoExclude: number;
   /** Output path for the RSS feed file */
   outputPath: string;
@@ -49,7 +49,7 @@ export function loadConfig(): Config {
     lookbackDays: parseInt(process.env.LOOKBACK_DAYS || "7", 10),
     minRelevanceScore: parseInt(process.env.MIN_RELEVANCE_SCORE || "5", 10),
     filterAutoInclude: parseInt(process.env.FILTER_AUTO_INCLUDE || "7", 10),
-    filterAutoExclude: parseInt(process.env.FILTER_AUTO_EXCLUDE || "2", 10),
+    filterAutoExclude: parseInt(process.env.FILTER_AUTO_EXCLUDE || "3", 10),
     outputPath: process.env.OUTPUT_PATH || "feed.xml",
     feedTitle: process.env.FEED_TITLE || "LLM Acceleration Papers Weekly",
     feedDescription:
