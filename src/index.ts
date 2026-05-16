@@ -155,7 +155,7 @@ function validateConfig(config: Config): void {
   }
 
   if (config.filterAutoInclude < 1 || config.filterAutoInclude > 10) {
-    console.warn("  FILTER_AUTO_INCLUDE should be 1-10. Using 6.");
+    console.warn("  FILTER_AUTO_INCLUDE should be 1-10. Using 8.");
     config.filterAutoInclude = 7;
   }
 

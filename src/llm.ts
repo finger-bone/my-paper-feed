@@ -5,18 +5,17 @@ import type { Config, Paper } from "./types";
  * ── Keyword pre-filtering ──
  *
  * Strategy: strict auto-include + broad auto-exclude.
- *   - auto-include: ONLY papers with obvious acceleration keywords
- *     (sparsity, quantization, distillation, acceleration, etc.)
+ *   - auto-include: ONLY papers with obvious acceleration keywords (score ≥ 8)
  *   - auto-exclude: papers clearly about applications, platforms, or
- *     irrelevant domains (≥ 2 LOW_SIGNAL groups → penalty kicks in)
+ *     irrelevant domains (any LOW_SIGNAL group → -1 per group penalty)
  *   - everything in between → LLM judges relevance + writes summary
  *
- *   score ≥ 7  → auto-include (obvious acceleration)
+ *   score ≥ 8  → auto-include (obvious acceleration)
  *   score ≤ 3  → auto-exclude (irrelevant domain/application)
- *   4 ≤ score ≤ 6 → uncertain → LLM
+ *   4 ≤ score ≤ 7 → uncertain → LLM
  *
- * LOW_SIGNAL penalties are applied when ANY group matches (≥1),
- * capped at -3 total penalty.
+ * LOW_SIGNAL penalties are UNCONDITIONAL (apply even when score ≥ autoInclude),
+ * -1 per matching group, capped at -3 total.
  */
 
 interface KeywordRule {
@@ -215,16 +214,16 @@ export interface FilterThresholds {
 }
 
 const DEFAULT_THRESHOLDS: FilterThresholds = {
-  autoInclude: 7,   // only obvious acceleration keywords auto-include
+  autoInclude: 8,   // only obvious acceleration keywords auto-include
   autoExclude: 3,   // broader exclusion for application/platform papers
 };
 
 /**
  * Phase 1: Keyword-based pre-filtering.
  *
- *   score ≥ 7  → auto-include (obvious acceleration keywords matched)
+ *   score ≥ 8  → auto-include (obvious acceleration keywords matched)
  *   score ≤ 3  → auto-exclude (irrelevant domain/application)
- *   4 ≤ score ≤ 6 → uncertain → LLM
+ *   4 ≤ score ≤ 7 → uncertain → LLM
  */
 export function keywordFilter(
   papers: Paper[],
@@ -247,23 +246,21 @@ export function keywordFilter(
       }
     }
 
-    // 2) Low-signal: penalty when score hasn't reached auto-include
+    // 2) Low-signal: UNCONDITIONAL penalty for domain/application keywords
     //    ANY matching group → -1 per group (cap -3)
-    if (score < thresholds.autoInclude) {
-      let lowMatchCount = 0;
-      for (const rule of LOW_SIGNAL) {
-        for (const kw of rule.include) {
-          if (text.includes(kw)) {
-            lowMatchCount++;
-            break;
-          }
+    let lowMatchCount = 0;
+    for (const rule of LOW_SIGNAL) {
+      for (const kw of rule.include) {
+        if (text.includes(kw)) {
+          lowMatchCount++;
+          break;
         }
       }
-      if (lowMatchCount >= 1) {
-        // -1 per group, cap at -3
-        const penalty = Math.min(lowMatchCount, 3);
-        score = Math.max(score - penalty, 0);
-      }
+    }
+    if (lowMatchCount >= 1) {
+      // -1 per group, cap at -3
+      const penalty = Math.min(lowMatchCount, 3);
+      score = Math.max(score - penalty, 0);
     }
 
     score = Math.max(0, Math.min(10, score));

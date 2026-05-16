@@ -28,7 +28,7 @@ export interface Config {
   lookbackDays: number;
   /** Minimum relevance score (0-10) to include in RSS */
   minRelevanceScore: number;
-  /** Keyword filter: auto-include threshold (default 7) */
+  /** Keyword filter: auto-include threshold (default 8) */
   filterAutoInclude: number;
   /** Keyword filter: auto-exclude threshold (default 3) */
   filterAutoExclude: number;
@@ -48,7 +48,7 @@ export function loadConfig(): Config {
     arxivMaxResults: parseInt(process.env.ARXIV_MAX_RESULTS || "300", 10),
     lookbackDays: parseInt(process.env.LOOKBACK_DAYS || "7", 10),
     minRelevanceScore: parseInt(process.env.MIN_RELEVANCE_SCORE || "5", 10),
-    filterAutoInclude: parseInt(process.env.FILTER_AUTO_INCLUDE || "7", 10),
+    filterAutoInclude: parseInt(process.env.FILTER_AUTO_INCLUDE || "8", 10),
     filterAutoExclude: parseInt(process.env.FILTER_AUTO_EXCLUDE || "3", 10),
     outputPath: process.env.OUTPUT_PATH || "feed.xml",
     feedTitle: process.env.FEED_TITLE || "LLM Acceleration Papers Weekly",
