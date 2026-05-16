@@ -34,7 +34,7 @@ jobs:
           DEEPSEEK_MODEL: ${{ secrets.DEEPSEEK_MODEL || 'deepseek-chat' }}
           ARXIV_MAX_RESULTS: "200"
           LOOKBACK_DAYS: "7"
-          MIN_RELEVANCE_SCORE: "5"
+          MIN_RELEVANCE_SCORE: "6"
           OUTPUT_PATH: "feed.xml"
           FEED_TITLE: "LLM Acceleration Papers Weekly"
           FEED_DESCRIPTION: "每周精选大模型推理/训练加速相关论文"
