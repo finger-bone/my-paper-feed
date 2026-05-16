@@ -44,6 +44,14 @@ async function main() {
     allJudgments.set(id, j);
   }
 
+  // Phase 3b: Generate Chinese summaries for keyword-decided papers
+  console.log("\n[3b/5] Generating Chinese summaries for keyword-decided papers...");
+  const summaryJudgments = await generateSummariesForDecided(allPapers, config, cache);
+  updateCache(cache, summaryJudgments);
+  for (const [id, j] of summaryJudgments) {
+    allJudgments.set(id, j);
+  }
+
   // Persist updated cache
   saveCache(cache);
 
@@ -147,21 +155,13 @@ function validateConfig(config: Config): void {
   }
 
   if (config.filterAutoInclude < 1 || config.filterAutoInclude > 10) {
-    console.warn("  FILTER_AUTO_INCLUDE should be 1-10. Using 7.");
-    config.filterAutoInclude = 7;
+    console.warn("  FILTER_AUTO_INCLUDE should be 1-10. Using 6.");
+    config.filterAutoInclude = 6;
   }
 
   if (config.filterAutoExclude < 0 || config.filterAutoExclude > 5) {
-    console.warn("  FILTER_AUTO_EXCLUDE should be 0-5. Using 2.");
-    config.filterAutoExclude = 2;
-  }
-}
-
-main().catch((err) => {
-  console.error("Fatal error:", err);
-  process.exit(1);
-});
-    config.filterAutoExclude = 2;
+    console.warn("  FILTER_AUTO_EXCLUDE should be 0-5. Using 1.");
+    config.filterAutoExclude = 1;
   }
 }
 
