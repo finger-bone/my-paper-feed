@@ -2,20 +2,99 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://github.com/finger-bone/my-paper-feed</id>
     <title>LLM Acceleration Papers Weekly</title>
-    <updated>2026-07-17T17:59:32.000Z</updated>
+    <updated>2026-07-24T05:19:41.000Z</updated>
     <generator>paper-feed</generator>
     <link rel="alternate" href="https://github.com/finger-bone/my-paper-feed"/>
     <subtitle>每周精选大模型推理/训练加速相关论文</subtitle>
     <rights>All rights reserved 2026</rights>
     <entry>
+        <title type="html"><![CDATA[Unified Static-Dynamic Pruning for Efficient LLM Inference]]></title>
+        <id>https://arxiv.org/abs/2607.21985</id>
+        <link href="https://arxiv.org/abs/2607.21985"/>
+        <updated>2026-07-24T05:19:41.000Z</updated>
+        <summary type="html"><![CDATA[The increasing deployment of large language models (LLMs) has magnified the computational and memory bottlenecks of autoregressive decoding, where low compute intensity and bandwidth-bound kernels dominate inference cost. Weight pruning offers a promising remedy, but existing methods remain confined to either static pruning (SP), which permanently removes redundant weights but lacks adaptivity, or dynamic pruning (DP), which adapts to input sparsity but introduces runtime irregularity. This pape]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出SPDP框架，结合静态和动态剪枝，通过Tiled-CBC格式和专用GPU内核加速LLM推理，在GPU上实现1.24-1.37倍加速。</p>
+<h3>原始摘要</h3><p>The increasing deployment of large language models (LLMs) has magnified the computational and memory bottlenecks of autoregressive decoding, where low compute intensity and bandwidth-bound kernels dominate inference cost. Weight pruning offers a promising remedy, but existing methods remain confined to either static pruning (SP), which permanently removes redundant weights but lacks adaptivity, or dynamic pruning (DP), which adapts to input sparsity but introduces runtime irregularity. This paper presents SPDP, a unified sparse-inference framework that integrates unstructured SP with input-adaptive DP for efficient LLM inference on GPUs. SPDP co-designs a new Tiled-Column-wise Bitmap Compressed (Tiled-CBC) format and two complementary GPU kernels: (1) a CUDA-core spMspV kernel featuring Hybrid Activation-aware Dynamic Shared-Memory Bitmap Decoding (HAD-SMBD) for fine-grained, runtime activation skipping, and (2) a Tensor-Core SpMM kernel optimized for prefill computation. This joint format-kernel design harmonizes static and dynamic sparsity, maintaining bandwidth-efficient memory access and high compute intensity under both phases of LLM inference. Comprehensive evaluations on inference-optimized GPUs demonstrate that SPDP achieves 1.24x-1.37x average speedup (up to 2.51x) over state-of-the- art sparse frameworks such as SpInfer, while matching. perplexity with up to 25% higher sparsity. SPDP advances the inference efficiency-quality Pareto frontier, showing that unified static-dynamic pruning can deliver substantial throughput and performance-per-watt improvements in large-scale LLM serving</p>
+<p><strong>Categories:</strong> cs.DC, cs.AI, cs.AR, cs.LG</p>
+<p><strong>Relevance:</strong> 9/10</p>
+<p><a href="https://arxiv.org/pdf/2607.21985">PDF</a> | <a href="https://arxiv.org/abs/2607.21985">arXiv</a></p>]]></content>
+        <author>
+            <name>Jinhyeok Kim</name>
+        </author>
+        <author>
+            <name>Yejoon Lee</name>
+        </author>
+        <author>
+            <name>Jaeyoung Do</name>
+        </author>
+        <category label="cs.DC" term="cs.DC"/>
+        <category label="cs.AI" term="cs.AI"/>
+        <category label="cs.AR" term="cs.AR"/>
+        <category label="cs.LG" term="cs.LG"/>
+        <published>2026-07-24T05:19:41.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[SANA-Video 2.0: Hybrid Linear Attention with Attention Residuals for Efficient Video Generation]]></title>
+        <id>https://arxiv.org/abs/2607.21553</id>
+        <link href="https://arxiv.org/abs/2607.21553"/>
+        <updated>2026-07-23T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[We introduce SANA-Video 2.0, a hybrid video diffusion transformer instantiated at 5B and 14B scales under a unified architecture. Designed to generate high-quality video up to 720p on a single GPU, SANA-Video 2.0 matches full-softmax video DiTs in quality while retaining the favorable long-sequence scaling of linear attention. To avoid quadratic attention throughout, Hybrid Linear-Softmax Attention combines gated linear attention for O(N)-dominated mixing with periodic gated-softmax anchors at a]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出混合线性-软注意力机制和块注意力残差，实现视频扩散Transformer的高效推理，在单GPU上生成720p视频，速度提升3.2倍。</p>
+<h3>原始摘要</h3><p>We introduce SANA-Video 2.0, a hybrid video diffusion transformer instantiated at 5B and 14B scales under a unified architecture. Designed to generate high-quality video up to 720p on a single GPU, SANA-Video 2.0 matches full-softmax video DiTs in quality while retaining the favorable long-sequence scaling of linear attention. To avoid quadratic attention throughout, Hybrid Linear-Softmax Attention combines gated linear attention for O(N)-dominated mixing with periodic gated-softmax anchors at a 3:1 ratio, restoring the full-rank token interactions that pure linear attention lacks. To propagate these refreshed representations across depth, Block Attention Residuals (AttnRes) route completed block summaries into later linear layers, enabling anchor-feature reuse and boosting deep-layer effective rank by ~12%. Through from-scratch training, SANA-Video 2.0 learns the complete hybrid directly rather than linearizing pretrained models, with reduced-resolution proxy studies establishing 25% softmax as the optimal quality-efficiency trade-off. With 40-step sampling, SANA-Video 2.0 achieves a VBench score of 84.30 in 13.2s at 480p on a single H100, remaining competitive with far larger softmax video DiTs at a fraction of the latency. Its compiled DiT forward pass is 3.2x faster than a matched full-softmax baseline at 720p/60s, a gap that expands with video duration. Furthermore, full-stack Sol-Engine optimization (kernel fusion, caching, and sparse attention) accelerates this hardware-friendly backbone by a further 3.58x, bringing the 5B pipeline to 13.06s at 720p/5s and making it 120x faster than Wan 2.2-A14B on one H100. Overall, our hybrid design recovers softmax-level expressiveness at substantially reduced cost, unlocking scalable long, high resolution video generation.</p>
+<p><strong>Relevance:</strong> 9/10</p>
+<p><a href="https://arxiv.org/pdf/2607.21553">PDF</a> | <a href="https://arxiv.org/abs/2607.21553">arXiv</a></p>]]></content>
+        <author>
+            <name>Junsong Chen</name>
+        </author>
+        <author>
+            <name>Jincheng Yu</name>
+        </author>
+        <author>
+            <name>Yitong Li</name>
+        </author>
+        <author>
+            <name>Shuchen Xue</name>
+        </author>
+        <author>
+            <name>Haozhe Liu</name>
+        </author>
+        <author>
+            <name>Jingyu Xin</name>
+        </author>
+        <author>
+            <name>Yuyang Zhao</name>
+        </author>
+        <author>
+            <name>Tian Ye</name>
+        </author>
+        <author>
+            <name>Zhangjie Wu</name>
+        </author>
+        <author>
+            <name>Zian Wang</name>
+        </author>
+        <author>
+            <name>Daquan Zhou</name>
+        </author>
+        <author>
+            <name>Ping Luo</name>
+        </author>
+        <author>
+            <name>Song Han</name>
+        </author>
+        <author>
+            <name>Enze Xie</name>
+        </author>
+        <published>2026-07-23T00:00:00.000Z</published>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[FVAttn: Adaptive Sparse Attention with Runtime Load Balancing for Video Generation]]></title>
         <id>https://arxiv.org/abs/2607.16190</id>
         <link href="https://arxiv.org/abs/2607.16190"/>
-        <updated>2026-07-17T17:59:32.000Z</updated>
-        <summary type="html"><![CDATA[Video Diffusion Transformers process long spatio-temporal sequences, making self-attention the main bottleneck in high-resolution video generation. Training-free sparse attention reduces this cost, but adaptive Top-$p$ routing creates uneven per-head workloads under multi-GPU sequence parallelism. The resulting workload heterogeneity turns sparse attention into a rank-level straggler problem. We present \method{}, a training-free sparse-attention system that improves the distributed execution ef]]></summary>
-        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出FVAttn，一种无需训练的稀疏注意力系统，通过运行时负载均衡和稀疏增强，在视频扩散Transformer中实现4.41倍注意力加速和2.02-2.11倍DiT推理加速。</p>
-<h3>原始摘要</h3><p>Video Diffusion Transformers process long spatio-temporal sequences, making self-attention the main bottleneck in high-resolution video generation. Training-free sparse attention reduces this cost, but adaptive Top-$p$ routing creates uneven per-head workloads under multi-GPU sequence parallelism. The resulting workload heterogeneity turns sparse attention into a rank-level straggler problem. We present \method{}, a training-free sparse-attention system that improves the distributed execution efficiency of adaptive sparse attention under multi-GPU sequence parallelism. \method{} uses Top-$p$ routing, a Top-$k$ safety floor, and video-aware block organization as the sparse-routing frontend, then repairs the materialized mask at runtime. Runtime Load Balancing migrates a small number of heavy heads via P2P communication to shorten the current critical path. Slack-Aware Sparse Augmentation fills residual non-critical-rank slack with additional high-value blocks, while overlap hides scheduling and migration overhead behind existing computation. On step-distilled Wan2.2 I2V, \method{} reduces average load imbalance from 1.34 to 1.08 and delivers a $4.41\times$ attention speedup over FlashAttention, while achieving a $2.02$--$2.11\times$ DiT inference speedup with competitive video quality.</p>
-<p><strong>Categories:</strong> cs.CV</p>
+        <updated>2026-07-17T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Video Diffusion Transformers process long spatio-temporal sequences, making self-attention the main bottleneck in high-resolution video generation. Training-free sparse attention reduces this cost, but adaptive Top-p routing creates uneven per-head workloads under multi-GPU sequence parallelism. The resulting workload heterogeneity turns sparse attention into a rank-level straggler problem. We present , a training-free sparse-attention system that improves the distributed execution efficiency of]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出自适应稀疏注意力系统FVAttn，通过运行时负载均衡和稀疏增强，在视频扩散Transformer上实现4.41倍注意力加速和2.02-2.11倍整体推理加速。</p>
+<h3>原始摘要</h3><p>Video Diffusion Transformers process long spatio-temporal sequences, making self-attention the main bottleneck in high-resolution video generation. Training-free sparse attention reduces this cost, but adaptive Top-p routing creates uneven per-head workloads under multi-GPU sequence parallelism. The resulting workload heterogeneity turns sparse attention into a rank-level straggler problem. We present , a training-free sparse-attention system that improves the distributed execution efficiency of adaptive sparse attention under multi-GPU sequence parallelism.  uses Top-p routing, a Top-k safety floor, and video-aware block organization as the sparse-routing frontend, then repairs the materialized mask at runtime. Runtime Load Balancing migrates a small number of heavy heads via P2P communication to shorten the current critical path. Slack-Aware Sparse Augmentation fills residual non-critical-rank slack with additional high-value blocks, while overlap hides scheduling and migration overhead behind existing computation. On step-distilled Wan2.2 I2V,  reduces average load imbalance from 1.34 to 1.08 and delivers a 4.41times attention speedup over FlashAttention, while achieving a 2.02--2.11times DiT inference speedup with competitive video quality.</p>
 <p><strong>Relevance:</strong> 9/10</p>
 <p><a href="https://arxiv.org/pdf/2607.16190">PDF</a> | <a href="https://arxiv.org/abs/2607.16190">arXiv</a></p>]]></content>
         <author>
@@ -48,1123 +127,1053 @@
         <author>
             <name>Jiangsu Du</name>
         </author>
-        <category label="cs.CV" term="cs.CV"/>
-        <published>2026-07-17T17:59:32.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[PagedWeight: Efficient MoE LLM Serving with Dynamic Quality-Aware Weight Quantization]]></title>
-        <id>https://arxiv.org/abs/2607.16184</id>
-        <link href="https://arxiv.org/abs/2607.16184"/>
-        <updated>2026-07-17T17:58:29.000Z</updated>
-        <summary type="html"><![CDATA[Mixture-of-Experts (MoE) is a popular class of large language models (LLMs), offering high efficiency and accuracy. However, in KV-cache-intensive serving scenarios, MoEs often exhibit a tension between the GPU memory requirements of the model weights and the growing KV cache. We propose PagedWeight, a novel management method for MoE LLM serving that dynamically quantizes MoE model's weights at runtime and balances expert-weight precision with the KV cache sizes. PagedWeight exposes and effectiv]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Mixture-of-Experts (MoE) is a popular class of large language models (LLMs), offering high efficiency and accuracy. However, in KV-cache-intensive serving scenarios, MoEs often exhibit a tension between the GPU memory requirements of the model weights and the growing KV cache. We propose PagedWeight, a novel management method for MoE LLM serving that dynamically quantizes MoE model's weights at runtime and balances expert-weight precision with the KV cache sizes. PagedWeight exposes and effectively navigates the complex tradeoff between the model's task accuracy, memory consumption, and throughput/latency. Across several memory-sensitive MoE serving scenarios, PagedWeight improves the quality-memory tradeoff over several existing quantization baselines. PagedWeight achieves FP16-equivalent accuracy with up to 72.0% GPU memory savings and 1.94$\times$ throughput improvement, and improves quality over quantization methods by up to 39.3% at a similar memory budget with at most 4.1% throughput loss.</p>
-<p><strong>Categories:</strong> cs.LG</p>
-<p><strong>Relevance:</strong> 9/10</p>
-<p><a href="https://arxiv.org/pdf/2607.16184">PDF</a> | <a href="https://arxiv.org/abs/2607.16184">arXiv</a></p>]]></content>
-        <author>
-            <name>Yuchen Yang</name>
-        </author>
-        <author>
-            <name>Yifan Zhao</name>
-        </author>
-        <author>
-            <name>Anisha Dasgupta</name>
-        </author>
-        <author>
-            <name>Sasa Misailovic</name>
-        </author>
-        <category label="cs.LG" term="cs.LG"/>
-        <published>2026-07-17T17:58:29.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Loop the Loopies!]]></title>
-        <id>https://arxiv.org/abs/2607.16051</id>
-        <link href="https://arxiv.org/abs/2607.16051"/>
-        <updated>2026-07-17T15:28:43.000Z</updated>
-        <summary type="html"><![CDATA[We present Loopie, the most powerful looped Transformer to date. The Loopie series consists of two Mixture-of-Experts (MoE) models: a 20B-parameter model with 2B active parameters and a 6Bparameter model with 0.6B active parameters. Looped Transformers have long faced a challenge: given an N-fold increase in pre-training compute, increasing the parameter count by a factor of N usually outperforms looping a model N times. Loopie addresses this challenge. Extensive ablation studies, including comp]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>We present Loopie, the most powerful looped Transformer to date. The Loopie series consists of two Mixture-of-Experts (MoE) models: a 20B-parameter model with 2B active parameters and a 6Bparameter model with 0.6B active parameters. Looped Transformers have long faced a challenge: given an N-fold increase in pre-training compute, increasing the parameter count by a factor of N usually outperforms looping a model N times. Loopie addresses this challenge. Extensive ablation studies, including comparisons with a vanilla 30B-A3B model, show that Loopie substantially outperforms vanilla Transformer baselines trained with the same compute budget. Our novel post-training pipeline equips Loopie with strong reasoning abilities. At the 2025 IMO and IPhO, Loopie achieves gold-medal performance without tools.</p>
-<p><strong>Categories:</strong> cs.CL, cs.AI</p>
-<p><strong>Relevance:</strong> 9/10</p>
-<p><a href="https://arxiv.org/pdf/2607.16051">PDF</a> | <a href="https://arxiv.org/abs/2607.16051">arXiv</a></p>]]></content>
-        <author>
-            <name>Zitian Gao</name>
-        </author>
-        <author>
-            <name>Yilong Chen</name>
-        </author>
-        <author>
-            <name>Yihao Xiao</name>
-        </author>
-        <author>
-            <name>Xinyu Yang</name>
-        </author>
-        <author>
-            <name>Ran Tao</name>
-        </author>
-        <author>
-            <name>Joey Zhou</name>
-        </author>
-        <author>
-            <name>Bryan Dai</name>
-        </author>
-        <category label="cs.CL" term="cs.CL"/>
-        <category label="cs.AI" term="cs.AI"/>
-        <published>2026-07-17T15:28:43.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[An MLIR-Based Compilation Method for Large Language Models]]></title>
-        <id>https://arxiv.org/abs/2607.15865</id>
-        <link href="https://arxiv.org/abs/2607.15865"/>
-        <updated>2026-07-17T11:24:45.000Z</updated>
-        <summary type="html"><![CDATA[Large Language Models (LLMs) have become the dominant workload on modern AI accelerators, yet deploying them on specialized hardware still faces two core challenges: how to import a trained model into a compiler-friendly intermediate representation, and how to efficiently schedule the autoregressive inference loop under limited on-chip memory. This paper presents an MLIR (Multi-Level Intermediate Representation) based compilation method for large language models, illustrated using two dialects o]]></summary>
-        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出基于MLIR的编译方法，通过TopOp和TpuOp方言实现模型导入和高效调度，支持预填充和解码阶段静态编译，加速LLM推理。</p>
-<h3>原始摘要</h3><p>Large Language Models (LLMs) have become the dominant workload on modern AI accelerators, yet deploying them on specialized hardware still faces two core challenges: how to import a trained model into a compiler-friendly intermediate representation, and how to efficiently schedule the autoregressive inference loop under limited on-chip memory. This paper presents an MLIR (Multi-Level Intermediate Representation) based compilation method for large language models, illustrated using two dialects of operators, TopOp and TpuOp. TopOp serves as a high-level graph dialect that is independent of both the source framework and the target chip, and is responsible for expressing model semantics; TpuOp serves as the target hardware dialect, carrying chip-related decisions such as quantization, layer groups, and memory layout. A model is first represented as TopOp, then lowered layer by layer to TpuOp, and finally a deployable binary is generated. In addition, each Transformer layer is split into three stages for static compilation: prefill, prefill_kv (prefill with historical key-value cache), and decode, so as to accommodate the different computational characteristics of prompt-parallel processing and per-token generation. The method has been implemented in the TPU-MLIR compiler{https://github.com/sophgo/tpu-mlir} and the LLM-TPU deployment project\footnote{https://github.com/sophgo/LLM-TPU}, supporting a variety of generative models including the Qwen, Llama, InternVL, and MiniCPM-V series, as well as multiple quantization and deployment forms such as GPTQ, AWQ, and AutoRound.</p>
-<p><strong>Categories:</strong> cs.CL</p>
-<p><strong>Relevance:</strong> 9/10</p>
-<p><a href="https://arxiv.org/pdf/2607.15865">PDF</a> | <a href="https://arxiv.org/abs/2607.15865">arXiv</a></p>]]></content>
-        <author>
-            <name>Pengchao Hu</name>
-        </author>
-        <author>
-            <name>Zhibin Xin</name>
-        </author>
-        <author>
-            <name>Yifan Chen</name>
-        </author>
-        <author>
-            <name>Yangyang Zhou</name>
-        </author>
-        <author>
-            <name>Liang Wang</name>
-        </author>
-        <category label="cs.CL" term="cs.CL"/>
-        <published>2026-07-17T11:24:45.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[QUADS: Stabilizing NVFP4 Reinforcement Learning for MoE via QUantization-error Alignment across Dual Sides]]></title>
-        <id>https://arxiv.org/abs/2607.15810</id>
-        <link href="https://arxiv.org/abs/2607.15810"/>
-        <updated>2026-07-17T10:21:27.000Z</updated>
-        <summary type="html"><![CDATA[Rollout generation is a major bottleneck in Reinforcement Learning (RL) for Mixture-of-Experts (MoE) Large Language Models, motivating low-precision rollout acceleration such as FP8. As an emerging low-precision format, NVFP4 combines fine-grained scaling for accuracy preservation with native W4A4 FP4 GEMMs for higher throughput than FP8. However, we find that directly applying NVFP4 to MoE RL rollout is impractical. NVFP4 rollout with BF16 training collapses after roughly 150 steps, accompanied]]></summary>
-        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出QUADS方法，通过非对称量化感知训练和残差激活补偿，稳定NVFP4低精度强化学习训练，实现MoE模型约16%的吞吐量提升。</p>
-<h3>原始摘要</h3><p>Rollout generation is a major bottleneck in Reinforcement Learning (RL) for Mixture-of-Experts (MoE) Large Language Models, motivating low-precision rollout acceleration such as FP8. As an emerging low-precision format, NVFP4 combines fine-grained scaling for accuracy preservation with native W4A4 FP4 GEMMs for higher throughput than FP8. However, we find that directly applying NVFP4 to MoE RL rollout is impractical. NVFP4 rollout with BF16 training collapses after roughly 150 steps, accompanied by rapidly growing rollout-trainer log-probability gaps. Through training-inference error analysis and controlled ablations, we identify activation error, rather than weight error, as the dominant source of FP4 RL instability: weights can be synchronized and aligned by a shared quantization-dequantization path, whereas activations are recomputed online and error is amplified by the coarse E2M1 grid. Therefore, to stabilize NVFP4 RL for MoE, we propose QUantization-error Alignment across Dual Sides (QUADS). On the trainer side, we introduce Asymmetric Quantization-Aware Training fake-quantizing weights while keeping activations unquantized for better alignment. On the rollout side, Residual Activation Compensation corrects high-error activation channels while preserving native W4A4 GEMMs. In our MoE RL experiments on several benchmarks, QUADS achieves BF16-level accuracy, improves average pass@1 by 21.49 points over naive NVFP4 RL, and delivers ~16% higher rollout throughput than FP8.</p>
-<p><strong>Categories:</strong> cs.LG</p>
-<p><strong>Relevance:</strong> 9/10</p>
-<p><a href="https://arxiv.org/pdf/2607.15810">PDF</a> | <a href="https://arxiv.org/abs/2607.15810">arXiv</a></p>]]></content>
-        <author>
-            <name>Zhengyang Zhuge</name>
-        </author>
-        <author>
-            <name>Hao Yu</name>
-        </author>
-        <author>
-            <name>Xin Wang</name>
-        </author>
-        <author>
-            <name>Zheng Li</name>
-        </author>
-        <author>
-            <name>Yizhong Cao</name>
-        </author>
-        <author>
-            <name>Dayiheng Liu</name>
-        </author>
-        <author>
-            <name>Jianwei Zhang</name>
-        </author>
-        <category label="cs.LG" term="cs.LG"/>
-        <published>2026-07-17T10:21:27.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[DiTango: Cost-Effective Parallel Diffusion Generation with Selective Attention State Reuse]]></title>
-        <id>https://arxiv.org/abs/2607.15650</id>
-        <link href="https://arxiv.org/abs/2607.15650"/>
-        <updated>2026-07-17T05:56:42.000Z</updated>
-        <summary type="html"><![CDATA[Recent advances in AI-generated content have driven widespread adoption of Diffusion Transformers (DiTs) for high-resolution, long-duration content generation. While parallelization techniques accelerate diffusion inference, they face significant scalability challenges due to excessive communication overhead in multi-node environments. We observe that sequence partitions in Context Parallelism (CP) exhibit distinct heterogeneity: spatially proximate partitions contribute more significantly to at]]></summary>
-        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出DiTango，一种高效的扩散Transformer并行框架，通过选择性注意力状态复用减少通信开销，在多节点环境下实现高达1.9倍端到端加速。</p>
-<h3>原始摘要</h3><p>Recent advances in AI-generated content have driven widespread adoption of Diffusion Transformers (DiTs) for high-resolution, long-duration content generation. While parallelization techniques accelerate diffusion inference, they face significant scalability challenges due to excessive communication overhead in multi-node environments. We observe that sequence partitions in Context Parallelism (CP) exhibit distinct heterogeneity: spatially proximate partitions contribute more significantly to attention computation results. By mapping this heterogeneous pattern to hierarchical communication topology, we can access high-contribution partitions with reduced communication cost. This insight motivates our novel selective attention state mechanism that strategically balances partial attention computation and historical result reuse across denoising steps. We present DiTango, an efficient parallel framework for DiT generation. DiTango features an anchor-guided state selection planner that optimizes computation-reuse decisions for each partition, complemented by a runtime that orchestrates efficient state-centric operations. This design achieves superior system efficiency while preserving generation quality. Experimental evaluation on popular diffusion models demonstrates that DiTango achieves up to 1.9x end-to-end and 3.2x attention speedup with near-linear scaling in multi-node settings, while maintaining generation quality comparable to state-of-the-art approaches.</p>
-<p><strong>Categories:</strong> cs.CV</p>
-<p><strong>Relevance:</strong> 9/10</p>
-<p><a href="https://arxiv.org/pdf/2607.15650">PDF</a> | <a href="https://arxiv.org/abs/2607.15650">arXiv</a></p>]]></content>
-        <author>
-            <name>Yuyang Chen</name>
-        </author>
-        <author>
-            <name>Runxin Zhong</name>
-        </author>
-        <author>
-            <name>Zan Zong</name>
-        </author>
-        <author>
-            <name>Hengjie Li</name>
-        </author>
-        <author>
-            <name>Yuyang Jin</name>
-        </author>
-        <author>
-            <name>Jidong Zhai</name>
-        </author>
-        <category label="cs.CV" term="cs.CV"/>
-        <published>2026-07-17T05:56:42.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[LongStraw: Long-Context RL Beyond 2M Tokens under a Fixed GPU Budget]]></title>
-        <id>https://arxiv.org/abs/2607.14952</id>
-        <link href="https://arxiv.org/abs/2607.14952"/>
-        <updated>2026-07-16T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[A growing gap separates inference context lengths from RL post-training: inference systems are approaching million-token contexts, while post-training workloads often remain at 256K tokens or below and rely on length generalization at deployment. The gap is especially important for AI agents, whose observations, tool outputs, documents, and prior decisions accumulate over long trajectories. LongStraw is an architecture-aware execution stack for million-token RL post-training under a fixed GPU bu]]></summary>
-        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出LongStraw，一种面向百万token RL后训练的架构感知执行栈，通过共享提示无梯度、响应分支重放等策略，在固定GPU预算下实现2.1M token的GRPO训练，显著降低显存占用。</p>
-<h3>原始摘要</h3><p>A growing gap separates inference context lengths from RL post-training: inference systems are approaching million-token contexts, while post-training workloads often remain at 256K tokens or below and rely on length generalization at deployment. The gap is especially important for AI agents, whose observations, tool outputs, documents, and prior decisions accumulate over long trajectories. LongStraw is an architecture-aware execution stack for million-token RL post-training under a fixed GPU budget, instantiated with Group Relative Policy Optimization (GRPO). It evaluates the shared prompt without autograd, retains only model-specific state needed by later tokens, and replays short response branches one at a time, reducing the live training graph at the cost of additional replay time. We implement it for the hybrid recurrent and full-attention Qwen3.6-27B and the compressed-attention mixture-of-experts GLM-5.2. On eight H20 GPUs, LongStraw completes grouped Qwen scoring and response backward at 2.1M positions for groups of 2 and 8; increasing the group size adds only 0.21 GB of peak allocated memory, while a separate stress test reaches 4.46M positions. On 32 H20 GPUs, we validate the end-to-end LongStraw execution path for a 2.1M-token prompt across all 78 layers of GLM-5.2. These experiments establish execution capacity rather than complete training correctness because the captured prompt state is detached and some distributed forward and gradient composition paths remain incomplete.</p>
-<p><strong>Relevance:</strong> 9/10</p>
-<p><a href="https://arxiv.org/pdf/2607.14952">PDF</a> | <a href="https://arxiv.org/abs/2607.14952">arXiv</a></p>]]></content>
-        <author>
-            <name>Changhai Zhou</name>
-        </author>
-        <author>
-            <name>Kieran Liu</name>
-        </author>
-        <author>
-            <name>Yuhua Zhou</name>
-        </author>
-        <author>
-            <name>Qian Qiao</name>
-        </author>
-        <author>
-            <name>Jun Gao</name>
-        </author>
-        <author>
-            <name>Harry Zhang</name>
-        </author>
-        <author>
-            <name>Irvine Lu</name>
-        </author>
-        <author>
-            <name>Nolan Ho</name>
-        </author>
-        <author>
-            <name>Lucian Li</name>
-        </author>
-        <author>
-            <name>Andrew Lei</name>
-        </author>
-        <author>
-            <name>Cleon Cheng</name>
-        </author>
-        <author>
-            <name>Steven Chiang</name>
-        </author>
-        <author>
-            <name>Yihang Zeng</name>
-        </author>
-        <author>
-            <name>Di Zhang</name>
-        </author>
-        <author>
-            <name>Rio Yang</name>
-        </author>
-        <author>
-            <name>Kaijie Chen</name>
-        </author>
-        <author>
-            <name>Andrew Chen</name>
-        </author>
-        <author>
-            <name>Pony Ma</name>
-        </author>
-        <author>
-            <name>Weizhong Zhang</name>
-        </author>
-        <author>
-            <name>Cheng Jin</name>
-        </author>
-        <published>2026-07-16T00:00:00.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Smarter and Cheaper at Once: Byte-Exact KV-Cache Grafting Turns a Frozen Small Model into a Verified-Knowledge Flywheel]]></title>
-        <id>https://arxiv.org/abs/2607.14431</id>
-        <link href="https://arxiv.org/abs/2607.14431"/>
-        <updated>2026-07-15T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[We report a way to make a frozen small language model both more capable and dramatically cheaper at once, without changing any weights. Verified knowledge is deposited once as a byte-exact key-value (KV) state artifact and later restored, by graft, into a fresh inference context. The restore is bit-exact: under a pinned deterministic configuration, the grafted logits are byte-for-byte identical to a fresh computation (SHA-256 equality), with zero KL divergence and 100% argmax agreement over fift]]></summary>
-        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出字节精确的KV缓存移植技术，将验证知识以KV状态存储并注入推理上下文，实现零额外显存下扩展上下文至2.8M token，推理token减少6574倍，能耗降低约8700倍。</p>
-<h3>原始摘要</h3><p>We report a way to make a frozen small language model both more capable and dramatically cheaper at once, without changing any weights. Verified knowledge is deposited once as a byte-exact key-value (KV) state artifact and later restored, by graft, into a fresh inference context. The restore is bit-exact: under a pinned deterministic configuration, the grafted logits are byte-for-byte identical to a fresh computation (SHA-256 equality), with zero KL divergence and 100% argmax agreement over fifty samples. We show that own-position graft is the unique numerically exact operating point on a model with floating-point rotary encoding, and we verify byte-exactness on two model scales (12B, 31B) and two GPU targets, one through a pre-registered replay. On AIME 2025, a frozen Gemma-4-12B moves from 80.0% to 93.3% once a verified solution library is grafted, above its own 77.5% and its 31B sibling's 89.2% published anchors. On the recurring case, eight problems the base model never solves within a 401,026-token budget are answered from cached verified solutions in 61 total decode tokens, a factor of 6,574 fewer tokens and about 8,700x less energy; the capability claim proper rests on held-out transfer (7 of 7 at 31B). The same byte-exact store widens usable context from 32,768 to 2,854,766 tokens at zero extra accelerator memory, and moves byte-identical between machines of the same architecture. We describe the system at the behavior level; the engine is proprietary, and every reported number is backed by committed input and output hashes so the scoring can be re-checked without it.</p>
-<p><strong>Relevance:</strong> 9/10</p>
-<p><a href="https://arxiv.org/pdf/2607.14431">PDF</a> | <a href="https://arxiv.org/abs/2607.14431">arXiv</a></p>]]></content>
-        <author>
-            <name>Sietse Schelpe</name>
-        </author>
-        <published>2026-07-15T00:00:00.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Rethinking Quantum Continual Learning with Quantum Fisher Information]]></title>
-        <id>https://arxiv.org/abs/2607.16030</id>
-        <link href="https://arxiv.org/abs/2607.16030"/>
-        <updated>2026-07-17T15:02:32.000Z</updated>
-        <summary type="html"><![CDATA[Quantum continual learning aims to train quantum models on sequential tasks without losing previously learned knowledge. However, variational quantum classifiers (VQCs) are prone to catastrophic forgetting under nonstationary task distributions. We propose quantum elastic weight consolidation (QEWC), a quantum Fisher information (QFI)-informed regularization method for mitigating forgetting. Unlike conventional elastic weight consolidation based on classical Fisher information (CFI), which measu]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Quantum continual learning aims to train quantum models on sequential tasks without losing previously learned knowledge. However, variational quantum classifiers (VQCs) are prone to catastrophic forgetting under nonstationary task distributions. We propose quantum elastic weight consolidation (QEWC), a quantum Fisher information (QFI)-informed regularization method for mitigating forgetting. Unlike conventional elastic weight consolidation based on classical Fisher information (CFI), which measures parameter importance through measurement-dependent output statistics, QEWC uses QFI to quantify the intrinsic sensitivity of the parameterized quantum state. This gives an information-geometric view in which important parameters are identified by the local response of the quantum state manifold. We evaluate QEWC on VQCs trained on sequential binary classification tasks, including classical image-classification and quantum phase-classification tasks. Simulations show that sequential training without regularization causes severe forgetting, while both CFI-based EWC and QFI-based QEWC improve retention of previous tasks. Mechanistic analyses further show that the two methods impose different regularization geometries: CFI acts selectively on measurement-sensitive directions, whereas QFI imposes a denser state-geometric constraint over parameter space. Under depolarizing noise, CFI values are strongly suppressed by degraded measurement statistics, while QFI preserves a more stable sensitivity structure of the noisy parameterized quantum state. These results establish QEWC as a physically motivated approach for studying and mitigating forgetting in quantum continual learning through quantum-state geometry.</p>
-<p><strong>Categories:</strong> quant-ph, cs.AI, cs.LG</p>
-<p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2607.16030">PDF</a> | <a href="https://arxiv.org/abs/2607.16030">arXiv</a></p>]]></content>
-        <author>
-            <name>Yu-Chao Hsu</name>
-        </author>
-        <author>
-            <name>Yu-Cheng Lin</name>
-        </author>
-        <author>
-            <name>Tai-Yue Li</name>
-        </author>
-        <author>
-            <name>Nan-Yow Chen</name>
-        </author>
-        <author>
-            <name>En-Jui Kuo</name>
-        </author>
-        <category label="quant-ph" term="quant-ph"/>
-        <category label="cs.AI" term="cs.AI"/>
-        <category label="cs.LG" term="cs.LG"/>
-        <published>2026-07-17T15:02:32.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Rendering 3D Gaussians on a Graph Processor]]></title>
-        <id>https://arxiv.org/abs/2607.15951</id>
-        <link href="https://arxiv.org/abs/2607.15951"/>
-        <updated>2026-07-17T13:36:30.000Z</updated>
-        <summary type="html"><![CDATA[We present the first implementation of a 3D Gaussian renderer on an Intelligence Processing Unit (IPU), comprising 1,472 independent tiles with only on-chip SRAM; constraints that approximate properties of efficient sensor-processor architectures. Our input scenes are 3D Gaussian maps from real-world sequences. Each tile 'owns' a screen-space region of the framebuffer; Gaussian primitives are routed to destination tiles via Manhattan-distance hops on a north-east-west-south (NEWS) grid, then dis]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>We present the first implementation of a 3D Gaussian renderer on an Intelligence Processing Unit (IPU), comprising 1,472 independent tiles with only on-chip SRAM; constraints that approximate properties of efficient sensor-processor architectures. Our input scenes are 3D Gaussian maps from real-world sequences. Each tile 'owns' a screen-space region of the framebuffer; Gaussian primitives are routed to destination tiles via Manhattan-distance hops on a north-east-west-south (NEWS) grid, then distributed to overlapping neighbours in an expanding tree pattern. Computation follows the IPU's Bulk Synchronous Parallel (BSP) model, with inter-tile communication defined at compile time. We show this hardware allows us to exploit spatial and temporal locality by enabling local data transfer between cores. We evaluate the bottlenecks in this SRAM-only implementation: inter-tile bandwidth, per-tile SRAM capacity, and workload imbalance from non-uniform Gaussian density. We analyse how these constraints affect performance and render quality. This exploration raises broader questions for conventional GPUs and 3D representations, suggesting that direct inter-SM (streaming multiprocessor) communication might offer ways to reduce DRAM access in GPU kernels. We discuss these implications for the future of on-sensor and DRAM-free architectures. Project page: https://nmjfry.github.io/ipu-3dgs/</p>
-<p><strong>Categories:</strong> cs.GR, cs.CV, cs.DC</p>
-<p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2607.15951">PDF</a> | <a href="https://arxiv.org/abs/2607.15951">arXiv</a></p>]]></content>
-        <author>
-            <name>Nicholas Fry</name>
-        </author>
-        <author>
-            <name>Ignacio Alzugaray</name>
-        </author>
-        <author>
-            <name>Mark Pupilli</name>
-        </author>
-        <author>
-            <name>Paul H. J. Kelly</name>
-        </author>
-        <author>
-            <name>Andrew J. Davison</name>
-        </author>
-        <category label="cs.GR" term="cs.GR"/>
-        <category label="cs.CV" term="cs.CV"/>
-        <category label="cs.DC" term="cs.DC"/>
-        <published>2026-07-17T13:36:30.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[In-context learning of closed form solution to simple linear regression task using transformer with linear self-attention]]></title>
-        <id>https://arxiv.org/abs/2607.15819</id>
-        <link href="https://arxiv.org/abs/2607.15819"/>
-        <updated>2026-07-17T10:28:27.000Z</updated>
-        <summary type="html"><![CDATA[In-context learning is a remarkable property of transformers and has recently received a lot of interest. In many studies of in-context learning, it has been shown that transformers are capable of implementing solver for linear and non-linear regression problems, in which the most of them implement gradient descent algorithm. However, it is still unclear whether those implementations have actually been acquired through training. In this paper, we construct a transformer with linear self-attentio]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>In-context learning is a remarkable property of transformers and has recently received a lot of interest. In many studies of in-context learning, it has been shown that transformers are capable of implementing solver for linear and non-linear regression problems, in which the most of them implement gradient descent algorithm. However, it is still unclear whether those implementations have actually been acquired through training. In this paper, we construct a transformer with linear self-attention, which in-context learns the least squares estimate in a simple regression task. The point here is that the closed form (analytical) solution is approximately obtained by using layer normalization rather than an approximate solution based on gradient descent algorithm. Then, we show an experimental example, in which our implementation is mainly used in the transformer trained with l1 regularization when the target output is the least squares estimate.</p>
-<p><strong>Categories:</strong> cs.LG, cs.AI</p>
-<p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2607.15819">PDF</a> | <a href="https://arxiv.org/abs/2607.15819">arXiv</a></p>]]></content>
-        <author>
-            <name>Katsuyuki Hagiwara</name>
-        </author>
-        <category label="cs.LG" term="cs.LG"/>
-        <category label="cs.AI" term="cs.AI"/>
-        <published>2026-07-17T10:28:27.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Better Starts, Better Ends: Bootstrapped Iterative Self-Reasoning Distillation for Compressed Reasoning]]></title>
-        <id>https://arxiv.org/abs/2607.15736</id>
-        <link href="https://arxiv.org/abs/2607.15736"/>
-        <updated>2026-07-17T08:15:35.000Z</updated>
-        <summary type="html"><![CDATA[Large reasoning models often solve problems through long chain-of-thought (CoT) traces, yet much of this computation is spent on redundant derivations, repeated self-verification, and detours that do not improve the final answer. Existing on-policy self-distillation methods reduce this cost by matching a student model to a concise copy of itself on prefixes sampled from the student's own rollouts. We show that this objective has an initialization bottleneck. Since supervision is applied only to ]]></summary>
-        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出BIRD方法，通过两阶段自推理蒸馏压缩长链思维，减少冗余计算，加速大模型推理。</p>
-<h3>原始摘要</h3><p>Large reasoning models often solve problems through long chain-of-thought (CoT) traces, yet much of this computation is spent on redundant derivations, repeated self-verification, and detours that do not improve the final answer. Existing on-policy self-distillation methods reduce this cost by matching a student model to a concise copy of itself on prefixes sampled from the student's own rollouts. We show that this objective has an initialization bottleneck. Since supervision is applied only to visited prefixes, training from a verbose base model places the KL loss on contexts that are often noisy, redundant, or already off track. In such regions, a concise teacher can provide only local corrections, while the student continues to explore trajectories that an efficient reasoner should avoid. In this paper, we propose BIRD(Bootstrapped Iterative Self-Reasoning Distillation), a two-stage self-reasoning distillation method that improves the rollout distribution before on-policy training. BIRD first samples concise solutions from the base model under a brevity instruction, keeps only answer-correct traces, and performs a lightweight prompt-switch SFT step. The traces are generated with the brevity instruction but learned under the original task prompt, turning instruction-induced conciseness into a default reasoning behavior. Starting from this warm model, BIRD then applies on-policy reverse-KL distillation with a concise self-teacher, now on cleaner and more informative prefixes. Across Qwen3 series models, BIRD achieves a stronger accuracy-efficiency trade-off than prompting and cold-start on-policy distillation on MATH-500 and AIME benchmarks. On Qwen3-8B, it improves MATH-500 accuracy from 86.2% to 92.0% while reducing the average response length from 3,099 to 1,115 tokens. These results highlight prefix support as a central factor in efficient reasoning distillation.</p>
-<p><strong>Categories:</strong> cs.CL</p>
-<p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2607.15736">PDF</a> | <a href="https://arxiv.org/abs/2607.15736">arXiv</a></p>]]></content>
-        <author>
-            <name>Leichao Dong</name>
-        </author>
-        <author>
-            <name>Dongxu Zhang</name>
-        </author>
-        <author>
-            <name>Yiding Sun</name>
-        </author>
-        <author>
-            <name>Qirui Wang</name>
-        </author>
-        <author>
-            <name>Yuhan Wang</name>
-        </author>
-        <author>
-            <name>Lin Chen</name>
-        </author>
-        <author>
-            <name>Jihua Zhu</name>
-        </author>
-        <category label="cs.CL" term="cs.CL"/>
-        <published>2026-07-17T08:15:35.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Adaptive Multi-Step Lookahead Decoding for Diffusion Language Models]]></title>
-        <id>https://arxiv.org/abs/2607.15655</id>
-        <link href="https://arxiv.org/abs/2607.15655"/>
-        <updated>2026-07-17T06:04:04.000Z</updated>
-        <summary type="html"><![CDATA[Masked diffusion language models (DLMs) enable parallel text generation by iteratively refining masked tokens, offering a promising alternative to autoregressive decoding. Recent lookahead-based decoding methods improve the accuracy--efficiency trade-off by exploring future decoding states before committing token updates. However, existing approaches mainly rely on shallow one-step lookahead, which optimizes immediate information gain but can be suboptimal for longer-horizon decoding trajectorie]]></summary>
-        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出AdaLook，一种自适应多步前瞻解码框架，动态决定解码深度，在扩散语言模型中实现更好的准确率与解码步数权衡。</p>
-<h3>原始摘要</h3><p>Masked diffusion language models (DLMs) enable parallel text generation by iteratively refining masked tokens, offering a promising alternative to autoregressive decoding. Recent lookahead-based decoding methods improve the accuracy--efficiency trade-off by exploring future decoding states before committing token updates. However, existing approaches mainly rely on shallow one-step lookahead, which optimizes immediate information gain but can be suboptimal for longer-horizon decoding trajectories. Meanwhile, we find that a naive extension for deeper lookahead is also ineffective, as fixed-depth rollout introduces additional computation and cannot adapt to heterogeneous intermediate decoding states. Thus, in this work, we propose AdaLook, an adaptive lookahead framework for DLM decoding. AdaLook dynamically determines whether to continue rollout based on candidate-score variance and further enables branch expansion when intermediate rollout states require additional exploration. This design avoids unnecessary deep rollout while allowing the decoder to re-trigger lookahead from informative intermediate states. Experiments on various benchmarks and models demonstrate that AdaLook achieves a better accuracy--decoding steps trade-off than existing one-step lookahead decoding methods.</p>
-<p><strong>Categories:</strong> cs.CL, cs.LG</p>
-<p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2607.15655">PDF</a> | <a href="https://arxiv.org/abs/2607.15655">arXiv</a></p>]]></content>
-        <author>
-            <name>Yingqian Cui</name>
-        </author>
-        <author>
-            <name>Wei Deng</name>
-        </author>
-        <author>
-            <name>Lantao Mei</name>
-        </author>
-        <author>
-            <name>Hang Li</name>
-        </author>
-        <author>
-            <name>Charu C. Aggarwal</name>
-        </author>
-        <author>
-            <name>Hui Liu</name>
-        </author>
-        <author>
-            <name>Yue Xing</name>
-        </author>
-        <category label="cs.CL" term="cs.CL"/>
-        <category label="cs.LG" term="cs.LG"/>
-        <published>2026-07-17T06:04:04.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Think at 5 Hz, Act at 20 Hz: Asynchronous Fast-Slow Vision-Language-Action Inference for Closed-Loop Driving]]></title>
-        <id>https://arxiv.org/abs/2607.15621</id>
-        <link href="https://arxiv.org/abs/2607.15621"/>
-        <updated>2026-07-17T04:40:02.000Z</updated>
-        <summary type="html"><![CDATA[Large language models bring instruction following and scene reasoning to end-to-end driving, but their inference latency collides with the control rate a vehicle requires. Existing closed-loop agents hide this gap by invoking the model on alternate simulation ticks and replaying the previous command in between, so half of all control outputs ignore the newest observations. We present a fast-slow architecture that removes this compromise. A frozen 7B vision-language backbone acts as the slow syst]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Large language models bring instruction following and scene reasoning to end-to-end driving, but their inference latency collides with the control rate a vehicle requires. Existing closed-loop agents hide this gap by invoking the model on alternate simulation ticks and replaying the previous command in between, so half of all control outputs ignore the newest observations. We present a fast-slow architecture that removes this compromise. A frozen 7B vision-language backbone acts as the slow system, digesting navigation instructions and visual history at low frequency while exposing its per-layer key-value cache as a standing representation of the scene. A lightweight action expert acts as the fast system, attending to this cache and to the current camera frame at every simulation tick to regress waypoints in a single forward pass. Since the cache lags behind the world at deployment, we train the expert under randomized staleness, aligning training with asynchronous execution. On LangAuto-Short routes in CARLA, our system produces fresh control at every 50 ms simulation tick and lifts route completion from 37.0 to 94.0 over the frame-skipping baseline. A frame-skip ablation with the same expert separates the two factors at work: the expert raises the driving score on its own, while per-tick freshness raises completion from 82.1 to 94.0 and cuts red-light violations by a third. Trained on a single town, the expert transfers zero-shot to two unseen towns, holding 84-94% route completion where the baseline reaches 31-41%. It reduces open-loop waypoint error by nearly a factor of four compared to the backbone's own action head, at a per-tick model cost of 32 ms that is independent of history length on a single consumer GPU.</p>
-<p><strong>Categories:</strong> cs.RO, cs.AI</p>
-<p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2607.15621">PDF</a> | <a href="https://arxiv.org/abs/2607.15621">arXiv</a></p>]]></content>
-        <author>
-            <name>Yun Li</name>
-        </author>
-        <author>
-            <name>Jiachen Gong</name>
-        </author>
-        <author>
-            <name>Simon Thompson</name>
-        </author>
-        <author>
-            <name>Ehsan Javanmardi</name>
-        </author>
-        <author>
-            <name>Qunli Zhang</name>
-        </author>
-        <author>
-            <name>Zifan Zeng</name>
-        </author>
-        <author>
-            <name>Shiming Liu</name>
-        </author>
-        <author>
-            <name>Peng Wang</name>
-        </author>
-        <author>
-            <name>Zixuan Guo</name>
-        </author>
-        <author>
-            <name>Manabu Tsukada</name>
-        </author>
-        <category label="cs.RO" term="cs.RO"/>
-        <category label="cs.AI" term="cs.AI"/>
-        <published>2026-07-17T04:40:02.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[xHC: Expanded Hyper-Connections]]></title>
-        <id>https://arxiv.org/abs/2607.14530</id>
-        <link href="https://arxiv.org/abs/2607.14530"/>
-        <updated>2026-07-16T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Hyper-Connections (HC) expand the residual stream of Transformers into N parallel streams, providing a form of memory scaling beyond model width and depth. Manifold-Constrained HC (mHC) stabilizes this formulation at scale. The large gains from N{=}1 to N{=}4 suggest residual-stream expansion as a promising scaling axis. However, existing HC-family methods typically stop at N{=}4. Our experiments reveal why: scaling mHC beyond this point yields diminishing performance gains and rapidly increasin]]></summary>
-        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出xHC，扩展超连接方法，通过稀疏残差流架构和时序特征增强，在18B和28B MoE模型上实现显著下游提升，并降低达到相同损失所需的计算量。</p>
-<h3>原始摘要</h3><p>Hyper-Connections (HC) expand the residual stream of Transformers into N parallel streams, providing a form of memory scaling beyond model width and depth. Manifold-Constrained HC (mHC) stabilizes this formulation at scale. The large gains from N{=}1 to N{=}4 suggest residual-stream expansion as a promising scaling axis. However, existing HC-family methods typically stop at N{=}4. Our experiments reveal why: scaling mHC beyond this point yields diminishing performance gains and rapidly increasing training cost. We attribute this limitation to two bottlenecks: insufficient write-back information for an expanding number of streams and residual-mixing generation whose cost scales cubically with N. To address both bottlenecks, we propose xHC (Expanded Hyper-Connections), the first HC-family method to achieve meaningful expansion beyond N{=}4. xHC combines temporal feature augmentation for richer write-back with a sparse residual-stream architecture that updates only k=4 of the N=16 streams while retaining dense access to the full residual state. Across 18B and 28B MoE models, xHC delivers strong and consistent downstream improvements. On an 18B MoE model, xHC improves the average downstream score by 4.0 points over mHC, while adding only modest training FLOPs over the vanilla baseline. Scaling-law experiments show that the vanilla and mHC require 1.50times and 1.19times the compute of xHC, respectively, to reach the same loss. Practical large-N training also requires controlling memory traffic from the expanded residual state. We therefore introduce xHC-Flash, which reduces the per-sublayer memory traffic from 73.5C to 40C, comparable to the 34C required by mHC at N{=}4, while retaining the gains of full xHC. Together, xHC and xHC-Flash make large-N residual-stream expansion effective and practical for LLM pre-training.</p>
-<p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2607.14530">PDF</a> | <a href="https://arxiv.org/abs/2607.14530">arXiv</a></p>]]></content>
-        <author>
-            <name>Xiangdong Zhang</name>
-        </author>
-        <author>
-            <name>Xiaohan Qin</name>
-        </author>
-        <author>
-            <name>Sunan Zou</name>
-        </author>
-        <author>
-            <name>Tuo Dai</name>
-        </author>
-        <author>
-            <name>Xiaoming Shi</name>
-        </author>
-        <author>
-            <name>Huaijin Wu</name>
-        </author>
-        <author>
-            <name>Yebin Yang</name>
-        </author>
-        <author>
-            <name>Zhuo Xia</name>
-        </author>
-        <author>
-            <name>Shaofeng Zhang</name>
-        </author>
-        <author>
-            <name>Lin Yao</name>
-        </author>
-        <author>
-            <name>Yuliang Liu</name>
-        </author>
-        <author>
-            <name>Yu Cheng</name>
-        </author>
-        <author>
-            <name>Junchi Yan</name>
-        </author>
-        <published>2026-07-16T00:00:00.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[DeepLoop: Depth Scaling for Looped Transformers]]></title>
-        <id>https://arxiv.org/abs/2607.13491</id>
-        <link href="https://arxiv.org/abs/2607.13491"/>
-        <updated>2026-07-15T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Looped Transformers scale sequential computation by applying a compact stack of physical blocks for multiple rounds, increasing unrolled depth without increasing stored parameters. This reuse changes the residual-scaling problem: in an untied Transformer, each residual branch receives and applies its own parameter update, whereas in a looped Transformer one shared update aggregates gradients from repeated visits and is read back by those same visits in the next linearized forward pass. We formal]]></summary>
-        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出DeepLoop，通过分析循环Transformer的残差缩放问题，推导出随循环次数增长的缩放规则，实现稳定深度扩展，提升模型效率。</p>
-<h3>原始摘要</h3><p>Looped Transformers scale sequential computation by applying a compact stack of physical blocks for multiple rounds, increasing unrolled depth without increasing stored parameters. This reuse changes the residual-scaling problem: in an untied Transformer, each residual branch receives and applies its own parameter update, whereas in a looped Transformer one shared update aggregates gradients from repeated visits and is read back by those same visits in the next linearized forward pass. We formalize this tied-depth effect through a first-order perturbation bound controlled by a visit-alignment coefficient κ_R. The bound recovers the DeepNorm exponent when visits decorrelate, but in the conservative aligned regime it requires the exponent to increase from 1/4 to 1/2 as loop count grows at fixed physical depth. The resulting method, DeepLoop, keeps the Post-LN DeepNorm architecture and sets α=(2N)^{1/2} and β=(8N)^{-1/2} for unrolled depth N. On GPT-style looped language models at GPT-2 small and GPT-2 medium scale, DeepLoop is neutral when no physical block is revisited and improves validation loss and downstream accuracy once recurrent depth is activated. These results show that stable recurrent depth requires residual scaling rules that account for parameter visits, not only nominal layer count.</p>
-<p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2607.13491">PDF</a> | <a href="https://arxiv.org/abs/2607.13491">arXiv</a></p>]]></content>
-        <author>
-            <name>Shuzhen Li</name>
-        </author>
-        <author>
-            <name>Yifan Zhang</name>
-        </author>
-        <author>
-            <name>Jiacheng Guo</name>
-        </author>
-        <author>
-            <name>Quanquan Gu</name>
-        </author>
-        <author>
-            <name>Mengdi Wang</name>
-        </author>
-        <published>2026-07-15T00:00:00.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Registers Matter for Pixel-Space Diffusion Transformers]]></title>
-        <id>https://arxiv.org/abs/2605.16147</id>
-        <link href="https://arxiv.org/abs/2605.16147"/>
-        <updated>2026-07-06T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Vision Transformers (ViTs) are known to exhibit high-norm patch-token outliers that degrade feature map quality, a problem effectively mitigated by register tokens. As diffusion models increasingly adopt transformer architectures and move toward pixel-space training, they become closer in form to ViTs, raising the question of whether register tokens are also useful for Diffusion Transformers (DiTs). In this work, we show that DiTs differ from ViTs in a key respect: they do not exhibit patch-toke]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Vision Transformers (ViTs) are known to exhibit high-norm patch-token outliers that degrade feature map quality, a problem effectively mitigated by register tokens. As diffusion models increasingly adopt transformer architectures and move toward pixel-space training, they become closer in form to ViTs, raising the question of whether register tokens are also useful for Diffusion Transformers (DiTs). In this work, we show that DiTs differ from ViTs in a key respect: they do not exhibit patch-token outliers but still benefit from registers. Interestingly, registers are more effective in pixel-space DiTs than in latent-space DiTs. By analyzing intermediate representations, we find that register tokens produce cleaner feature maps at high noise levels, which may contribute to their effectiveness in pixel-space generation. We further observe that recent pixel-space DiT architectures implicitly incorporate register-like mechanisms, which may partially account for their strong empirical performance. Motivated by these observations, we propose Register Guidance, a technique that amplifies the contribution of register tokens responsible for improving visual structure and coherence.</p>
-<p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2605.16147">PDF</a> | <a href="https://arxiv.org/abs/2605.16147">arXiv</a></p>]]></content>
-        <author>
-            <name>Nikita Starodubcev</name>
-        </author>
-        <author>
-            <name>Ilia Sudakov</name>
-        </author>
-        <author>
-            <name>Ilya Drobyshevskiy</name>
-        </author>
-        <author>
-            <name>Artem Babenko</name>
-        </author>
-        <author>
-            <name>Dmitry Baranchuk</name>
-        </author>
-        <published>2026-07-06T00:00:00.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[ShortOPD: Recovering Pruned LLMs with Short-to-Long On-Policy Distillation]]></title>
-        <id>https://arxiv.org/abs/2607.13124</id>
-        <link href="https://arxiv.org/abs/2607.13124"/>
-        <updated>2026-07-14T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Structured pruning is a hardware-friendly way to compress LLMs, but it is mostly validated on multiple-choice recognition tasks, while the same compressed checkpoints can collapse on the free-form generation that deployment actually requires. Two observations trace this gap. First, greedy pass@1 nearly vanishes after compression, yet pass@k recovers substantially under repeated sampling: useful generations are demoted, not erased. Second, the recoverable regime fails mainly through suffix repeti]]></summary>
-        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出ShortOPD，短到长在线策略蒸馏调度，通过检测重复后缀并分配有效长度，在恢复剪枝LLM时节省71%的rollout token和4倍训练时间，性能接近全量训练。</p>
-<h3>原始摘要</h3><p>Structured pruning is a hardware-friendly way to compress LLMs, but it is mostly validated on multiple-choice recognition tasks, while the same compressed checkpoints can collapse on the free-form generation that deployment actually requires. Two observations trace this gap. First, greedy pass@1 nearly vanishes after compression, yet pass@k recovers substantially under repeated sampling: useful generations are demoted, not erased. Second, the recoverable regime fails mainly through suffix repetition. Recovery should therefore train on the compressed model's own on-policy states with dense token-level supervision, which On-Policy Distillation (OPD) provides by reusing the pre-compression model as a frozen teacher. However, long on-policy rollouts spend early recovery budget on low-information repetitive suffixes, delaying loss descent. To mitigate this waste, we propose \shortopd, a short-to-long OPD schedule that detects teacher-confirmed repetitive suffixes, treats the surviving prefix as each rollout's effective length, and allocates future rollout budgets to the effective lengths the policy can currently use. Across math, code, and open-ended generation, \shortopd\ raises the compressed model's score to about 9times its unrecovered value and 1.6--4.4times standard recovery recipes (SFT w/o KD, KD, and SeqKD), and it matches a fixed 8192-token rollout horizon within two points using a quarter of the training time (8.5 vs.\ 35.9 hours) and 71% fewer rollout tokens. We hope this recipe helps move structured pruning beyond marginal gains on perplexity and multiple-choice benchmarks, a step closer to deployment-ready generation quality.</p>
-<p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2607.13124">PDF</a> | <a href="https://arxiv.org/abs/2607.13124">arXiv</a></p>]]></content>
-        <author>
-            <name>Qingyu Zhang</name>
-        </author>
-        <author>
-            <name>Qianhao Yuan</name>
-        </author>
-        <author>
-            <name>Hongyu Lin</name>
-        </author>
-        <author>
-            <name>Yaojie Lu</name>
-        </author>
-        <author>
-            <name>Xianpei Han</name>
-        </author>
-        <author>
-            <name>Le Sun</name>
-        </author>
-        <author>
-            <name>Xiang Li</name>
-        </author>
-        <author>
-            <name>Ming Xu</name>
-        </author>
-        <author>
-            <name>Jiarui Li</name>
-        </author>
-        <author>
-            <name>Xiuyin Zhao</name>
-        </author>
-        <published>2026-07-14T00:00:00.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Efficient Frame Selection for Long Videos at Test Time with Attention-Based MLLM Selectors]]></title>
-        <id>https://arxiv.org/abs/2607.15689</id>
-        <link href="https://arxiv.org/abs/2607.15689"/>
-        <updated>2026-07-17T07:04:31.000Z</updated>
-        <summary type="html"><![CDATA[Understanding long videos with multimodal large language models (MLLMs) requires selecting a compact set of frames from thousands of candidates, yet identifying the right frames seemingly requires understanding the video first. We resolve this circular dependency with a simple observation: cross-modal attention at validation-selected extraction layers in MLLMs already provides query-relevant frame evidence without requiring autoregressive generation. We exploit this property to build DAFS (Dynam]]></summary>
-        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出DAFS，一种无需训练的视频帧选择方法，利用MLLM的交叉注意力分数选择关键帧，在保持性能的同时显著减少计算开销。</p>
-<h3>原始摘要</h3><p>Understanding long videos with multimodal large language models (MLLMs) requires selecting a compact set of frames from thousands of candidates, yet identifying the right frames seemingly requires understanding the video first. We resolve this circular dependency with a simple observation: cross-modal attention at validation-selected extraction layers in MLLMs already provides query-relevant frame evidence without requiring autoregressive generation. We exploit this property to build DAFS (Dynamic Attention-based Budget-aware Frame Selection), a training-free frame selector. A lightweight MLLM selector, even with only 2B parameters, can extract frame-level evidence by converting selected-layer attention into relevance scores through query-conditioned aggregation. This enables cross-frame comparison without autoregressive decoding. To handle the selector's own context constraint, we formulate the joint allocation of candidate pool size and per-frame token budget as a discrete optimization problem solved by dynamic programming. Under a 32-frame budget, our selector improves over uniform sampling by up to 6.4 points on Video-MME and outperforms prior training-based selectors under matched frame budgets, while generalizing across selector and answerer backbones, and across tasks, without retraining.</p>
-<p><strong>Categories:</strong> cs.CV</p>
-<p><strong>Relevance:</strong> 7/10</p>
-<p><a href="https://arxiv.org/pdf/2607.15689">PDF</a> | <a href="https://arxiv.org/abs/2607.15689">arXiv</a></p>]]></content>
-        <author>
-            <name>Yilin Wang</name>
-        </author>
-        <author>
-            <name>Xiangxi Zheng</name>
-        </author>
-        <author>
-            <name>Dongxing Mao</name>
-        </author>
-        <author>
-            <name>Linjie Li</name>
-        </author>
-        <author>
-            <name>Zhengyuan Yang</name>
-        </author>
-        <author>
-            <name>Ping Yu</name>
-        </author>
-        <author>
-            <name>Rui Yan</name>
-        </author>
-        <author>
-            <name>Yuan Yao</name>
-        </author>
-        <author>
-            <name>Alex Jinpeng Wang</name>
-        </author>
-        <category label="cs.CV" term="cs.CV"/>
-        <published>2026-07-17T07:04:31.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Are All Tokens Necessary for Visual Place Recognition? An Empirical Study of Token Reduction for Efficient Inference]]></title>
-        <id>https://arxiv.org/abs/2607.15563</id>
-        <link href="https://arxiv.org/abs/2607.15563"/>
-        <updated>2026-07-17T02:13:19.000Z</updated>
-        <summary type="html"><![CDATA[Recent visual place recognition (VPR) methods based on vision transformers, particularly foundation models, have achieved remarkable recognition performance. However, these models process all visual tokens throughout the entire network, resulting in substantial computational overhead, which hinders their deployment in real-time and resource-constrained scenarios. A natural question thus arises: are all visual tokens necessary for VPR? To answer this question, we present the first systematic benc]]></summary>
-        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>首次系统评估了视觉位置识别中令牌缩减方法的效率，发现令牌缩减可减少29%计算量并提升44%吞吐量，同时精度损失小于1%。</p>
-<h3>原始摘要</h3><p>Recent visual place recognition (VPR) methods based on vision transformers, particularly foundation models, have achieved remarkable recognition performance. However, these models process all visual tokens throughout the entire network, resulting in substantial computational overhead, which hinders their deployment in real-time and resource-constrained scenarios. A natural question thus arises: are all visual tokens necessary for VPR? To answer this question, we present the first systematic benchmark of token reduction for efficient visual place recognition. Our benchmark comprehensively evaluates representative token pruning, token merging, and hybrid pruning-merging methods across multiple state-of-the-art VPR models and diverse benchmark datasets covering urban, suburban, and natural environments. We further investigate token reduction from multiple perspectives, including recognition performance under different reduction configurations, computational complexity, inference speed, qualitative visualization, and deployment efficiency on edge devices. Through extensive experiments and in-depth analysis, our benchmark reveals multiple important characteristics of token reduction in VPR and provides several practical insights into the trade-offs between accuracy and inference efficiency. For example, token reduction can reduce computational cost by up to 29\% and improve throughput by up to 44\%, while incurring less than 1\% degradation in recognition accuracy. Overall, this work establishes a comprehensive foundation for future research on token-efficient VPR and efficient visual retrieval systems. Our codes and models will be available at https://github.com/Tong-Jin01/TokenReduction4VPR</p>
-<p><strong>Categories:</strong> cs.CV</p>
-<p><strong>Relevance:</strong> 7/10</p>
-<p><a href="https://arxiv.org/pdf/2607.15563">PDF</a> | <a href="https://arxiv.org/abs/2607.15563">arXiv</a></p>]]></content>
-        <author>
-            <name>Tong Jin</name>
-        </author>
-        <author>
-            <name>Yunpeng Liu</name>
-        </author>
-        <author>
-            <name>Shuyu Hu</name>
-        </author>
-        <author>
-            <name>Qinghua Zhang</name>
-        </author>
-        <author>
-            <name>Ruize Han</name>
-        </author>
-        <author>
-            <name>Song Wang</name>
-        </author>
-        <author>
-            <name>Feng Lu</name>
-        </author>
-        <category label="cs.CV" term="cs.CV"/>
-        <published>2026-07-17T02:13:19.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[RecGPT-V3 Technical Report]]></title>
-        <id>https://arxiv.org/abs/2607.15591</id>
-        <link href="https://arxiv.org/abs/2607.15591"/>
-        <updated>2026-07-17T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Large language models (LLMs) are transforming recommender systems from matching co-occurrence patterns in historical behavior toward reasoning about the intent that drives it. RecGPT-V1 pioneered this paradigm on Taobao by centering user understanding, and RecGPT-V2 scaled it via coordinated multi-agent reasoning; both are deployed in production with consistent gains in user experience and commercial outcomes. However, operating RecGPT at scale reveals three challenges: (1) stateless behavior mo]]></summary>
-        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出RecGPT-V3，通过状态化记忆中心和潜在意图推理，将用户建模计算量减少55.8%，并降低推理延迟，提升推荐系统效率。</p>
-<h3>原始摘要</h3><p>Large language models (LLMs) are transforming recommender systems from matching co-occurrence patterns in historical behavior toward reasoning about the intent that drives it. RecGPT-V1 pioneered this paradigm on Taobao by centering user understanding, and RecGPT-V2 scaled it via coordinated multi-agent reasoning; both are deployed in production with consistent gains in user experience and commercial outcomes. However, operating RecGPT at scale reveals three challenges: (1) stateless behavior modeling, where each request reprocesses full user history, wasting computation and discarding prior analysis; (2) a tag-to-item information bottleneck, where natural-language tags form a lossy channel between user understanding and item grounding; and (3) inefficient explicit reasoning, whose lengthy chain-of-thought incurs untenable latency and compute overhead.
-  We present RecGPT-V3, a stateful, hybrid-modal recommender that reasons over natural language for open-world knowledge and Semantic IDs (SIDs) for concrete item grounding. A Memory Hub maintains structured, continually evolving user memory that distills long-horizon behavior into condensed units, cutting user-modeling computation by 55.8%. A Hybrid-modal Foundation Model allows the LLM jointly reason over text tags and SIDs, opening a high-bandwidth channel into the item space. Latent Intent Reasoning internalizes verbose rationales into compact learnable latent tokens that remain decodable into readable explanations, lowering output token cost by 200x. Deployed in Taobao's &quot;Guess What You Like&quot; feed, RecGPT-V3 achieves consistent gains in large-scale online A/B tests: IPV +1.28%, CTR +1.00%, TC +1.97%, GMV +3.97%, while cutting end-to-end serving resource consumption by 52.4%.</p>
-<p><strong>Relevance:</strong> 7/10</p>
-<p><a href="https://arxiv.org/pdf/2607.15591">PDF</a> | <a href="https://arxiv.org/abs/2607.15591">arXiv</a></p>]]></content>
-        <author>
-            <name>Bowen Zheng</name>
-        </author>
-        <author>
-            <name>Chao Yi</name>
-        </author>
-        <author>
-            <name>Dian Chen</name>
-        </author>
-        <author>
-            <name>Gaoyang Guo</name>
-        </author>
-        <author>
-            <name>Han Zhu</name>
-        </author>
-        <author>
-            <name>Jiakai Tang</name>
-        </author>
-        <author>
-            <name>Jian Wu</name>
-        </author>
-        <author>
-            <name>Mao Zhang</name>
-        </author>
-        <author>
-            <name>Wen Chen</name>
-        </author>
-        <author>
-            <name>Yifan Lu</name>
-        </author>
-        <author>
-            <name>Yujie Luo</name>
-        </author>
-        <author>
-            <name>Yuning Jiang</name>
-        </author>
-        <author>
-            <name>Zhujin Gao</name>
-        </author>
-        <author>
-            <name>Bo Zheng</name>
-        </author>
-        <author>
-            <name>Dixuan Wang</name>
-        </author>
-        <author>
-            <name>Hao Fang</name>
-        </author>
-        <author>
-            <name>Jiancai Liu</name>
-        </author>
-        <author>
-            <name>Jing Yu</name>
-        </author>
-        <author>
-            <name>Ke Chen</name>
-        </author>
-        <author>
-            <name>Kewei Zhu</name>
-        </author>
-        <author>
-            <name>Mingke Xu</name>
-        </author>
-        <author>
-            <name>Wenjun Yang</name>
-        </author>
-        <author>
-            <name>Xunke Xi</name>
-        </author>
-        <author>
-            <name>Zile Zhou</name>
-        </author>
         <published>2026-07-17T00:00:00.000Z</published>
     </entry>
     <entry>
-        <title type="html"><![CDATA[VideoChat3: Fully Open Video MLLM for Efficient and Generalist Video Understanding]]></title>
-        <id>https://arxiv.org/abs/2607.14935</id>
-        <link href="https://arxiv.org/abs/2607.14935"/>
-        <updated>2026-07-16T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Recent advances in video understanding have spanned motion, long video, and streaming interaction, driving this field toward real-world applications. Despite this progress, current open-source models remain limited in several ways. They often struggle to generalize across diverse video types, making them effective only in specific domains. High computational demands further restrict their efficiency and scalability. Moreover, most models are only partially open, with key components such as train]]></summary>
-        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出VideoChat3，通过膨胀3D视觉Transformer和自适应帧分辨率降低视频处理成本，实现高效视频理解，同时保持通用性。</p>
-<h3>原始摘要</h3><p>Recent advances in video understanding have spanned motion, long video, and streaming interaction, driving this field toward real-world applications. Despite this progress, current open-source models remain limited in several ways. They often struggle to generalize across diverse video types, making them effective only in specific domains. High computational demands further restrict their efficiency and scalability. Moreover, most models are only partially open, with key components such as training code, strategy, or datasets unavailable, which hinders reproducibility and slows community-driven development. To address these issues, we introduce VideoChat3, a fully open, efficient, and generalist video-centric MLLM. VideoChat3 advances video understanding through two complementary designs. For efficiency, we introduce Inflated 3D Vision Transformer (I3D-ViT) and Adaptive Frame Resolution for Streaming Video Perception, which enables efficient spatiotemporal representation and reduces the cost of processing video inputs during training and inference. For effectiveness, we develop a scalable video data synthesis pipeline that curates three diverse, high-quality training datasets: VideoChat3-Academic2M, VideoChat3-LV116K, and VideoChat3-OL617K, covering general, long-form, and streaming video scenarios, improving the model's generalization across domains. By integrating these designs, VideoChat3 achieves a rare balance of broad generalization and computational efficiency. Experiments across general, long-form, and streaming benchmarks demonstrate that VideoChat3 surpasses prior open-source models with equal or larger parameter counts with only 4B parameters and higher efficiency.</p>
-<p><strong>Relevance:</strong> 7/10</p>
-<p><a href="https://arxiv.org/pdf/2607.14935">PDF</a> | <a href="https://arxiv.org/abs/2607.14935">arXiv</a></p>]]></content>
+        <title type="html"><![CDATA[Where Should Optimizer State Live? Tiered State Allocation for Memory-Efficient Mixture-of-Experts Training]]></title>
+        <id>https://arxiv.org/abs/2607.19058</id>
+        <link href="https://arxiv.org/abs/2607.19058"/>
+        <updated>2026-07-21T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Optimizer state is the largest single line item in the memory budget of mixture-of-experts (MoE) training: on a 6.78B-parameter MoE language model, AdamW keeps 50.6 GB of first and second moments to update 12.6 GB of bfloat16 weights. We study SkewAdam, an optimizer built on the observation that the three parameter populations of an MoE - the dense backbone, the experts, and the router - differ enough in size and gradient statistics that they should not receive the same state. SkewAdam keeps flo]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Optimizer state is the largest single line item in the memory budget of mixture-of-experts (MoE) training: on a 6.78B-parameter MoE language model, AdamW keeps 50.6 GB of first and second moments to update 12.6 GB of bfloat16 weights. We study SkewAdam, an optimizer built on the observation that the three parameter populations of an MoE - the dense backbone, the experts, and the router - differ enough in size and gradient statistics that they should not receive the same state. SkewAdam keeps float32 momentum plus a factored second moment for the backbone (5% of parameters), a factored second moment alone for the experts (95%), and an exact second moment for the router (&lt;0.01%). The resulting state occupies 1.29 GB, 2.6% of AdamW's, and peak training memory falls from 81.4 GB to 31.3 GB, within the budget of a 40 GB accelerator. In a controlled comparison from identical initializations over 82M tokens, SkewAdam reaches validation perplexity 108.4, ahead of AdamW (126.8), Muon (120.2), and Lion (393.7), and settles router load balance to within 1% of its uniform floor. The allocation is not what earns that perplexity: a tier ablation matches it with twenty times the state, and Adafactor, which shares the factored estimator but drops momentum, plateaus 40 points behind. The tiers buy memory at no cost to accuracy; the accuracy comes from keeping momentum, which a uniform optimizer shares too. Sweeping the baselines' learning rates narrows but does not close the gap: the best tuned AdamW reaches 118.5, tuned Adafactor 139.7. Where optimizer state lives, these results suggest, matters at least as much as how much of it there is.</p>
+<p><strong>Relevance:</strong> 9/10</p>
+<p><a href="https://arxiv.org/pdf/2607.19058">PDF</a> | <a href="https://arxiv.org/abs/2607.19058">arXiv</a></p>]]></content>
         <author>
-            <name>Xinhao Li</name>
+            <name>Nuemaan Malik</name>
+        </author>
+        <published>2026-07-21T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Susceptible Reservoir Architectures for Regime-Conditional Volatility Forecasting]]></title>
+        <id>https://arxiv.org/abs/2607.22491</id>
+        <link href="https://arxiv.org/abs/2607.22491"/>
+        <updated>2026-07-24T17:03:08.000Z</updated>
+        <summary type="html"><![CDATA[Volatility forecasting is dominated by persistence and measurement noise, leaving limited residual structure for nonlinear models to exploit. We introduce Susceptible Architectures (SUSA), a reservoir-design principle for volatility forecasting, and its two concrete implementations, based on complex-valued open-chain and periodic reservoirs and regime-conditioned experts to interpret reservoir features across calm, onset, recovery, and persistent-stress states. We also implement open-system $q$-]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Volatility forecasting is dominated by persistence and measurement noise, leaving limited residual structure for nonlinear models to exploit. We introduce Susceptible Architectures (SUSA), a reservoir-design principle for volatility forecasting, and its two concrete implementations, based on complex-valued open-chain and periodic reservoirs and regime-conditioned experts to interpret reservoir features across calm, onset, recovery, and persistent-stress states. We also implement open-system $q$-qubit counterparts in Qiskit while retaining a common AR-Ridge anchor and a bounded residual correction trained under QLIKE. We evaluate models on 16 U.S. equity and exchange-traded-fund series using three disjoint chronological training, validation, and test folds, a 12-observation input window, and a five-observation forecast horizon. The proposed models perform competitively with GARCH, achieving statistically significant QLIKE improvements for specific assets (IWM, XLP). Also models' forecasts complement HARQ-style predictions: a stacked ensemble improves mean QLIKE by 0.0116 over its strongest constituent and wins in 75% of test scenarios.</p>
+<p><strong>Categories:</strong> cs.LG</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2607.22491">PDF</a> | <a href="https://arxiv.org/abs/2607.22491">arXiv</a></p>]]></content>
+        <author>
+            <name>Aliaksei Kaliutau</name>
+        </author>
+        <category label="cs.LG" term="cs.LG"/>
+        <published>2026-07-24T17:03:08.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[HiKV: Hierarchical Importance-Aware KV Cache with Hardware Acceleration for LLM Decoding]]></title>
+        <id>https://arxiv.org/abs/2607.22389</id>
+        <link href="https://arxiv.org/abs/2607.22389"/>
+        <updated>2026-07-24T15:15:10.000Z</updated>
+        <summary type="html"><![CDATA[With the rapid adoption of long-context large language models (LLMs), the continuously growing KV cache during decoding has become the critical memory bottleneck. To tackle this challenge, we propose HiKV, a novel algorithm-hardware co-design that exploits KV cache redundancy through hierarchical importance awareness. Algorithmically, HiKV compresses the KV cache at two granularities: Stage I evicts unimportant tokens within a fixed budget, and Stage II further loads only the significant element]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>With the rapid adoption of long-context large language models (LLMs), the continuously growing KV cache during decoding has become the critical memory bottleneck. To tackle this challenge, we propose HiKV, a novel algorithm-hardware co-design that exploits KV cache redundancy through hierarchical importance awareness. Algorithmically, HiKV compresses the KV cache at two granularities: Stage I evicts unimportant tokens within a fixed budget, and Stage II further loads only the significant elements of each retained token, reaching compression ratios unattainable at a single granularity. Architecturally, we develop a dedicated accelerator centered on a reconfigurable importance sorter that switches between the distinct sorting datapaths each stage requires, unifying the two-stage acceleration in one circuit with minimal overhead. Evaluated on representative LLMs, HiKV achieves up to 7.95x speedup and 90% energy reduction in the attention computation over the vanilla KV cache baseline within negligible 1% accuracy loss. Under iso-accuracy constraints, HiKV outperforms state-of-the-art importance-based methods by achieving an additional 1.82~4.87x reduction in external memory accesses. These benefits are enabled by specialized hardware components that add only 8% to the system area.</p>
+<p><strong>Categories:</strong> cs.AR, cs.AI, cs.LG</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2607.22389">PDF</a> | <a href="https://arxiv.org/abs/2607.22389">arXiv</a></p>]]></content>
+        <author>
+            <name>Chao Fang</name>
         </author>
         <author>
-            <name>Yuhan Zhu</name>
+            <name>Jun Yin</name>
         </author>
         <author>
-            <name>Xiangyu Zeng</name>
+            <name>Man Shi</name>
         </author>
         <author>
-            <name>Yuhao Dong</name>
+            <name>Marian Verhelst</name>
+        </author>
+        <category label="cs.AR" term="cs.AR"/>
+        <category label="cs.AI" term="cs.AI"/>
+        <category label="cs.LG" term="cs.LG"/>
+        <published>2026-07-24T15:15:10.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Indexing: the Beginning and the End]]></title>
+        <id>https://arxiv.org/abs/2607.22361</id>
+        <link href="https://arxiv.org/abs/2607.22361"/>
+        <updated>2026-07-24T14:42:44.000Z</updated>
+        <summary type="html"><![CDATA[We study information bottlenecks in modern deep-learning architectures -- RNNs, softmax transformers, linear-attention transformers and state-space models -- through the lens of the indexing primitive. In this primitive, the input consists of $n$ bits and one integer $i$ from $1$ to $n$ called the index, and the output equals the value of the $i$-th bit. We introduce causal complexity for masked architectures. We show that architectures with low causal complexity cannot solve the indexing primit]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>We study information bottlenecks in modern deep-learning architectures -- RNNs, softmax transformers, linear-attention transformers and state-space models -- through the lens of the indexing primitive. In this primitive, the input consists of $n$ bits and one integer $i$ from $1$ to $n$ called the index, and the output equals the value of the $i$-th bit. We introduce causal complexity for masked architectures. We show that architectures with low causal complexity cannot solve the indexing primitive in any constant number of layers when the index appears at the end of the input. In particular, this limitation applies to low-parameter RNNs, SSMs and masked linear-attention transformers. In contrast, small softmax transformers can solve it in one layer, while non-masked linear-attention transformers can solve it in 2, which separates them from their masked counterparts. In turn, when the index appears at the beginning, we show that small RNNs are capable of solving this task in 1 layer, while all the other architectures require 2. All our impossibility results are unconditional and apply even to models that employ infinite-precision real arithmetic. Moreover, experiments for up to $n=64$ qualitatively align with our theory: configurations with low-parameter theoretical solutions learn the indexing task easily, while configurations that do not admit such theoretical solutions struggle to learn as the sequence length grows.</p>
+<p><strong>Categories:</strong> cs.LG, cs.AI</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2607.22361">PDF</a> | <a href="https://arxiv.org/abs/2607.22361">arXiv</a></p>]]></content>
+        <author>
+            <name>Alexander Kozachinskiy</name>
         </author>
         <author>
-            <name>Haoning Wu</name>
+            <name>Vicente Opazo</name>
         </author>
         <author>
-            <name>Zhiqiu Zhang</name>
+            <name>Felipe Urrutia</name>
+        </author>
+        <category label="cs.LG" term="cs.LG"/>
+        <category label="cs.AI" term="cs.AI"/>
+        <published>2026-07-24T14:42:44.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Cross-Tokenizer On-Policy Distillation via Byte-Prefix Marginalization]]></title>
+        <id>https://arxiv.org/abs/2607.22334</id>
+        <link href="https://arxiv.org/abs/2607.22334"/>
+        <updated>2026-07-24T14:12:54.000Z</updated>
+        <summary type="html"><![CDATA[Open-weight language models from different families exhibit complementary capabilities, motivating their consolidation into a compact student through on-policy distillation (OPD). However, full-vocabulary OPD typically assumes a shared tokenizer, while existing cross-tokenizer methods may discard teacher probability mass or assign it to student tokens with unrelated content. We introduce Byte-Prefix Marginalization (BPM), which re-expresses the teacher's next-token distribution over the student ]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出Byte-Prefix Marginalization (BPM)方法，通过字节空间对齐教师和学生模型的tokenizer，实现跨tokenizer的on-policy蒸馏，在数学和编程基准上显著优于现有方法。</p>
+<h3>原始摘要</h3><p>Open-weight language models from different families exhibit complementary capabilities, motivating their consolidation into a compact student through on-policy distillation (OPD). However, full-vocabulary OPD typically assumes a shared tokenizer, while existing cross-tokenizer methods may discard teacher probability mass or assign it to student tokens with unrelated content. We introduce Byte-Prefix Marginalization (BPM), which re-expresses the teacher's next-token distribution over the student vocabulary in a shared byte space. Specifically, BPM assigns each teacher token's probability to the longest student token whose byte representation is a prefix of the teacher token's bytes, aggregates mass mapped to the same student token, and places otherwise unmatched mass in an explicit residual category. This produces a vocabulary-complete, byte-aligned, and mass-preserving target for dense OPD. The target exactly recovers the teacher-induced byte-prefix marginal when the relevant prefix does not span multiple teacher tokens (a condition satisfied at more than 99% of training positions) and uses a mass-preserving, chain-factorized lower bound otherwise. Across Qwen3-32B, GLM-Z1-9B-0414, and MiniMax-M2.7 as teachers, BPM consistently outperforms current cross-tokenizer methods on six mathematics and programming benchmarks, improving six-benchmark avg@8 by 3.7-6.6 points over the strongest baselines.</p>
+<p><strong>Categories:</strong> cs.LG, cs.AI, cs.CL</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2607.22334">PDF</a> | <a href="https://arxiv.org/abs/2607.22334">arXiv</a></p>]]></content>
+        <author>
+            <name>Hao Wang</name>
         </author>
         <author>
-            <name>Yuandong Yang</name>
+            <name>Kun Yuan</name>
         </author>
         <author>
-            <name>Changlian Ma</name>
+            <name>Wenlin Zhong</name>
         </author>
         <author>
-            <name>Qingyu Zhang</name>
+            <name>Minglei Zhang</name>
         </author>
         <author>
-            <name>Yansong Shi</name>
+            <name>Han Xiao</name>
+        </author>
+        <author>
+            <name>Ming Sun</name>
+        </author>
+        <author>
+            <name>Honggang Qi</name>
+        </author>
+        <category label="cs.LG" term="cs.LG"/>
+        <category label="cs.AI" term="cs.AI"/>
+        <category label="cs.CL" term="cs.CL"/>
+        <published>2026-07-24T14:12:54.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[IFCLoRA: Topology-Aware Rank Allocation for Parameter-Efficient Fine-Tuning]]></title>
+        <id>https://arxiv.org/abs/2607.22251</id>
+        <link href="https://arxiv.org/abs/2607.22251"/>
+        <updated>2026-07-24T12:34:46.000Z</updated>
+        <summary type="html"><![CDATA[Low-Rank Adaptation (LoRA) is a widely used parameter-efficient fine-tuning method for large language models, but its performance depends strongly on how a fixed rank budget is distributed across Transformer modules. Existing adaptive-rank methods usually rely on local gradient statistics collected during training, which introduces extra memory and computation and overlooks task-conditioned global information flow. We propose IFCLoRA, a topology-aware rank allocation method applied before fine-t]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出IFCLoRA，一种拓扑感知的秩分配方法，用于大语言模型的参数高效微调。通过构建稀疏任务条件交互图并计算信息流中心性，在微调前分配秩预算，在保持训练成本的同时提升性能。</p>
+<h3>原始摘要</h3><p>Low-Rank Adaptation (LoRA) is a widely used parameter-efficient fine-tuning method for large language models, but its performance depends strongly on how a fixed rank budget is distributed across Transformer modules. Existing adaptive-rank methods usually rely on local gradient statistics collected during training, which introduces extra memory and computation and overlooks task-conditioned global information flow. We propose IFCLoRA, a topology-aware rank allocation method applied before fine-tuning. Using a small calibration set and a frozen pretrained model, IFCLoRA builds a sparse task-conditioned interaction graph whose nodes represent LoRA-compatible modules. It combines a global information-flow topology prior with local gradient sensitivity to compute Information-Flow Centrality scores, which estimate each module's adaptation importance under multi-hop propagation. Ranks are then assigned once under a global budget. Across multiple models, tasks, and low-rank settings, IFCLoRA consistently outperforms LoRA, AdaLoRA, and EVA under matched training configurations and total rank budgets, while retaining training costs comparable to standard LoRA. On mathematical reasoning with LLaMA 3 8B, IFCLoRA improves over LoRA by 1.36 percent at rank 4 and 1.82 percent at rank 8. Further analysis shows task-dependent, non-uniform rank profiles, indicating that global information-flow structure provides an informative and interpretable prior for low-budget parameter-efficient fine-tuning.</p>
+<p><strong>Categories:</strong> cs.LG, cs.AI</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2607.22251">PDF</a> | <a href="https://arxiv.org/abs/2607.22251">arXiv</a></p>]]></content>
+        <author>
+            <name>Wei Zhang</name>
+        </author>
+        <author>
+            <name>Xinwu Liu</name>
+        </author>
+        <author>
+            <name>Yihang Cheng</name>
+        </author>
+        <category label="cs.LG" term="cs.LG"/>
+        <category label="cs.AI" term="cs.AI"/>
+        <published>2026-07-24T12:34:46.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[TRaM-VSR: Importance-Aware Token Routing and Merging for One-Step Diffusion Video Super-Resolution]]></title>
+        <id>https://arxiv.org/abs/2607.22231</id>
+        <link href="https://arxiv.org/abs/2607.22231"/>
+        <updated>2026-07-24T11:57:26.000Z</updated>
+        <summary type="html"><![CDATA[Video super-resolution (VSR) using large-scale Diffusion Transformer (DiT) priors achieves exceptional perceptual quality but is often impractical due to the quadratic computational cost of processing dense spatio-temporal token sequences. Existing efficiency-oriented methods risk irreversible detail loss and temporal flickering, a vulnerability especially pronounced in one-step diffusion models. To address this, we propose TRaM-VSR, a Token Routing and Merging framework for adaptive token alloc]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出TRaM-VSR框架，通过重要性感知的令牌路由与合并，自适应分配令牌，加速扩散Transformer视频超分辨率推理，同时保持重建质量。</p>
+<h3>原始摘要</h3><p>Video super-resolution (VSR) using large-scale Diffusion Transformer (DiT) priors achieves exceptional perceptual quality but is often impractical due to the quadratic computational cost of processing dense spatio-temporal token sequences. Existing efficiency-oriented methods risk irreversible detail loss and temporal flickering, a vulnerability especially pronounced in one-step diffusion models. To address this, we propose TRaM-VSR, a Token Routing and Merging framework for adaptive token allocation, leveraging both context-aware video priors and network-level priors. First, token importance is estimated by fusing motion-sensitive temporal cues with semantic text similarity, isolating dynamic objects and structural boundaries. Next, this importance is further calibrated and adjusted by an offline planner to guide routing across optimally grouped network blocks. Technically, within each routed group, structurally critical tokens are processed in a high-fidelity local stream, while less informative tokens are aggregated into a compact global stream, both modulated by network depth and aligned with the multigranular nature of diffusion models. Extensive experiments show that TRaM-VSR accelerates inference significantly while preserving state-of-the-art reconstruction quality and robust temporal consistency. The code is available at https://github.com/Ree1s/TRaM-VSR.</p>
+<p><strong>Categories:</strong> cs.CV, cs.AI</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2607.22231">PDF</a> | <a href="https://arxiv.org/abs/2607.22231">arXiv</a></p>]]></content>
+        <author>
+            <name>Sicheng Gao</name>
+        </author>
+        <author>
+            <name>Zhuyun Zhou</name>
+        </author>
+        <author>
+            <name>Yixuan Liu</name>
+        </author>
+        <author>
+            <name>Tong Shen</name>
+        </author>
+        <author>
+            <name>Zongwei Wu</name>
+        </author>
+        <author>
+            <name>Radu Timofte</name>
+        </author>
+        <category label="cs.CV" term="cs.CV"/>
+        <category label="cs.AI" term="cs.AI"/>
+        <published>2026-07-24T11:57:26.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[MemNMF: Memory-Augmented NMF on LPC Spectra for Anomalous Sound Detection]]></title>
+        <id>https://arxiv.org/abs/2607.22086</id>
+        <link href="https://arxiv.org/abs/2607.22086"/>
+        <updated>2026-07-24T08:34:12.000Z</updated>
+        <summary type="html"><![CDATA[Autoencoder-based anomalous sound detection is attractive for machine condition monitoring because it can be trained using only normal recordings and yields an interpretable anomaly score from reconstruction error. Most prior work uses spectrogram autoencoders, but reconstructing detailed time--frequency patterns is sensitive to noise and transients, and models can reconstruct some anomalous inputs well, weakening normal--anomaly separation. We propose MemNMF, a constrained reconstruction method]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Autoencoder-based anomalous sound detection is attractive for machine condition monitoring because it can be trained using only normal recordings and yields an interpretable anomaly score from reconstruction error. Most prior work uses spectrogram autoencoders, but reconstructing detailed time--frequency patterns is sensitive to noise and transients, and models can reconstruct some anomalous inputs well, weakening normal--anomaly separation. We propose MemNMF, a constrained reconstruction method that operates on the Linear Predictive Coding spectrum, a compact estimate of the spectral envelope. MemNMF initializes a memory module from an NMF dictionary learned on normal LPC spectra and reconstructs each input as an attention-weighted combination of prototypical normal spectral patterns. Experiments on MIMII and DCASE 2020 Task 2 across multiple machine types and operating conditions show that LPC-spectrum inputs improve a standard autoencoder baseline and that MemNMF yields further gains, with especially strong robustness under noisy, non-stationary settings.</p>
+<p><strong>Categories:</strong> cs.SD, cs.LG</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2607.22086">PDF</a> | <a href="https://arxiv.org/abs/2607.22086">arXiv</a></p>]]></content>
+        <author>
+            <name>Phurich Saengthong</name>
+        </author>
+        <author>
+            <name>Takahiro Shinozaki</name>
+        </author>
+        <category label="cs.SD" term="cs.SD"/>
+        <category label="cs.LG" term="cs.LG"/>
+        <published>2026-07-24T08:34:12.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Sparse by Command: Task-Conditional Compute Skipping for Multi-Task Inference Accelerators]]></title>
+        <id>https://arxiv.org/abs/2607.22038</id>
+        <link href="https://arxiv.org/abs/2607.22038"/>
+        <updated>2026-07-24T07:06:06.000Z</updated>
+        <summary type="html"><![CDATA[Multi-task inference models share a single backbone across diverse tasks, yet execute identical computation regardless of which task is active - wasting energy and cycles on task-irrelevant operations. We observe that the task command, typically available before inference begins, provides a free signal that can be exploited to skip unnecessary computation at the hardware level. We present a HW/SW co-designed approach in which a lightweight gating network, trained jointly with the backbone, predi]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出一种软硬件协同设计方法，通过任务条件门控网络预测每块执行掩码，跳过不必要计算，加速多任务推理。在FPGA上原型验证，实现任务相关的计算减少。</p>
+<h3>原始摘要</h3><p>Multi-task inference models share a single backbone across diverse tasks, yet execute identical computation regardless of which task is active - wasting energy and cycles on task-irrelevant operations. We observe that the task command, typically available before inference begins, provides a free signal that can be exploited to skip unnecessary computation at the hardware level. We present a HW/SW co-designed approach in which a lightweight gating network, trained jointly with the backbone, predicts per-tile binary execution masks conditioned on the task input. Each tile corresponds to a fixed group of output channels (the native scheduling granularity of the accelerator), enabling masked tiles to be skipped with zero overhead. This yields a task-dependent reduction in compute, where each command activates only the subset of the network it requires, without changes to the model architecture or inference pipeline. We co-design the full system stack: a command-conditioned training procedure that learns hardware-aligned tile masks under a sparsity objective; an instruction set architecture whose instructions carry per-tile bitmask fields, allowing the hardware to skip masked tiles without software intervention; and a tiled inference accelerator with configurable parallelism, double-buffered memory, and INT8 datapath that natively supports sparse tile execution. We prototype on an AMD/Xilinx Alveo U50 FPGA and evaluate on a closed-loop visuomotor driving task in CARLA autonomous driving simulator. Task-conditional sparsity reduces FLOPs by 66-76% while maintaining driving quality. On-device latency decreases by 51-59%, from 9.12 ms to 3.74-4.44 ms (2.1-2.4x speedup), with energy per inference dropping from 263 to 108-128mJ.</p>
+<p><strong>Categories:</strong> cs.AR, cs.AI</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2607.22038">PDF</a> | <a href="https://arxiv.org/abs/2607.22038">arXiv</a></p>]]></content>
+        <author>
+            <name>Afzal Ahmad</name>
+        </author>
+        <author>
+            <name>Gaoyu Mao</name>
+        </author>
+        <author>
+            <name>Shoubo Hu</name>
+        </author>
+        <author>
+            <name>Hui-Ling Zhen</name>
+        </author>
+        <author>
+            <name>Mingxuan Yuan</name>
         </author>
         <author>
             <name>Xinyu Chen</name>
         </author>
         <author>
-            <name>Haoran Chen</name>
+            <name>Wei Zhang</name>
         </author>
-        <author>
-            <name>Zizheng Huang</name>
-        </author>
-        <author>
-            <name>Jun Zhang</name>
-        </author>
-        <author>
-            <name>Kun Ouyang</name>
-        </author>
-        <author>
-            <name>Lin Sui</name>
-        </author>
-        <author>
-            <name>Ziang Yan</name>
-        </author>
-        <author>
-            <name>Yicheng Xu</name>
-        </author>
-        <author>
-            <name>Chenting Wang</name>
-        </author>
-        <author>
-            <name>Yinan He</name>
-        </author>
-        <author>
-            <name>Hongjie Zhang</name>
-        </author>
-        <author>
-            <name>Yi Wang</name>
-        </author>
-        <author>
-            <name>Yu Qiao</name>
-        </author>
-        <author>
-            <name>Yali Wang</name>
-        </author>
-        <author>
-            <name>Ziwei Liu</name>
-        </author>
-        <author>
-            <name>Kai Chen</name>
-        </author>
-        <author>
-            <name>Limin Wang</name>
-        </author>
-        <published>2026-07-16T00:00:00.000Z</published>
+        <category label="cs.AR" term="cs.AR"/>
+        <category label="cs.AI" term="cs.AI"/>
+        <published>2026-07-24T07:06:06.000Z</published>
     </entry>
     <entry>
-        <title type="html"><![CDATA[AsySplat: Efficient Asymmetric 3D Gaussian Splatting for Long-Sequence Scene Modeling]]></title>
-        <id>https://arxiv.org/abs/2607.10995</id>
-        <link href="https://arxiv.org/abs/2607.10995"/>
-        <updated>2026-07-13T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Recent generalizable 3D Gaussian Splatting models have advanced long-sequence novel view synthesis (NVS), but at the cost of substantial redundant computation. We identify that the redundancy can be mitigated based on two observations: (i) high-precision geometry is not strictly required for high-quality NVS; (ii) appearance learning is generally easier than geometry recovery. Motivated by these insights, we propose an asymmetric architecture that decouples geometry and appearance modeling. The ]]></summary>
-        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出AsySplat，非对称3D高斯泼溅架构，解耦几何与外观建模，在长序列新视角合成中实现近800倍加速，参数效率显著提升。</p>
-<h3>原始摘要</h3><p>Recent generalizable 3D Gaussian Splatting models have advanced long-sequence novel view synthesis (NVS), but at the cost of substantial redundant computation. We identify that the redundancy can be mitigated based on two observations: (i) high-precision geometry is not strictly required for high-quality NVS; (ii) appearance learning is generally easier than geometry recovery. Motivated by these insights, we propose an asymmetric architecture that decouples geometry and appearance modeling. The geometry branch processes coarse-grained tokens with most of the parameters for multi-view reconstruction, while the appearance branch operates on fine-grained tokens to capture details using significantly fewer parameters. The two branches interact through bilateral connections, enabling mutual guidance for their respective tasks. This task-aware asymmetry reduces the computational redundancy and allocates the computation more judiciously, thereby increasing parameter efficiency and enabling smaller models to achieve strong performance. On 32-view 960P inputs, our model matches optimization-based methods while delivering nearly 800x speedup, and surpasses the zero-shot performance of state-of-the-art generalizable models with markedly fewer parameters and reduced training/inference overhead, achieving an overall efficiency improvement.</p>
-<p><strong>Relevance:</strong> 7/10</p>
-<p><a href="https://arxiv.org/pdf/2607.10995">PDF</a> | <a href="https://arxiv.org/abs/2607.10995">arXiv</a></p>]]></content>
-        <author>
-            <name>Yingji Zhong</name>
-        </author>
-        <author>
-            <name>Dave Zhenyu Chen</name>
-        </author>
-        <author>
-            <name>Fuzhao Ou</name>
-        </author>
-        <author>
-            <name>Youyu Chen</name>
-        </author>
-        <author>
-            <name>Zhihao Li</name>
-        </author>
-        <author>
-            <name>Lanqing Hong</name>
-        </author>
-        <author>
-            <name>Dan Xu</name>
-        </author>
-        <published>2026-07-13T00:00:00.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Token Time Continuous Diffusion for Language Modeling]]></title>
-        <id>https://arxiv.org/abs/2607.14106</id>
-        <link href="https://arxiv.org/abs/2607.14106"/>
-        <updated>2026-05-07T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[In this paper we introduce token time continuous diffusion (TTCD), a new diffusion language model which (a) operates in continuous space, deterministically mapping Gaussian noise to a final token canvas with no further sampling, and crucially (b) incorporates a new notion of per-token times, with some tokens proceeding from noise to token at a faster rate than others. Continuous space modeling helps TTCD avoid the parallel sampling of multiple tokens, which is a key source of inaccuracy at high ]]></summary>
-        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出TTCD，一种连续空间扩散语言模型，引入逐token时间概念，通过自蒸馏在高加速比下优于离散模型，实现高效条件生成。</p>
-<h3>原始摘要</h3><p>In this paper we introduce token time continuous diffusion (TTCD), a new diffusion language model which (a) operates in continuous space, deterministically mapping Gaussian noise to a final token canvas with no further sampling, and crucially (b) incorporates a new notion of per-token times, with some tokens proceeding from noise to token at a faster rate than others. Continuous space modeling helps TTCD avoid the parallel sampling of multiple tokens, which is a key source of inaccuracy at high speedups for models that iterate purely in discrete space. The notion of per-token times helps TTCD to better model conditional generation, allows for more sure tokens to proceed at a faster rate, and allows for differentiated inter-token influences during refinement. TTCD outperforms discrete models at high speedups. We train a 160M parameter TTCD model on OpenWebText, and then self-distill it; we find that at high speedups we are comparable in unconditional generation quality, and outperform in conditional generation, several existing models of similar size trained, on the same data, and self-distilled. We achieve similar gains in Sudoku solving as well.</p>
-<p><strong>Relevance:</strong> 7/10</p>
-<p><a href="https://arxiv.org/pdf/2607.14106">PDF</a> | <a href="https://arxiv.org/abs/2607.14106">arXiv</a></p>]]></content>
-        <author>
-            <name>Parikshit Bansal</name>
-        </author>
-        <author>
-            <name>Sujay Sanghavi</name>
-        </author>
-        <published>2026-05-07T00:00:00.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Weak-to-Strong Generalization via Direct On-Policy Distillation]]></title>
-        <id>https://arxiv.org/abs/2607.05394</id>
-        <link href="https://arxiv.org/abs/2607.05394"/>
-        <updated>2026-07-08T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Reinforcement learning with verifiable rewards (RLVR) is a powerful recipe for improving language-model reasoning, but it is expensive to repeat on every new strong model because the target model must generate many rollouts during training. As models scale, post-training itself becomes a bottleneck. We study a weak-to-strong alternative: run RL on a smaller model where rollouts are cheaper, then reuse what that RL run learned to improve a stronger target model. Directly distilling the post-RL we]]></summary>
-        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出直接在线策略蒸馏（Direct-OPD），将弱模型的RL策略迁移到强模型，避免在强模型上运行昂贵的RL，显著降低训练成本。</p>
-<h3>原始摘要</h3><p>Reinforcement learning with verifiable rewards (RLVR) is a powerful recipe for improving language-model reasoning, but it is expensive to repeat on every new strong model because the target model must generate many rollouts during training. As models scale, post-training itself becomes a bottleneck. We study a weak-to-strong alternative: run RL on a smaller model where rollouts are cheaper, then reuse what that RL run learned to improve a stronger target model. Directly distilling the post-RL weak teacher is not enough, because the teacher's final policy mixes useful RL gains with the limitations of the smaller model. We propose Direct On-Policy Distillation (Direct-OPD), which transfers the teacher's RL-induced policy shift instead. Direct-OPD compares the post-RL teacher with its own pre-RL reference and treats their log-ratio as a dense implicit reward for the student. In plain terms, the checkpoint pair tells us which actions RL made the weak model more or less likely to take, and Direct-OPD applies that signal on the stronger student's own on-policy states. This directly reuses the weak model's RL supervision signal without running sparse-reward RL on the target model. Empirically, Direct-OPD consistently leverages weaker teachers to improve stronger target models; notably, it boosts Qwen3-1.7B from 48.3% to 58.3% on AIME 2024 in just 4 hours on 8 A100 GPUs. It outperforms step-matched direct RL and enables the sequential composition of multiple policy shifts. Our results show that RL outcomes can be reused across model scales as implicit reward signals, not merely as final models to imitate.</p>
-<p><strong>Relevance:</strong> 7/10</p>
-<p><a href="https://arxiv.org/pdf/2607.05394">PDF</a> | <a href="https://arxiv.org/abs/2607.05394">arXiv</a></p>]]></content>
-        <author>
-            <name>Shiyuan Feng</name>
-        </author>
-        <author>
-            <name>Huan-ang Gao</name>
-        </author>
-        <author>
-            <name>Haohan Chi</name>
-        </author>
-        <author>
-            <name>Hanlin Wu</name>
-        </author>
-        <author>
-            <name>Zhilong Zhang</name>
-        </author>
-        <author>
-            <name>Zheng Jiang</name>
-        </author>
-        <author>
-            <name>Bingxiang He</name>
-        </author>
-        <author>
-            <name>Wei-Ying Ma</name>
-        </author>
-        <author>
-            <name>Ya-Qin Zhang</name>
-        </author>
-        <author>
-            <name>Hao Zhou</name>
-        </author>
-        <published>2026-07-08T00:00:00.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Frontier Language Models Struggle to Copy: Text Can Be Better Viewed in 2D]]></title>
-        <id>https://arxiv.org/abs/2607.16072</id>
-        <link href="https://arxiv.org/abs/2607.16072"/>
-        <updated>2026-07-17T15:56:52.000Z</updated>
-        <summary type="html"><![CDATA[While large language models (LLMs) can solve advanced reasoning problems in seconds, we show that even frontier models fail to perform a much simpler operation: exactly copying an input string that lies well within their context windows. We attribute this failure to positional encodings in Transformer architectures, whose inductive bias favors copying through a shortcut based on matching local contexts rather than carefully locating the corresponding input positions. To address this issue, we in]]></summary>
-        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出2D-RoPE，将文本组织为2D网格，使Transformer在复制任务上实现完美泛化，并提升语言建模效率。</p>
-<h3>原始摘要</h3><p>While large language models (LLMs) can solve advanced reasoning problems in seconds, we show that even frontier models fail to perform a much simpler operation: exactly copying an input string that lies well within their context windows. We attribute this failure to positional encodings in Transformer architectures, whose inductive bias favors copying through a shortcut based on matching local contexts rather than carefully locating the corresponding input positions. To address this issue, we introduce 2D-RoPE, which organizes text into a 2D grid rather than a 1D sequence and assigns each token a row ID and a column ID. Under this view, copying becomes simply retrieving input tokens at a fixed column offset, which makes the task easy to learn. In synthetic copy experiments, shallow Transformers with 2D-RoPE achieve perfect copying at input lengths hundreds of times longer than those seen during training, whereas standard positional encodings fall far behind. We further show that the advantage of 2D-RoPE language models on copy tasks consistently holds in large-scale pretraining on DCLM with model sizes up to 1.4B parameters. Overall, our results suggest that viewing text in 2D can benefit language modeling, and we hope this encourages future work to further explore the potential of 2D positional encodings.</p>
+        <title type="html"><![CDATA[MoE$^2$-LoRA: When MoE Models Meet MoE-style Low-Rank Adaptation]]></title>
+        <id>https://arxiv.org/abs/2607.21978</id>
+        <link href="https://arxiv.org/abs/2607.21978"/>
+        <updated>2026-07-24T04:50:39.000Z</updated>
+        <summary type="html"><![CDATA[Mixture-of-Experts (MoE) architectures have been widely adopted in large language models, yet parameter-efficient fine-tuning (PEFT) for MoE models remains underexplored. Existing PEFT methods for MoE either ignore router priors with uniform adapters, reducing efficiency and risking forgetting, or rely on static expert selection, limiting per-token capacity and cross-expert feature learning. In this paper, we make the first attempt to fine-tune MoE models with MoE-style low-rank adaptation: our ]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Mixture-of-Experts (MoE) architectures have been widely adopted in large language models, yet parameter-efficient fine-tuning (PEFT) for MoE models remains underexplored. Existing PEFT methods for MoE either ignore router priors with uniform adapters, reducing efficiency and risking forgetting, or rely on static expert selection, limiting per-token capacity and cross-expert feature learning. In this paper, we make the first attempt to fine-tune MoE models with MoE-style low-rank adaptation: our method, entitled MoE$^2$-LoRA, deeply couples the pretrained expert specialization with task-specific adaptivity via a dual-channel Routing-Conditioned Projection (RCP) module, which reuses base router activations to inform LoRA routing. We further introduce a single global LoRA expert pool shared across all layers, enabling model-wide adaptation with emergent layer-wise affinities and balanced expert utilization. MoE$^2$-LoRA simultaneously benefits from the advantages of prior reuse, dynamic adapter routing, and model-wide knowledge sharing. Evaluated on multiple MoE backbones with varying scales and expert granularities, MoE$^2$-LoRA consistently achieves state-of-the-art downstream accuracy while retaining stronger general capabilities.</p>
 <p><strong>Categories:</strong> cs.CL</p>
-<p><strong>Relevance:</strong> 6/10</p>
-<p><a href="https://arxiv.org/pdf/2607.16072">PDF</a> | <a href="https://arxiv.org/abs/2607.16072">arXiv</a></p>]]></content>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2607.21978">PDF</a> | <a href="https://arxiv.org/abs/2607.21978">arXiv</a></p>]]></content>
         <author>
-            <name>Haodong Wen</name>
+            <name>Qingyu Yang</name>
         </author>
         <author>
-            <name>Yiran Zhang</name>
+            <name>Haonan He</name>
         </author>
         <author>
-            <name>Yingfa Chen</name>
+            <name>Minglei Li</name>
         </author>
         <author>
-            <name>Kaifeng Lyu</name>
+            <name>Jingqi Ye</name>
+        </author>
+        <author>
+            <name>Tao Chen</name>
+        </author>
+        <author>
+            <name>Lei Bai</name>
+        </author>
+        <author>
+            <name>Peng Ye</name>
         </author>
         <category label="cs.CL" term="cs.CL"/>
-        <published>2026-07-17T15:56:52.000Z</published>
+        <published>2026-07-24T04:50:39.000Z</published>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Efficient Difficulty-Aware Dynamic Routing for Diffusion-Based Real-World Image Super-Resolution]]></title>
-        <id>https://arxiv.org/abs/2607.15711</id>
-        <link href="https://arxiv.org/abs/2607.15711"/>
-        <updated>2026-07-17T07:49:05.000Z</updated>
-        <summary type="html"><![CDATA[Diffusion-based methods have achieved impressive performance in real-world image super-resolution (Real-ISR) by leveraging large pre-trained stable diffusion (SD) models as powerful generative priors. However, these methods still face two key limitations. First, existing SD-based one-step and multi-step Real-ISR approaches adopt a unified processing paradigm for all input samples, ignoring the varying restoration difficulty across images. Second, the aggressive resolution reduction of the VAE in]]></summary>
-        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出了一种难度感知的动态路由策略（DDR），根据输入图像的恢复难度自动分配不同容量的网络，在保持效果的同时提升效率。</p>
-<h3>原始摘要</h3><p>Diffusion-based methods have achieved impressive performance in real-world image super-resolution (Real-ISR) by leveraging large pre-trained stable diffusion (SD) models as powerful generative priors. However, these methods still face two key limitations. First, existing SD-based one-step and multi-step Real-ISR approaches adopt a unified processing paradigm for all input samples, ignoring the varying restoration difficulty across images. Second, the aggressive resolution reduction of the VAE in SD models (e.g., 8x downsampling) leads to irreversible loss of fine-scale details, which cannot be recovered by the subsequent diffusion process. To address these limitations, we propose a Difficulty-aware Dynamic Routing (DDR) strategy that overcomes the rigid, one-size-fits-all processing paradigm. Specifically, we first design a difficulty estimator to predict the restoration cost of each input image, enabling automatic assignment to a network of appropriate capacity. Then, we construct a set of Real-ISR networks with varying model capacities by modulating the spatial downsampling ratio of the VAE in the SD backbone, thereby preserving more high-frequency information for challenging cases while maintaining efficiency for simpler inputs. Extensive experiments have demonstrated the superior efficiency and effectiveness of the proposed model compared to recent state-of-the-art methods.</p>
-<p><strong>Categories:</strong> cs.CV, cs.AI</p>
-<p><strong>Relevance:</strong> 6/10</p>
-<p><a href="https://arxiv.org/pdf/2607.15711">PDF</a> | <a href="https://arxiv.org/abs/2607.15711">arXiv</a></p>]]></content>
+        <title type="html"><![CDATA[RIS-Kernel: A Model-Agnostic Architecture for Long-Context LLM Inference via Sparse Attention]]></title>
+        <id>https://arxiv.org/abs/2607.21927</id>
+        <link href="https://arxiv.org/abs/2607.21927"/>
+        <updated>2026-07-24T03:00:02.000Z</updated>
+        <summary type="html"><![CDATA[Full self-attention in large language models scales as O(N^2), which limits long-context document analysis to 65,536 tokens and requires costly GPU clusters. The Reduced Interaction Sampling (RIS) inference engine addresses this constraint as a model-agnostic architecture. Without modifying weights, RIS reduces self-attention complexity to O(N log N) using sparse stochastic geometry that fits within commodity memory limits. We validate RIS on Qwen2-1.5B-Instruct across two regimes. In controlled]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Full self-attention in large language models scales as O(N^2), which limits long-context document analysis to 65,536 tokens and requires costly GPU clusters. The Reduced Interaction Sampling (RIS) inference engine addresses this constraint as a model-agnostic architecture. Without modifying weights, RIS reduces self-attention complexity to O(N log N) using sparse stochastic geometry that fits within commodity memory limits. We validate RIS on Qwen2-1.5B-Instruct across two regimes. In controlled evaluations at 32,768 tokens (where native dense attention serves as the upper bound), RIS-Stochastic at 1% density and 70 ensemble seeds achieves 75.00% accuracy, outperforming the native dense baseline (71.88%), while RIS-Stochastic at 5% density and 10 seeds matches it (71.88%). This demonstrates that sparse attention acts as a regularizer: low density (1%) over multiple seeds filters out sequence-level noise, whereas higher density (5%) reintroduces distractor noise. Under the tightest budget, RIS-Structural reaches 68.75% accuracy at 1% density with just 10 seeds, recovering 75% of the contextual gap relative to the zero-context floor (59.38%). At 65,536 tokens, where dense attention triggers out-of-memory faults, RIS yields retrieval gains of up to 14.06 percentage points over the zero-context floor (51.56%), which is confirmed as marginally significant under McNemar's paired test (p = 0.078 &lt; 0.10). All evaluations run on commodity, unaccelerated CPU servers (16-128 GB of RAM), demonstrating that long-context LLM inference is feasible on standard academic hardware without GPU acceleration.</p>
+<p><strong>Categories:</strong> cs.LG</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2607.21927">PDF</a> | <a href="https://arxiv.org/abs/2607.21927">arXiv</a></p>]]></content>
         <author>
-            <name>Xue Wu</name>
-        </author>
-        <author>
-            <name>Kang Zhao</name>
-        </author>
-        <author>
-            <name>Kafeng Wang</name>
-        </author>
-        <author>
-            <name>Jianfei Chen</name>
-        </author>
-        <author>
-            <name>Jingwei Xin</name>
-        </author>
-        <author>
-            <name>Nannan Wang</name>
-        </author>
-        <author>
-            <name>Xinbo Gao</name>
-        </author>
-        <category label="cs.CV" term="cs.CV"/>
-        <category label="cs.AI" term="cs.AI"/>
-        <published>2026-07-17T07:49:05.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Kolmogorov--Arnold Networks for Small Language Models]]></title>
-        <id>https://arxiv.org/abs/2607.15525</id>
-        <link href="https://arxiv.org/abs/2607.15525"/>
-        <updated>2026-07-17T00:22:23.000Z</updated>
-        <summary type="html"><![CDATA[Kolmogorov--Arnold Networks (KANs) replace fixed node activations with learned one-dimensional edge functions, offering an explicit interface for interpretation and a possible alternative to transformer feed-forward networks. We test these claims separately. In a six-layer, 10M-parameter B-spline KAN, we reconstruct all 884,736 feed-forward edges: 87.8\% exceed (NLS>0.1) and 0.4\% are inactive. Pruning the lowest-activity 20--25\% causes negligible loss increase, although structured MLP neuron p]]></summary>
-        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>研究了KAN作为Transformer前馈网络的替代方案，在小语言模型上进行了剪枝和效率分析，但未在大型模型上展示一致优势。</p>
-<h3>原始摘要</h3><p>Kolmogorov--Arnold Networks (KANs) replace fixed node activations with learned one-dimensional edge functions, offering an explicit interface for interpretation and a possible alternative to transformer feed-forward networks. We test these claims separately. In a six-layer, 10M-parameter B-spline KAN, we reconstruct all 884,736 feed-forward edges: 87.8\% exceed (NLS&gt;0.1) and 0.4\% are inactive. Pruning the lowest-activity 20--25\% causes negligible loss increase, although structured MLP neuron pruning tolerates comparable sparsity. The audit replicates on BabyLM, but grid-size sweeps show that near-total fPCA compression and high closed-form-fit coverage are properties of the low-capacity grid-2 basis, not universal KAN behavior. For replacement, we evaluate MLP, SwiGLU, grouped Chebyshev, and rational GR-KAN networks on BabyLM. The KAN-family and gated variants improve validation loss over the GELU MLP, but this ordering does not transfer to standardized benchmarks: across ten seeds and 59,875 BLiMP pairs, accuracies span 62.4--63.1\%, EWoK remains at chance, and a (+0.7)-point GR-KAN effect on BLiMP reverses on the supplement. Larger tests are also cautionary: parameter-matched MLPEdge underperforms the MLP on Wikitext-103, and 286M-parameter GR-KAN remains below a SwiGLU ClimbMix baseline after stabilization. Thus, small-basis KANs provide a practical, corpus-transferable interface for auditing learned scalar transformations, but the tested replacements show no consistent benchmark, quality, or latency advantage over strong MLP baselines.</p>
-<p><strong>Categories:</strong> cs.LG, cs.AI</p>
-<p><strong>Relevance:</strong> 6/10</p>
-<p><a href="https://arxiv.org/pdf/2607.15525">PDF</a> | <a href="https://arxiv.org/abs/2607.15525">arXiv</a></p>]]></content>
-        <author>
-            <name>Felippe Alves</name>
-        </author>
-        <author>
-            <name>Renato Vicente</name>
+            <name>Anderson R. Santos</name>
         </author>
         <category label="cs.LG" term="cs.LG"/>
-        <category label="cs.AI" term="cs.AI"/>
-        <published>2026-07-17T00:22:23.000Z</published>
+        <published>2026-07-24T03:00:02.000Z</published>
     </entry>
     <entry>
-        <title type="html"><![CDATA[VideoRAE: Taming Video Foundation Models for Generative Modeling via Representation Autoencoders]]></title>
-        <id>https://arxiv.org/abs/2607.14088</id>
-        <link href="https://arxiv.org/abs/2607.14088"/>
-        <updated>2026-07-15T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Video generative models commonly rely on latent spaces learned by 3D Variational Autoencoders (3D-VAEs). However, conventional 3D-VAEs are mainly optimized for pixel-level reconstruction, which can limit the semantic and spatio-temporal structure captured by their latents. Meanwhile, Video Foundation Models (VFMs) such as V-JEPA 2 and VideoMAEv2 show strong video understanding capabilities, yet whether their frozen representations can be transformed into compact, reconstruction-capable, and gene]]></summary>
-        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出VideoRAE，利用冻结的视频基础模型特征，通过轻量级1D自注意力投影器压缩为连续或离散潜变量，实现5倍训练加速，并支持扩散和自回归生成。</p>
-<h3>原始摘要</h3><p>Video generative models commonly rely on latent spaces learned by 3D Variational Autoencoders (3D-VAEs). However, conventional 3D-VAEs are mainly optimized for pixel-level reconstruction, which can limit the semantic and spatio-temporal structure captured by their latents. Meanwhile, Video Foundation Models (VFMs) such as V-JEPA 2 and VideoMAEv2 show strong video understanding capabilities, yet whether their frozen representations can be transformed into compact, reconstruction-capable, and generation-friendly video latents remains largely unexplored. We answer this question with VideoRAE, a representation autoencoder that leverages multi-scale hierarchical features from a frozen video foundation encoder and compresses them with a lightweight 1D self-attention projector. VideoRAE supports both continuous latents for Diffusion Transformers and discrete tokens for autoregressive models via multi-codebook high-dimensional quantization. During decoding, a local-and-global representation alignment objective with the frozen VFM teacher improves semantic preservation and enables training without KL regularization. Experiments show that VideoRAE achieves strong reconstruction in both continuous and discrete regimes. On UCF-101, it obtains state-of-the-art class-to-video gFVDs of 40 and 93 with AR and DiT generators, respectively, while converging approximately 5x faster than competing autoencoder baselines. In a controlled 2B-scale text-to-video study, replacing LTX-VAE with VideoRAE leads to faster convergence under comparable settings. These results validate frozen VFM representations as versatile and generation-friendly video latents. The model and code will be released on https://zhxie0117.github.io/VideoRAE.</p>
-<p><strong>Relevance:</strong> 6/10</p>
-<p><a href="https://arxiv.org/pdf/2607.14088">PDF</a> | <a href="https://arxiv.org/abs/2607.14088">arXiv</a></p>]]></content>
+        <title type="html"><![CDATA[SLAI T-Rex: Full-Parameter Post-training of the DeepSeek-V4 Family on Ascend SuperPOD]]></title>
+        <id>https://arxiv.org/abs/2607.20145</id>
+        <link href="https://arxiv.org/abs/2607.20145"/>
+        <updated>2026-07-22T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Full-parameter post-training of trillion-parameter-scale MoE models introduces substantial system-level challenges for large-scale distributed training, including severe memory pressure, non-overlapped communication overhead, and inefficient kernel execution. While most large-scale LLM training systems are built around GPU-based clusters, this report presents an end-to-end optimization practice on the Ascend NPU SuperPOD. Using the DeepSeek-V4 model family as the target workload, we develop a hi]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>针对万亿参数MoE模型在Ascend NPU上的全参数后训练，提出层次化优化框架，实现34.22% MFU，相比基线提升2.93倍。</p>
+<h3>原始摘要</h3><p>Full-parameter post-training of trillion-parameter-scale MoE models introduces substantial system-level challenges for large-scale distributed training, including severe memory pressure, non-overlapped communication overhead, and inefficient kernel execution. While most large-scale LLM training systems are built around GPU-based clusters, this report presents an end-to-end optimization practice on the Ascend NPU SuperPOD. Using the DeepSeek-V4 model family as the target workload, we develop a hierarchical optimization framework spanning model-level parallelism, computation-communication orchestration, and low-level kernel execution. The resulting system achieves 34.22% Model FLOPs Utilization (MFU) with a 2.93x improvement over the open-source baseline recipe while maintaining training stability. Building on this optimized infrastructure, we further establish a CPT and SFT workflow for complex Operations Research (OR) tasks. We refer to the integrated framework as SLAI T-Rex. Using DeepSeek-V4-Flash, we develop OR-oriented CPT and SFT data pipelines that combine collected domain resources with solver-verified synthetic optimization documents. The resulting dataset contains 10K high-quality SFT samples spanning four task categories and three problem representations. The specialized model achieves the highest average zero-shot Pass@1 score among the evaluated models, reaching 71.81% and outperforming GPT-5.4-Mini and the base DeepSeek-V4-Flash model by 3.98 and 11.27 percentage points, respectively. Overall, this work demonstrates a full-stack pathway from efficient trillion-parameter model post-training on Ascend infra to domain-specialized Flash models for solver-grounded mathematical modeling, advancing frontier-model systems for complex reasoning.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2607.20145">PDF</a> | <a href="https://arxiv.org/abs/2607.20145">arXiv</a></p>]]></content>
         <author>
-            <name>Zhihao Xie</name>
+            <name>Dongfang Li</name>
         </author>
         <author>
-            <name>Junfeng Wu</name>
+            <name>Xiaodong Luo</name>
         </author>
         <author>
-            <name>Xinting Hu</name>
+            <name>Ruoyu Sun</name>
         </author>
         <author>
-            <name>Junchao Huang</name>
+            <name>Xuhui Chen</name>
         </author>
         <author>
-            <name>Li Jiang</name>
+            <name>Linyuan Qiu</name>
         </author>
-        <published>2026-07-15T00:00:00.000Z</published>
+        <author>
+            <name>Jian Meng</name>
+        </author>
+        <author>
+            <name>Zhengxuan Lu</name>
+        </author>
+        <author>
+            <name>Yiting Wang</name>
+        </author>
+        <author>
+            <name>Yucheng Xie</name>
+        </author>
+        <author>
+            <name>Tao Guo</name>
+        </author>
+        <author>
+            <name>Tianxiang Fang</name>
+        </author>
+        <author>
+            <name>Jing Li</name>
+        </author>
+        <author>
+            <name>Sihang Chen</name>
+        </author>
+        <author>
+            <name>Shihao Hong</name>
+        </author>
+        <author>
+            <name>Chang Liu</name>
+        </author>
+        <author>
+            <name>Weihua Dai</name>
+        </author>
+        <author>
+            <name>Zirong Zeng</name>
+        </author>
+        <author>
+            <name>Ziwei Zhu</name>
+        </author>
+        <author>
+            <name>Zhuohan Wang</name>
+        </author>
+        <author>
+            <name>Zhengjun Yue</name>
+        </author>
+        <author>
+            <name>Igor Vasilyev</name>
+        </author>
+        <author>
+            <name>Min Liu</name>
+        </author>
+        <author>
+            <name>Weijian Sun</name>
+        </author>
+        <author>
+            <name>Xin Chen</name>
+        </author>
+        <author>
+            <name>Yingmeng Gao</name>
+        </author>
+        <author>
+            <name>Jinhua Zhou</name>
+        </author>
+        <author>
+            <name>Taolue Chen</name>
+        </author>
+        <author>
+            <name>Chenwei Wu</name>
+        </author>
+        <author>
+            <name>Dong Zhang</name>
+        </author>
+        <author>
+            <name>Wenlong Jin</name>
+        </author>
+        <author>
+            <name>Jinmin Xiang</name>
+        </author>
+        <author>
+            <name>Barkova Maria</name>
+        </author>
+        <author>
+            <name>Ushakov Anton</name>
+        </author>
+        <author>
+            <name>Xianfei Jin</name>
+        </author>
+        <author>
+            <name>Tian Ding</name>
+        </author>
+        <author>
+            <name>Zhihang Lin</name>
+        </author>
+        <author>
+            <name>Qian Chen</name>
+        </author>
+        <author>
+            <name>Linxin Yang</name>
+        </author>
+        <author>
+            <name>Mingzhe Yang</name>
+        </author>
+        <author>
+            <name>Bingwei Zhang</name>
+        </author>
+        <author>
+            <name>Hongzhang Yang</name>
+        </author>
+        <author>
+            <name>Fangxue Zhang</name>
+        </author>
+        <author>
+            <name>Shijun Qin</name>
+        </author>
+        <author>
+            <name>Jie Yu</name>
+        </author>
+        <author>
+            <name>Cuihua Hu</name>
+        </author>
+        <author>
+            <name>Tolstykh Vasiliy</name>
+        </author>
+        <author>
+            <name>Nosov Ivan</name>
+        </author>
+        <author>
+            <name>Abdullin Amir</name>
+        </author>
+        <author>
+            <name>Zhichen Zhou</name>
+        </author>
+        <author>
+            <name>Xin Zhang</name>
+        </author>
+        <author>
+            <name>Zhixiong Ning</name>
+        </author>
+        <author>
+            <name>Xutong Zhao</name>
+        </author>
+        <author>
+            <name>Junjie Huang</name>
+        </author>
+        <author>
+            <name>Jiajun Liu</name>
+        </author>
+        <author>
+            <name>Weiyan Kong</name>
+        </author>
+        <author>
+            <name>Zheng Zhang</name>
+        </author>
+        <author>
+            <name>Wenhan Luo</name>
+        </author>
+        <author>
+            <name>Lin Hu</name>
+        </author>
+        <author>
+            <name>Yangbo Guo</name>
+        </author>
+        <author>
+            <name>Li Zeng</name>
+        </author>
+        <author>
+            <name>Shihao Zeng</name>
+        </author>
+        <author>
+            <name>Baotian Hu</name>
+        </author>
+        <author>
+            <name>Min Zhang</name>
+        </author>
+        <author>
+            <name>Haizhou Li</name>
+        </author>
+        <author>
+            <name>Zhiquan Luo</name>
+        </author>
+        <published>2026-07-22T00:00:00.000Z</published>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Hierarchical Denoising For Multi-Step Visual Reasoning]]></title>
-        <id>https://arxiv.org/abs/2607.15278</id>
-        <link href="https://arxiv.org/abs/2607.15278"/>
-        <updated>2026-07-16T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Video models are evolving into vision foundation models, yet they still lack human-like multi-step reasoning. Streaming autoregressive diffusion models are efficient but limited in reasoning, while bidirectional diffusion enables global revision with high inference costs due to dense frame-level denoising. Both paradigms struggle to achieve logical consistency and low-latency streaming for complex reasoning tasks. We propose HDR (Hierarchical Denoising for Visual Reasoning), a unified framework ]]></summary>
-        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出HDR，层次化去噪框架，通过树状潜变量结构和稀疏层次注意力模式，实现多步视觉推理的低延迟流式生成，推理速度提升54.2倍。</p>
-<h3>原始摘要</h3><p>Video models are evolving into vision foundation models, yet they still lack human-like multi-step reasoning. Streaming autoregressive diffusion models are efficient but limited in reasoning, while bidirectional diffusion enables global revision with high inference costs due to dense frame-level denoising. Both paradigms struggle to achieve logical consistency and low-latency streaming for complex reasoning tasks. We propose HDR (Hierarchical Denoising for Visual Reasoning), a unified framework that integrates hierarchical latents into causal video generation for multi-step reasoning. HDR organizes video latents into a tree-structured hierarchy, enabling coarse-to-fine reasoning before streaming output. Coarse denoising layers preserve uncertain hypotheses for global planning, while finer layers progressively refine them into concrete visual states. A sparse hierarchical attention pattern (SHAP) further reduces temporal attention costs. We introduce a level-stratified multi-step video reasoning benchmark with out-of-distribution cases, covering six tasks: maze navigation, Tower of Hanoi, one-line drawing, sliding puzzle, Sokoban, and water pouring. Compared with streaming autoregressive diffusion baselines, HDR improves success from 34.22 to 60.29 (76.2% relative gain) and increases average progress from 76.00 to 89.56, demonstrating more consistent reasoning trajectories. HDR maintains low-latency streaming at 0.70 seconds per latent, achieving 54.2 times faster inference than bidirectional diffusion. It also retains 82.9% of full-data performance with only 2% training data, compared with 52.0% for bidirectional diffusion. Real-world robot experiments further demonstrate HDR's potential for physical interaction and world modeling. Project demo: https://hierarchical-diffusion-reasoning.github.io/.</p>
-<p><strong>Relevance:</strong> 6/10</p>
-<p><a href="https://arxiv.org/pdf/2607.15278">PDF</a> | <a href="https://arxiv.org/abs/2607.15278">arXiv</a></p>]]></content>
+        <title type="html"><![CDATA[Generative World Renderer at the Speed of Play]]></title>
+        <id>https://arxiv.org/abs/2607.18703</id>
+        <link href="https://arxiv.org/abs/2607.18703"/>
+        <updated>2026-07-21T04:54:24.000Z</updated>
+        <summary type="html"><![CDATA[Generative world renderer AlayaRenderer receives structured world states exported from physics engines and synthesizes RGB frames. Unlike models that generate frames from text/control-hints prompts, AlayaRenderer preserves scene structure without altering the underlying world dynamics. This demonstrates an alternative path toward interactive world modeling and user-controllable play. However, the original AlayaRenderer is too computationally expensive for real-time deployment. This technical rep]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>通过蒸馏和轻量编解码器将生成式世界渲染器从0.56 FPS加速至31.54 FPS，达到实时可玩速度。</p>
+<h3>原始摘要</h3><p>Generative world renderer AlayaRenderer receives structured world states exported from physics engines and synthesizes RGB frames. Unlike models that generate frames from text/control-hints prompts, AlayaRenderer preserves scene structure without altering the underlying world dynamics. This demonstrates an alternative path toward interactive world modeling and user-controllable play. However, the original AlayaRenderer is too computationally expensive for real-time deployment. This technical report introduces AlayaRenderer-Flash, a real-time-oriented generative forward world renderer that pushes AlayaRenderer from 0.56 FPS to 31.54 FPS, reaching the speed of play. AlayaRenderer-Flash reformulates the original renderer as a few-step autoregressive streaming model and introduces lightweight distilled codecs for efficient latent encoding and frame reconstruction. It retains the teacher model's G-buffer and text-prompt interfaces while enabling continuous rendering over input streams of unbounded length. We evaluate AlayaRenderer-Flash on G-buffer streams across content preservation, temporal consistency, cross-window stability, prompt controllability, and runtime efficiency. Our results show that AlayaRenderer-Flash substantially reduces inference cost while preserving the core rendering capabilities of the teacher model. By integrating AlayaRenderer-Flash with a physics engine, we build a fully playable generative world running at 30 FPS.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2607.18703">PDF</a> | <a href="https://arxiv.org/abs/2607.18703">arXiv</a></p>]]></content>
         <author>
-            <name>Zezhong Qian</name>
+            <name>Guixu Lin</name>
         </author>
         <author>
-            <name>Xiaowei Chi</name>
+            <name>Zheng-Hui Huang</name>
         </author>
         <author>
-            <name>Chak-Wing Mak</name>
+            <name>Siqi Yang</name>
         </author>
         <author>
-            <name>Tianze Zhou</name>
+            <name>Ming-Hsuan Yang</name>
         </author>
         <author>
-            <name>Ruibin Yuan</name>
+            <name>Kaipeng Zhang</name>
         </author>
         <author>
-            <name>Yuhan Rui</name>
+            <name>Zhixiang Wang</name>
         </author>
-        <author>
-            <name>Hengzhe Sun</name>
-        </author>
-        <author>
-            <name>Zhuoqun Wu</name>
-        </author>
-        <author>
-            <name>Yuming Li</name>
-        </author>
-        <author>
-            <name>Siyuan Qian</name>
-        </author>
-        <author>
-            <name>Sirui Han</name>
-        </author>
-        <author>
-            <name>Shanghang Zhang</name>
-        </author>
-        <published>2026-07-16T00:00:00.000Z</published>
+        <published>2026-07-21T04:54:24.000Z</published>
     </entry>
     <entry>
-        <title type="html"><![CDATA[What LLM Forecasters Know but Don't Say: Probing Internal Representations for Calibration and Faithfulness]]></title>
-        <id>https://arxiv.org/abs/2607.08046</id>
-        <link href="https://arxiv.org/abs/2607.08046"/>
-        <updated>2026-07-09T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Large language models fine-tuned for forecasting can be accurate yet poorly calibrated, and their chain-of-thought (CoT) reasoning may not faithfully reflect the evidence behind a forecast. We ask whether internal representations offer a more direct window into both. Working with Eternis-Forecaster 8B on OpenForesight, we train representation-pooling probes on intermediate activations and find they achieve substantially better calibration; a result that also holds for GLM-4.7-Flash and GLM-4.5-A]]></summary>
-        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>通过探测LLM内部表示实现校准和忠实性审计，并提出基于预推理答案分布的路由方法，可节省30-47%的生成token，提升推理效率。</p>
-<h3>原始摘要</h3><p>Large language models fine-tuned for forecasting can be accurate yet poorly calibrated, and their chain-of-thought (CoT) reasoning may not faithfully reflect the evidence behind a forecast. We ask whether internal representations offer a more direct window into both. Working with Eternis-Forecaster 8B on OpenForesight, we train representation-pooling probes on intermediate activations and find they achieve substantially better calibration; a result that also holds for GLM-4.7-Flash and GLM-4.5-Air. We then assess CoT faithfulness through evidence ablation and diversionary injection: removing an influential source in the prompt often changes the model's forecast while leaving the reasoning trace untouched. The same probes function as lie detectors: their activations track behavioral shifts far better than the reasoning trace does, and they also predict the direction of change in 84% of cases, including when the CoT conceals the perturbation's influence. Finally, forced answering reveals that forecasts are largely fixed before reasoning begins: a single pre-reasoning pass recovers the committed answer and confidence, and routing questions by the spread of this pre-set answer distribution saves 30-47% of generated tokens, with no loss of accuracy. Together, these results establish probing internal representations as a practical tool for calibrating, auditing, and triaging language model forecasters and reasoning models more broadly.</p>
+        <title type="html"><![CDATA[Mage-Flow: An Efficient Native-Resolution Foundation Model for Image Generation and Editing]]></title>
+        <id>https://arxiv.org/abs/2607.19064</id>
+        <link href="https://arxiv.org/abs/2607.19064"/>
+        <updated>2026-07-21T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Large-scale visual generators are increasingly capable but costly to train, fine-tune, and deploy. We introduce Mage-Flow, a compact 4B-scale generative stack for efficient text-to-image generation and instruction-based image editing. The stack is built from two co-designed components: Mage-VAE, a lightweight high-fidelity latent tokenizer, and a Native-Resolution Multimodal Diffusion Transformer trained with rectified flow matching. Mage-VAE uses one-step diffusion-style encoding and decoding w]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出Mage-Flow紧凑生成栈，包含轻量级VAE和原生分辨率扩散Transformer，通过CUDA核融合实现2.5倍训练吞吐提升，Turbo变体在A10上实现实时推理。</p>
+<h3>原始摘要</h3><p>Large-scale visual generators are increasingly capable but costly to train, fine-tune, and deploy. We introduce Mage-Flow, a compact 4B-scale generative stack for efficient text-to-image generation and instruction-based image editing. The stack is built from two co-designed components: Mage-VAE, a lightweight high-fidelity latent tokenizer, and a Native-Resolution Multimodal Diffusion Transformer trained with rectified flow matching. Mage-VAE uses one-step diffusion-style encoding and decoding with anchor-latent regularization, preserving the reconstruction quality of strong public VAEs while reducing tokenization cost by more than an order of magnitude. Together with native-resolution packing and stack-level CUDA kernel fusion, the stack supports flexible-resolution training and improves end-to-end training throughput by about 2.5times. Built on this foundation, we develop a complete model family with Base, RL-aligned, and Turbo variants for both generation and editing. Diffusion-NFT improves prompt following, text rendering, aesthetic quality, and editing fidelity, while few-step distillation with adversarial perceptual guidance produces 4-step Turbo models for low-latency inference. Despite its compact scale, Mage-Flow and Mage-Flow-Edit achieves competitive performance across standard generation and editing benchmarks. More importantly, the Turbo variants make high-resolution generation and editing practical for interactive use: at 1024^2 resolution on a single NVIDIA A100 GPU, Mage-Flow-Turbo generates an image in 0.59s, and Mage-Flow-Edit-Turbo edits an image in 1.02s, while maintaining a small memory footprint. These results show that careful tokenizer--backbone--system co-design can deliver strong high-resolution generation and editing within an efficient 4B model family.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2607.19064">PDF</a> | <a href="https://arxiv.org/abs/2607.19064">arXiv</a></p>]]></content>
+        <author>
+            <name>Xinjie Zhang</name>
+        </author>
+        <author>
+            <name>Peng Zhang</name>
+        </author>
+        <author>
+            <name>Shicheng Zheng</name>
+        </author>
+        <author>
+            <name>Jinghao Guo</name>
+        </author>
+        <author>
+            <name>Zhaoyang Jia</name>
+        </author>
+        <author>
+            <name>Yifei Shen</name>
+        </author>
+        <author>
+            <name>Xun Guo</name>
+        </author>
+        <author>
+            <name>Yuxuan Luo</name>
+        </author>
+        <author>
+            <name>Jiahao Li</name>
+        </author>
+        <author>
+            <name>Wenxuan Xie</name>
+        </author>
+        <author>
+            <name>Fanyi Pu</name>
+        </author>
+        <author>
+            <name>Xiaoyi Zhang</name>
+        </author>
+        <author>
+            <name>Kaichen Zhang</name>
+        </author>
+        <author>
+            <name>Zongyu Guo</name>
+        </author>
+        <author>
+            <name>Tianci Bi</name>
+        </author>
+        <author>
+            <name>Dongnan Gui</name>
+        </author>
+        <author>
+            <name>Zhening Liu</name>
+        </author>
+        <author>
+            <name>Zimo Wen</name>
+        </author>
+        <author>
+            <name>Zihan Zheng</name>
+        </author>
+        <author>
+            <name>Senqiao Yang</name>
+        </author>
+        <author>
+            <name>Xiao Li</name>
+        </author>
+        <author>
+            <name>Jinglu Wang</name>
+        </author>
+        <author>
+            <name>Bin Li</name>
+        </author>
+        <author>
+            <name>Yan Lu</name>
+        </author>
+        <published>2026-07-21T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[AlayaWorld: Interactive Long-Horizon World Modeling -- Full Technical Report]]></title>
+        <id>https://arxiv.org/abs/2607.18367</id>
+        <link href="https://arxiv.org/abs/2607.18367"/>
+        <updated>2026-07-20T17:15:41.000Z</updated>
+        <summary type="html"><![CDATA[Unlike conventional video game development, which relies on labor-intensive pipelines for asset production, animation, physics, and programming, video world models generate interactive environments from user inputs instantly. It enable us to create customized, explorable, and continuously evolving virtual world from text, an image, or video. Realizing this vision requires four tightly coupled capabilities: interaction, persistent spatiotemporal consistency, stable long-horizon generation, and ef]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出AlayaWorld交互式世界模型，通过离散自回归蒸馏（分布匹配蒸馏、自强制++、一致性蒸馏）将推理步数从30降至4，实现实时生成。</p>
+<h3>原始摘要</h3><p>Unlike conventional video game development, which relies on labor-intensive pipelines for asset production, animation, physics, and programming, video world models generate interactive environments from user inputs instantly. It enable us to create customized, explorable, and continuously evolving virtual world from text, an image, or video. Realizing this vision requires four tightly coupled capabilities: interaction, persistent spatiotemporal consistency, stable long-horizon generation, and efficient response. We present AlayaWorld, an interactive long-horizon video world model that generates 24-fps video at 540p and 720p. Built on a 15B video diffusion transformer, AlayaWorld generates short latent chunks autoregressively under camera trajectories and switchable text prompts. Its bounded visual context combines a persistent sink frame, compressed temporal history, geometry-aligned spatial memory, and recent-frame conditioning. To reduce long-term drift, the model is trained with corrupted histories and prediction residuals collected from its own roll-outs. We further introduce a discrete autoregressive distillation formulation that combines distribution-matching distillation, self-forcing++, and consistency distillation, reducing inference from approximately 30 sampling steps to four steps per chunk. On iWorld-Bench, AlayaWorld achieves the best performance over long-horizon generation. Conceived as a full-stack, open-source, and long-term project, AlayaWorld is intended to provide an extensible foundation for future research on interactive video world models.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2607.18367">PDF</a> | <a href="https://arxiv.org/abs/2607.18367">arXiv</a></p>]]></content>
+        <author>
+            <name>AlayaWorld Team</name>
+        </author>
+        <author>
+            <name>Kaipeng Zhang</name>
+        </author>
+        <author>
+            <name>Chuanhao Li</name>
+        </author>
+        <author>
+            <name>Yifan Zhan</name>
+        </author>
+        <author>
+            <name>Yongtao Ge</name>
+        </author>
+        <author>
+            <name>Yuanyang Yin</name>
+        </author>
+        <author>
+            <name>Jiaming Tan</name>
+        </author>
+        <author>
+            <name>Kang He</name>
+        </author>
+        <author>
+            <name>Liaoyuan Fan</name>
+        </author>
+        <author>
+            <name>Mingliang Zhai</name>
+        </author>
+        <author>
+            <name>Ruicong Liu</name>
+        </author>
+        <author>
+            <name>Xiaojie Xu</name>
+        </author>
+        <author>
+            <name>Xuangeng Chu</name>
+        </author>
+        <author>
+            <name>Zhen Li</name>
+        </author>
+        <author>
+            <name>Zhengyuan Lin</name>
+        </author>
+        <author>
+            <name>Zhixiang Wang</name>
+        </author>
+        <author>
+            <name>Zian Meng</name>
+        </author>
+        <author>
+            <name>Zihui Gao</name>
+        </author>
+        <published>2026-07-20T17:15:41.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[FlashRT: Agent Harness for Guiding Agents to Deploy Real-Time Multimodal Applications]]></title>
+        <id>https://arxiv.org/abs/2607.18171</id>
+        <link href="https://arxiv.org/abs/2607.18171"/>
+        <updated>2026-07-20T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Real-time multimodal applications, including voice agents and interactive video generation, compose heterogeneous models into pipelines whose efficient deployment requires application-specific decisions about placement, streaming, and intra-model parallelism. Existing serving systems and auto-parallelism compilers commit to limited transformations and fixed workload assumptions, so achieving high performance on a new application requires hand-crafting an efficient implementation. We present Flas]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出FlashRT，一种代理框架，通过链式编程自动优化多模态应用的部署，实现高达70倍延迟降低和2.8倍吞吐提升。</p>
+<h3>原始摘要</h3><p>Real-time multimodal applications, including voice agents and interactive video generation, compose heterogeneous models into pipelines whose efficient deployment requires application-specific decisions about placement, streaming, and intra-model parallelism. Existing serving systems and auto-parallelism compilers commit to limited transformations and fixed workload assumptions, so achieving high performance on a new application requires hand-crafting an efficient implementation. We present FlashRT, an agent harness that guides coding agents to lift simple developer-written reference implementations into optimized multi-GPU deployments that flexibly weigh target metrics like latency and throughput. Using a new chain-of-program paradigm, FlashRT directs a generic coding agent through a multi-pass transformation process where an agent transforms the reference into an intermediate representation (IR) to capture data dependencies and persistent-state scopes, validates this IR via a sequential interpreter, and performs static analyses to identify candidate transformations. Then, the agent iteratively implements, verifies, and benchmarks each candidate under a measurement-gated optimization loop to produce effective deployments that span different hardware budgets. Across various applications, including video world models and multimodal LLMs, FlashRT converts reference implementations into highly efficient deployments, delivering up to ~70x latency reduction and 2.8x throughput improvement on NVIDIA B200 GPUs. On AMD MI355X GPUs, FlashRT matches the peak latency reduction while increasing peak throughput improvement to 3.6x, demonstrating that agent-driven optimization can be more scalable on platforms with less mature expert optimization. In fact, for Qwen3-Omni text-to-audio inference, FlashRT reduces response latency by 65% compared to the expert vLLM-Omni implementation on AMD MI355X.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2607.18171">PDF</a> | <a href="https://arxiv.org/abs/2607.18171">arXiv</a></p>]]></content>
+        <author>
+            <name>Krish Agarwal</name>
+        </author>
+        <author>
+            <name>Zhuoming Chen</name>
+        </author>
+        <author>
+            <name>Yanyuan Qin</name>
+        </author>
+        <author>
+            <name>Zhenyu Gu</name>
+        </author>
+        <author>
+            <name>Atri Rudra</name>
+        </author>
+        <author>
+            <name>Beidi Chen</name>
+        </author>
+        <published>2026-07-20T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[LayoutLite: Token-Level Implicit Layout Analysis for Efficient Document OCR]]></title>
+        <id>https://arxiv.org/abs/2607.22200</id>
+        <link href="https://arxiv.org/abs/2607.22200"/>
+        <updated>2026-07-24T11:13:44.000Z</updated>
+        <summary type="html"><![CDATA[End-to-end OCR systems based on vision-language models have achieved strong performance in complex document OCR, but their efficiency is limited by the large number of visual tokens produced from document images. Many of these tokens correspond to blank margins or visually redundant regions, yet directly applying generic visual token compression methods may remove OCR-critical fine-grained details. In this paper, we propose LayoutLite, a lightweight plug-and-play module for efficient document OC]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出LayoutLite，一种轻量级即插即用模块，通过令牌级隐式布局分析预测视觉令牌重要性，移除低信息令牌以加速文档OCR推理，同时保持识别质量。</p>
+<h3>原始摘要</h3><p>End-to-end OCR systems based on vision-language models have achieved strong performance in complex document OCR, but their efficiency is limited by the large number of visual tokens produced from document images. Many of these tokens correspond to blank margins or visually redundant regions, yet directly applying generic visual token compression methods may remove OCR-critical fine-grained details. In this paper, we propose LayoutLite, a lightweight plug-and-play module for efficient document OCR. Instead of relying on explicit document layout detection, LayoutLite performs implicit layout analysis at the token level between the vision encoder and the language decoder. It aggregates multi-layer visual representations from the vision encoder, and predicts an importance score for each visual token with a lightweight scoring network. Low-information tokens are then removed before entering the language decoder while preserving the original spatial positional information of retained tokens. To train LayoutLite without human annotations, we cast token selection as a reinforcement learning problem and optimize it with a group-relative policy optimization objective driven by OCR output consistency, together with an auxiliary layout supervision signal to stabilize training. Experiments on OmniDocBench demonstrate that LayoutLite can substantially reduce visual token length and inference cost with negligible degradation in recognition quality. We further evaluate LayoutLite on two OCR-specialized VLMs, FireRed-OCR and Logics-Parsing-V2. Under up to 50% token compression, LayoutLite preserves almost the same score on both models while reducing prefill latency, FLOPs, and KV cache memory by over 40%, with only a small additional inference overhead. These results show that token-level implicit layout analysis is an effective and practical approach for accelerating VLM-based OCR systems.</p>
+<p><strong>Categories:</strong> cs.CV</p>
+<p><strong>Relevance:</strong> 7/10</p>
+<p><a href="https://arxiv.org/pdf/2607.22200">PDF</a> | <a href="https://arxiv.org/abs/2607.22200">arXiv</a></p>]]></content>
+        <author>
+            <name>Xudong Liu</name>
+        </author>
+        <author>
+            <name>Bicheng Wan</name>
+        </author>
+        <author>
+            <name>Yulin Jin</name>
+        </author>
+        <category label="cs.CV" term="cs.CV"/>
+        <published>2026-07-24T11:13:44.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[ABot-World-0: Infinite Interactive World Rollout on a Single Desktop GPU]]></title>
+        <id>https://arxiv.org/abs/2607.19191</id>
+        <link href="https://arxiv.org/abs/2607.19191"/>
+        <updated>2026-07-21T15:26:50.000Z</updated>
+        <summary type="html"><![CDATA[We present ABot-World-0, an action-conditioned video world model for real-time, long-horizon closed-loop interaction, supported by a multi-source data infrastructure spanning AAA games, simulation engines, and internet videos to learn controllable world dynamics. WorldExplorer performs agent-driven collection guided by training feedback, while a unified pipeline applies 14 deterministic quality checks, VLM-based assessment, and synchronized action and text annotation. We progressively distill a ]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出ABot-World-0世界模型，通过流式推理栈、轻量级VAE解码器、高效注意力和低比特DiT推理，在单张RTX 5090上实现720P视频16 FPS实时交互。</p>
+<h3>原始摘要</h3><p>We present ABot-World-0, an action-conditioned video world model for real-time, long-horizon closed-loop interaction, supported by a multi-source data infrastructure spanning AAA games, simulation engines, and internet videos to learn controllable world dynamics. WorldExplorer performs agent-driven collection guided by training feedback, while a unified pipeline applies 14 deterministic quality checks, VLM-based assessment, and synchronized action and text annotation. We progressively distill a bidirectional action-conditioned teacher into a causal student through teacher forcing and ODE distillation, and introduce LongForcing to align long student self-rollouts with an extended-horizon teacher, mitigating accumulated distribution shift and autoregressive drift. Raw keyboard actions provide a unified control interface for scene roaming and third-person character interaction, while reference-character memory provides persistent appearance cues for identity consistency during third-person rollouts. For deployment, we co-design a streaming inference stack with a lightweight VAE decoder, efficient attention, memory-aware scheduling, and low-bit DiT inference. Across optimized low-bit configurations, ABot-World-0 streams 720P video at up to 16 FPS on a single NVIDIA RTX 5090 desktop GPU, with 1.2s action-to-first-frame latency and approximately 19GiB peak VRAM. Experiments on WorldRoamBench and extended interactive rollouts demonstrate competitive controllability and coherent long-horizon world evolution.</p>
+<p><strong>Relevance:</strong> 7/10</p>
+<p><a href="https://arxiv.org/pdf/2607.19191">PDF</a> | <a href="https://arxiv.org/abs/2607.19191">arXiv</a></p>]]></content>
+        <author>
+            <name>Fan Jiang</name>
+        </author>
+        <author>
+            <name>Zhaoxu Sun</name>
+        </author>
+        <author>
+            <name>Mengchao Wang</name>
+        </author>
+        <author>
+            <name>Ziyu Zhu</name>
+        </author>
+        <author>
+            <name>Chiyu Wang</name>
+        </author>
+        <author>
+            <name>Yunpeng Zhang</name>
+        </author>
+        <author>
+            <name>Wenlin Liu</name>
+        </author>
+        <author>
+            <name>Yun Wang</name>
+        </author>
+        <author>
+            <name>Xue Zheng</name>
+        </author>
+        <author>
+            <name>Rui Sun</name>
+        </author>
+        <author>
+            <name>Junfeng Ni</name>
+        </author>
+        <author>
+            <name>Hongyu Pan</name>
+        </author>
+        <author>
+            <name>Zhongxu Sun</name>
+        </author>
+        <author>
+            <name>Fei Yu</name>
+        </author>
+        <author>
+            <name>Zengye Ge</name>
+        </author>
+        <author>
+            <name>Mengmeng Du</name>
+        </author>
+        <author>
+            <name>Nianfei Fan</name>
+        </author>
+        <author>
+            <name>Mingchao Sun</name>
+        </author>
+        <author>
+            <name>Yu Liu</name>
+        </author>
+        <author>
+            <name>Yongchang</name>
+        </author>
+        <author>
+            <name>Yanqing Zhu</name>
+        </author>
+        <author>
+            <name>Jiahang Wang</name>
+        </author>
+        <author>
+            <name>Ning Ying</name>
+        </author>
+        <author>
+            <name>Yuze Xuan</name>
+        </author>
+        <author>
+            <name>Di Yang</name>
+        </author>
+        <author>
+            <name>Zhicheng Liu</name>
+        </author>
+        <author>
+            <name>Zhe Gao</name>
+        </author>
+        <author>
+            <name>Tingbing Xu</name>
+        </author>
+        <author>
+            <name>Jiacheng Sui</name>
+        </author>
+        <author>
+            <name>Wenjin Yang</name>
+        </author>
+        <author>
+            <name>Junnan Lai</name>
+        </author>
+        <author>
+            <name>Shufeng Liu</name>
+        </author>
+        <author>
+            <name>Yuan Liu</name>
+        </author>
+        <author>
+            <name>Zheng Zhou</name>
+        </author>
+        <author>
+            <name>Yingliang Peng</name>
+        </author>
+        <author>
+            <name>Dawei Cao</name>
+        </author>
+        <author>
+            <name>Kaifeng Sheng</name>
+        </author>
+        <author>
+            <name>Yuxiang Cai</name>
+        </author>
+        <author>
+            <name>Fei Lu</name>
+        </author>
+        <author>
+            <name>Mu Xu</name>
+        </author>
+        <author>
+            <name>Ning Guo</name>
+        </author>
+        <published>2026-07-21T15:26:50.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[HPD-Parsing: Hierarchical Parallel Document Parsing]]></title>
+        <id>https://arxiv.org/abs/2607.18839</id>
+        <link href="https://arxiv.org/abs/2607.18839"/>
+        <updated>2026-07-21T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Efficient teamwork typically combines global coordination with parallel execution, a principle not yet fully reflected in unified Vision-Language Model (VLM)-based document parsers. Existing unified parsers process an entire page jointly but generate its output through a single token-by-token autoregressive trajectory, creating a sequential bottleneck that grows with document length. Such full-page sequential generation overlooks a key property of document parsing: layout must be analyzed global]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出层次化并行解码范式HPD-Parsing，用主布局分支和并行内容解码替代全页自回归生成，实现4752 tokens/s，吞吐量提升2.62倍。</p>
+<h3>原始摘要</h3><p>Efficient teamwork typically combines global coordination with parallel execution, a principle not yet fully reflected in unified Vision-Language Model (VLM)-based document parsers. Existing unified parsers process an entire page jointly but generate its output through a single token-by-token autoregressive trajectory, creating a sequential bottleneck that grows with document length. Such full-page sequential generation overlooks a key property of document parsing: layout must be analyzed globally, whereas block content can be parsed in parallel. Based on this observation, we introduce HPD-Parsing, which replaces full-page autoregressive generation with a Hierarchical Parallel Decoding paradigm. A main layout branch organizes the overall document structure and dynamically assigns block-level content decoding to concurrent branches, while progressive multi-token prediction (P-MTP) further reduces the decoding steps within each branch. Experiments on public benchmarks show that HPD-Parsing achieves 4,752 tokens per second, delivering 2.62times the throughput of the fastest existing document parsing model and 3.06times that of the vanilla autoregressive baseline, while maintaining competitive parsing accuracy. These results establish hierarchical parallel decoding as an effective alternative to full-page autoregressive generation, opening a new direction for efficient unified document parsing.</p>
+<p><strong>Relevance:</strong> 7/10</p>
+<p><a href="https://arxiv.org/pdf/2607.18839">PDF</a> | <a href="https://arxiv.org/abs/2607.18839">arXiv</a></p>]]></content>
+        <author>
+            <name>Shu Wei</name>
+        </author>
+        <author>
+            <name>Jingjing Wu</name>
+        </author>
+        <author>
+            <name>Lingshu Zhang</name>
+        </author>
+        <author>
+            <name>Qunyi Xie</name>
+        </author>
+        <author>
+            <name>Hao Zou</name>
+        </author>
+        <author>
+            <name>Le Xiang</name>
+        </author>
+        <author>
+            <name>Xu Fan</name>
+        </author>
+        <author>
+            <name>Yangliu Xu</name>
+        </author>
+        <author>
+            <name>Manhui Lin</name>
+        </author>
+        <author>
+            <name>Xiaolong Ma</name>
+        </author>
+        <author>
+            <name>Cheng Cui</name>
+        </author>
+        <author>
+            <name>Tengyu Du</name>
+        </author>
+        <author>
+            <name>YY</name>
+        </author>
+        <published>2026-07-21T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[SWE-Pruner Pro: The Coder LLM Already Knows What to Prune]]></title>
+        <id>https://arxiv.org/abs/2607.18213</id>
+        <link href="https://arxiv.org/abs/2607.18213"/>
+        <updated>2026-07-20T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Pruning long context for coding agents has been a vital technology for efficient context management. While existing context pruning methods such as SWE-Pruner realize this by attaching a separate code classifier, we find the agent itself encodes internal representations indicating the relevance of code context when reading tool output. Based on this finding, we propose SWE-Pruner Pro, which prunes tool outputs directly inside the agent. Concretely, a small head turns the agent's own internal rep]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出SWE-Pruner Pro，利用编码器内部表示进行上下文剪枝，可节省高达39%的token，同时保持任务质量，适用于长上下文代码代理。</p>
+<h3>原始摘要</h3><p>Pruning long context for coding agents has been a vital technology for efficient context management. While existing context pruning methods such as SWE-Pruner realize this by attaching a separate code classifier, we find the agent itself encodes internal representations indicating the relevance of code context when reading tool output. Based on this finding, we propose SWE-Pruner Pro, which prunes tool outputs directly inside the agent. Concretely, a small head turns the agent's own internal representations into a keep-or-prune label for each line, with a length-aware embedding keyed to each tool output's line count. Across two open-weight backbones and four multi-turn benchmarks, SWE-Pruner Pro saves up to 39% of prompt and completion tokens while preserving task quality, with bounded inference overhead. Notably, on MiMo-V2-Flash SWE-Pruner Pro additionally raises the SWE-Bench Verified resolve rate by +3.8% and the long-context Oolong accuracy by +2.2 points.</p>
+<p><strong>Relevance:</strong> 7/10</p>
+<p><a href="https://arxiv.org/pdf/2607.18213">PDF</a> | <a href="https://arxiv.org/abs/2607.18213">arXiv</a></p>]]></content>
+        <author>
+            <name>Yuhang Wang</name>
+        </author>
+        <author>
+            <name>Yuling Shi</name>
+        </author>
+        <author>
+            <name>Shaoqiu Zhang</name>
+        </author>
+        <author>
+            <name>Jialiang Liang</name>
+        </author>
+        <author>
+            <name>Shilin He</name>
+        </author>
+        <author>
+            <name>Siyu Ye</name>
+        </author>
+        <author>
+            <name>Yuting Chen</name>
+        </author>
+        <author>
+            <name>Kai Cai</name>
+        </author>
+        <author>
+            <name>Xiaodong Gu</name>
+        </author>
+        <published>2026-07-20T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Three-Body Scattering for Generative Modeling]]></title>
+        <id>https://arxiv.org/abs/2607.18198</id>
+        <link href="https://arxiv.org/abs/2607.18198"/>
+        <updated>2026-07-20T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Modern generative models typically rely on an adversarial critic, a prescribed noise-to-data path, or an autoregressive factorization. Instead, we show that a proper distributional energy can induce sample-level motion and provide direct regression supervision for a one-step generator. Three-Body Scattering Modeling (TBSM) for generation turns the energy distance into a constant-size per-projectile interaction: each projectile is attracted toward one real source and repelled from one independent]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出三体散射建模（TBSM），通过能量距离实现一步生成，在ImageNet上达到FID 2.23，加速了扩散模型采样。</p>
+<h3>原始摘要</h3><p>Modern generative models typically rely on an adversarial critic, a prescribed noise-to-data path, or an autoregressive factorization. Instead, we show that a proper distributional energy can induce sample-level motion and provide direct regression supervision for a one-step generator. Three-Body Scattering Modeling (TBSM) for generation turns the energy distance into a constant-size per-projectile interaction: each projectile is attracted toward one real source and repelled from one independently generated source. Conditioned on the projectile and its condition, its expectation equals the 2-Wasserstein gradient-flow velocity of frac12D_E^2(P_θ,Q). A batch of B frozen-target events yields O(B) sample-level losses, each using one reference for its condition instead of the minibatch-wide all-pairs field used by methods such as Drifting Models. Tracking this conditional expectation online can reduce field noise. Using scattering in frozen image features, TBSM trains one-step generators on ImageNet-256, achieving FID{}=2.23 with pixel-space PixelDiT-XL and FID{}=1.63 with latent-space DiT-XL at NFE{}=1. We provide a design map relating diffusion-related supervision, Drift-like dynamics, and GAN-like objectives. These results establish tracked scattering as a route to high-dimensional one-step generation. Code: https://github.com/sp12138/TBSM.</p>
 <p><strong>Relevance:</strong> 6/10</p>
-<p><a href="https://arxiv.org/pdf/2607.08046">PDF</a> | <a href="https://arxiv.org/abs/2607.08046">arXiv</a></p>]]></content>
+<p><a href="https://arxiv.org/pdf/2607.18198">PDF</a> | <a href="https://arxiv.org/abs/2607.18198">arXiv</a></p>]]></content>
         <author>
-            <name>Raphaël Sarfati</name>
+            <name>Peng Sun</name>
         </author>
         <author>
-            <name>Pratyush Ranjan Tiwari</name>
+            <name>Zhenglin Cheng</name>
         </author>
         <author>
-            <name>Siddharth Boppana</name>
+            <name>Deyuan Liu</name>
         </author>
         <author>
-            <name>Christopher J. Earls</name>
+            <name>Jun Xie</name>
         </author>
         <author>
-            <name>Srikar Varadaraj</name>
+            <name>Xinyi Shang</name>
         </author>
         <author>
-            <name>Eric Ho</name>
+            <name>Tao Lin</name>
         </author>
-        <published>2026-07-09T00:00:00.000Z</published>
+        <published>2026-07-20T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Self Gradient Forcing: Native Long Video Extrapolation]]></title>
+        <id>https://arxiv.org/abs/2607.20368</id>
+        <link href="https://arxiv.org/abs/2607.20368"/>
+        <updated>2026-07-22T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Recent autoregressive video diffusion methods are increasingly built upon Self Forcing, where the student is trained on histories produced by its own rollout rather than ground-truth video contexts. This reduces exposure bias, but the historical key-value cache is still used by future frames only as frozen rollout state. As a result, future losses cannot supervise how earlier generated latents should be written into more useful keys and values for later video-latent generation. We call this the ]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出自梯度强制训练策略，通过两遍训练恢复历史上下文梯度信号，提升长视频自回归扩散模型的训练效率。</p>
+<h3>原始摘要</h3><p>Recent autoregressive video diffusion methods are increasingly built upon Self Forcing, where the student is trained on histories produced by its own rollout rather than ground-truth video contexts. This reduces exposure bias, but the historical key-value cache is still used by future frames only as frozen rollout state. As a result, future losses cannot supervise how earlier generated latents should be written into more useful keys and values for later video-latent generation. We call this the historical context-gradient gap. We propose Self Gradient Forcing (SGF), a two-pass training strategy that restores this missing supervision signal without backpropagating through the full serial rollout. Pass 1 performs a no-gradient autoregressive rollout matching inference and, at a sampled denoising exit step, records both the self-generated context and the noisy latents fed to the model. Pass 2 performs parallel context-gradient reconstruction for the recorded exit step. The generated context is used as stop-gradient clean-latent input, while the model recomputes the context KV representations and future-to-context causal attention. Thus, SGF provides the missing memory-writing supervision within the native autoregressive training objective, using losses on future video latents to train the model to encode context into more effective causal memory. Across extensive long-horizon frame-wise and chunk-wise experiments under different initializations, SGF achieves stronger native long-video extrapolation than Self Forcing, especially in subject identity, background/layout consistency, and temporal stability. Remarkably, using only a 5-second training window, SGF can extrapolate to videos lasting several minutes. Code and models will be released to advance research on autoregressive video generation.</p>
+<p><strong>Relevance:</strong> 6/10</p>
+<p><a href="https://arxiv.org/pdf/2607.20368">PDF</a> | <a href="https://arxiv.org/abs/2607.20368">arXiv</a></p>]]></content>
+        <author>
+            <name>Junhao Zhuang</name>
+        </author>
+        <author>
+            <name>Shiyi Zhang</name>
+        </author>
+        <author>
+            <name>Yuxuan Bian</name>
+        </author>
+        <author>
+            <name>Yaowei Li</name>
+        </author>
+        <author>
+            <name>Yawen Luo</name>
+        </author>
+        <author>
+            <name>Yijun Liu</name>
+        </author>
+        <author>
+            <name>Weiyang Jin</name>
+        </author>
+        <author>
+            <name>Songchun Zhang</name>
+        </author>
+        <author>
+            <name>Xianglong He</name>
+        </author>
+        <author>
+            <name>Xuying Zhang</name>
+        </author>
+        <author>
+            <name>Haoran Li</name>
+        </author>
+        <author>
+            <name>Haoyang Huang</name>
+        </author>
+        <author>
+            <name>Zeyue Xue</name>
+        </author>
+        <author>
+            <name>Nan Duan</name>
+        </author>
+        <published>2026-07-22T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[DiFA: Inference-Time Forward-Process Alignment for Diffusion Models]]></title>
+        <id>https://arxiv.org/abs/2607.17972</id>
+        <link href="https://arxiv.org/abs/2607.17972"/>
+        <updated>2026-07-20T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[The prevailing inference framework for diffusion models formulates generation fundamentally as a problem of numerical integration. This perspective casts the model as an exact estimator, neglecting the inherent statistical uncertainty of the denoising process. In this work, we propose Forward-Process Aligned Diffusion prediction (DiFA), a training-free framework that reframes inference-time data prediction refinement as a sequential state estimation problem. Rather than reusing past outputs sole]]></summary>
+        <content type="html"><![CDATA[<h3>AI 摘要</h3><p>提出DiFA，一种无需训练的扩散模型推理时对齐方法，通过卡尔曼滤波式的时间一致性聚合提升生成质量，不增加训练成本。</p>
+<h3>原始摘要</h3><p>The prevailing inference framework for diffusion models formulates generation fundamentally as a problem of numerical integration. This perspective casts the model as an exact estimator, neglecting the inherent statistical uncertainty of the denoising process. In this work, we propose Forward-Process Aligned Diffusion prediction (DiFA), a training-free framework that reframes inference-time data prediction refinement as a sequential state estimation problem. Rather than reusing past outputs solely for numerical integration, DiFA treats iterative data predictions along the reverse trajectory as correlated observations to build a forward-aligned temporal consensus. Inspired by Kalman filtering, this consensus aggregates historical predictions according to structural consistency and noise-level compatibility. To counteract the over-smoothing tendency of temporal consensus, we introduce a deviation guidance mechanism to adaptively preserve residual details. Empirically, DiFA yields significant improvements on CIFAR-10 and ImageNet across the evaluated metrics, including FID, IS, and FD-DINOv2, demonstrating that aligning inference with the forward statistical structure substantially improves generative fidelity.</p>
+<p><strong>Relevance:</strong> 6/10</p>
+<p><a href="https://arxiv.org/pdf/2607.17972">PDF</a> | <a href="https://arxiv.org/abs/2607.17972">arXiv</a></p>]]></content>
+        <author>
+            <name>Shigui Li</name>
+        </author>
+        <author>
+            <name>Delu Zeng</name>
+        </author>
+        <published>2026-07-20T00:00:00.000Z</published>
     </entry>
 </feed>
