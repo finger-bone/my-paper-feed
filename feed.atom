@@ -2,412 +2,296 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://github.com/finger-bone/my-paper-feed</id>
     <title>LLM Acceleration Papers Weekly</title>
-    <updated>2026-08-14T11:08:01.000Z</updated>
+    <updated>2026-08-21T10:31:15.000Z</updated>
     <generator>paper-feed</generator>
     <link rel="alternate" href="https://github.com/finger-bone/my-paper-feed"/>
     <subtitle>每周精选大模型推理/训练加速相关论文</subtitle>
     <rights>All rights reserved 2026</rights>
     <entry>
-        <title type="html"><![CDATA[KV Cache Compression Through the Lens of Transform Coding]]></title>
-        <id>https://arxiv.org/abs/2608.14191</id>
-        <link href="https://arxiv.org/abs/2608.14191"/>
-        <updated>2026-08-14T11:08:01.000Z</updated>
-        <summary type="html"><![CDATA[The key-value (KV) cache stores information from past tokens and is a major memory bottleneck in long-context inference. Existing quantization methods address this bottleneck by representing the KV cache uniformly with lower-precision data types and designing quantization schemes to minimize reconstruction error in the cache itself, without accounting for how that error propagates through attention mechanisms. We prove that, under a white-noise quantization model, the expected attention-aware di]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>The key-value (KV) cache stores information from past tokens and is a major memory bottleneck in long-context inference. Existing quantization methods address this bottleneck by representing the KV cache uniformly with lower-precision data types and designing quantization schemes to minimize reconstruction error in the cache itself, without accounting for how that error propagates through attention mechanisms. We prove that, under a white-noise quantization model, the expected attention-aware distortion decomposes into additive key and value contributions that factor across tokens and channels. Building on transform coding and reverse water-filling, which are classical tools from signal processing and rate-distortion theory, we introduce Attention-Aware Transform Coding (AATC), which allocates bits over a calibration set to minimize attention-aware distortion. On Llama-3.1-8B-Instruct and Qwen-2.5-7B-Instruct, evaluated across LongBench, RULER, GSM8K, MMLU-Pro, and MATH-500, our method achieves near-lossless accuracy at approximately $5.8\times$ compression, whereas each baseline degrades in at least some settings.</p>
-<p><strong>Categories:</strong> cs.LG, cs.CL, eess.SP</p>
+        <title type="html"><![CDATA[TreeWY: Speculative Verification for Gated DeltaNet Hybrids]]></title>
+        <id>https://arxiv.org/abs/2608.20961</id>
+        <link href="https://arxiv.org/abs/2608.20961"/>
+        <updated>2026-08-21T10:31:15.000Z</updated>
+        <summary type="html"><![CDATA[Modern open models are hybrids: most layers are linear-attention (Gated DeltaNet, GDN) layers carrying a small fixed-size recurrent state instead of a growing key-value (KV) cache. This makes ordinary decoding memory-efficient, but hurts speculative decoding. To verify a batch of draft tokens and then roll back the rejected ones, today's systems snapshot the full recurrent state at every draft position for GDN layers, and those snapshots cannot be shared across branches of a draft tree, so a wid]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Modern open models are hybrids: most layers are linear-attention (Gated DeltaNet, GDN) layers carrying a small fixed-size recurrent state instead of a growing key-value (KV) cache. This makes ordinary decoding memory-efficient, but hurts speculative decoding. To verify a batch of draft tokens and then roll back the rejected ones, today's systems snapshot the full recurrent state at every draft position for GDN layers, and those snapshots cannot be shared across branches of a draft tree, so a wide, high-acceptance tree becomes memory-infeasible. We remove the snapshots. Using a tree-structured WY transform of the gated delta rule, we compute every draft node's output with a single triangular solve and reconstruct only the one accepted state on commit, storing a small pseudo-value matrix instead of per-node states; the derivation depends only on the gated delta rule, not on any other architectural detail. In serving benchmarks on two scales of one hybrid model family (Qwen3.5 35B and 397B) this cuts speculative recurrent-state memory and KV-cache pressure at identical acceptance length, turning the freed HBM into higher throughput and much lower time-to-first-token (TTFT) wherever memory binds, and costing a few percent where it does not. For tree width the same memory buys affordability: a wider, higher-acceptance draft becomes possible, though not yet a throughput win.</p>
+<p><strong>Categories:</strong> cs.AI, cs.CL, cs.DC, cs.LG, cs.PF</p>
 <p><strong>Relevance:</strong> 9/10</p>
-<p><a href="https://arxiv.org/pdf/2608.14191">PDF</a> | <a href="https://arxiv.org/abs/2608.14191">arXiv</a></p>]]></content>
+<p><a href="https://arxiv.org/pdf/2608.20961">PDF</a> | <a href="https://arxiv.org/abs/2608.20961">arXiv</a></p>]]></content>
         <author>
-            <name>Hannah Laus</name>
-        </author>
-        <author>
-            <name>Claudio Mayrink Verdun</name>
-        </author>
-        <author>
-            <name>Hao Wang</name>
-        </author>
-        <author>
-            <name>Flavio du Pin Calmon</name>
-        </author>
-        <author>
-            <name>Felix Krahmer</name>
-        </author>
-        <category label="cs.LG" term="cs.LG"/>
-        <category label="cs.CL" term="cs.CL"/>
-        <category label="eess.SP" term="eess.SP"/>
-        <published>2026-08-14T11:08:01.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Intern-S2-Mobius: Foundation Model with Decoupled Knowledge and Reasoning]]></title>
-        <id>https://arxiv.org/abs/2608.14290</id>
-        <link href="https://arxiv.org/abs/2608.14290"/>
-        <updated>2026-08-14T13:21:49.000Z</updated>
-        <summary type="html"><![CDATA[We introduce Mobius-v0, an architecture that comprises a globally shared Memory (FFN) that stores knowledge vectors and multiple Reasoners (Self-Attn) that iteratively achieve compositional reasoning. Using hidden states as cache and carrier, reasoners repeatedly query memory for required knowledge-vectors, while the knowledge is transmitted back to reasoning operators. Through this knowledge-reasoning-separation architecture, Mobius achieves better knowledge compression and reasoning efficiency]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>We introduce Mobius-v0, an architecture that comprises a globally shared Memory (FFN) that stores knowledge vectors and multiple Reasoners (Self-Attn) that iteratively achieve compositional reasoning. Using hidden states as cache and carrier, reasoners repeatedly query memory for required knowledge-vectors, while the knowledge is transmitted back to reasoning operators. Through this knowledge-reasoning-separation architecture, Mobius achieves better knowledge compression and reasoning efficiency. Built upon Mobius-v0 architecture: 1) Our 7B model trained-from-scratch achieves similar downstream score as a 7B Transformer baseline with 62.6% of baseline's training data. 2) Our Intern-S2-Mobius, continually-pretrained from Qwen3.5-35B, achieves similar downstream score while delivering nearly 4x end-to-end inference speedup.</p>
-<p><strong>Categories:</strong> cs.AI</p>
-<p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2608.14290">PDF</a> | <a href="https://arxiv.org/abs/2608.14290">arXiv</a></p>]]></content>
-        <author>
-            <name>Kai Chen</name>
-        </author>
-        <author>
-            <name>Jifeng Ding</name>
-        </author>
-        <author>
-            <name>Ning Ding</name>
-        </author>
-        <author>
-            <name>Jiaye Ge</name>
-        </author>
-        <author>
-            <name>Lixin Gu</name>
-        </author>
-        <author>
-            <name>Yicheng Gu</name>
-        </author>
-        <author>
-            <name>Qipeng Guo</name>
-        </author>
-        <author>
-            <name>Ermo Hua</name>
-        </author>
-        <author>
-            <name>Haian Huang</name>
-        </author>
-        <author>
-            <name>Haozheng Hou</name>
-        </author>
-        <author>
-            <name>Jie Hou</name>
-        </author>
-        <author>
-            <name>Xiangyu Hong</name>
-        </author>
-        <author>
-            <name>Che Jiang</name>
-        </author>
-        <author>
-            <name>Minxi Jin</name>
-        </author>
-        <author>
-            <name>Cheng Liang</name>
-        </author>
-        <author>
-            <name>Dahua Lin</name>
-        </author>
-        <author>
-            <name>Dawei Liu</name>
-        </author>
-        <author>
-            <name>Kuikun Liu</name>
-        </author>
-        <author>
-            <name>Chengqi Lv</name>
-        </author>
-        <author>
-            <name>Haijun Lv</name>
-        </author>
-        <author>
-            <name>Han Lv</name>
-        </author>
-        <author>
-            <name>Ningsheng Ma</name>
-        </author>
-        <author>
-            <name>Biqing Qi</name>
-        </author>
-        <author>
-            <name>Jianmin Qian</name>
-        </author>
-        <author>
-            <name>Shiya Su</name>
-        </author>
-        <author>
-            <name>Youbang Sun</name>
-        </author>
-        <author>
-            <name>Huanze Tang</name>
-        </author>
-        <author>
-            <name>Zhongbo Tian</name>
-        </author>
-        <author>
-            <name>Hanjing Wang</name>
-        </author>
-        <author>
-            <name>Rui Wang</name>
-        </author>
-        <author>
-            <name>Ting Wang</name>
-        </author>
-        <author>
-            <name>Yi Wang</name>
-        </author>
-        <author>
-            <name>Baiting Wu</name>
-        </author>
-        <author>
-            <name>Jun Xu</name>
-        </author>
-        <author>
-            <name>Bowen Yang</name>
-        </author>
-        <author>
-            <name>Hui Wang</name>
-        </author>
-        <author>
-            <name>Weida Wang</name>
-        </author>
-        <author>
-            <name>Haochen Ye</name>
-        </author>
-        <author>
-            <name>Jiashuo Yu</name>
-        </author>
-        <author>
-            <name>Shan Yu</name>
-        </author>
-        <author>
-            <name>Xiaoyi Yu</name>
-        </author>
-        <author>
-            <name>Qirui Zeng</name>
-        </author>
-        <author>
-            <name>Qi Zhang</name>
-        </author>
-        <author>
-            <name>Ming Zhang</name>
-        </author>
-        <author>
-            <name>Wenwei Zhang</name>
-        </author>
-        <author>
-            <name>Bowen Zhou</name>
-        </author>
-        <author>
-            <name>Xinyu Zhou</name>
+            <name>Sneha Murthy Ghantasala</name>
         </author>
         <category label="cs.AI" term="cs.AI"/>
-        <published>2026-08-14T13:21:49.000Z</published>
+        <category label="cs.CL" term="cs.CL"/>
+        <category label="cs.DC" term="cs.DC"/>
+        <category label="cs.LG" term="cs.LG"/>
+        <category label="cs.PF" term="cs.PF"/>
+        <published>2026-08-21T10:31:15.000Z</published>
     </entry>
     <entry>
-        <title type="html"><![CDATA[InstructVVT: Instruction-Driven Video Virtual Try-On without Auxiliary Spatial Priors]]></title>
-        <id>https://arxiv.org/abs/2608.14070</id>
-        <link href="https://arxiv.org/abs/2608.14070"/>
-        <updated>2026-08-14T08:26:42.000Z</updated>
-        <summary type="html"><![CDATA[Video virtual try-on is a highly constrained editing task requiring the precise replacement of a target person's clothing while strictly preserving the original video's spatial structure and temporal dynamics. Existing methods heavily rely on auxiliary handcrafted spatial priors (e.g., masks, poses) for editing control. However, these priors are prone to failure in unconstrained real-world videos and often compress rich visual context into incomplete structural signals. Furthermore, standard rec]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Video virtual try-on is a highly constrained editing task requiring the precise replacement of a target person's clothing while strictly preserving the original video's spatial structure and temporal dynamics. Existing methods heavily rely on auxiliary handcrafted spatial priors (e.g., masks, poses) for editing control. However, these priors are prone to failure in unconstrained real-world videos and often compress rich visual context into incomplete structural signals. Furthermore, standard reconstruction objectives fail to fully capture try-on-specific human preferences. To address these challenges, we propose InstructVVT, an instruction-driven and reference-guided video virtual try-on framework based on a Diffusion Transformer (DiT) that operates without inference-time spatial priors. Our core insight is to recover fine-grained control directly from the input triplet (source video, reference garment, and instruction) via a dual-level reference conditioning scheme. Specifically, an MLLM infers semantic edit tokens for target disambiguation and structural preservation, while a lightweight conditioning pathway explicitly injects fine-grained visual garment details. Finally, we design a try-on-specific reward and utilize the DiffusionNFT algorithm to align the model with human preferences. Extensive experiments on ViViD-S and TripVVT-Bench demonstrate that InstructVVT outperforms state-of-the-art open-source methods in garment fidelity, structural preservation, and temporal consistency, despite requiring fewer inference-time controls.</p>
+        <title type="html"><![CDATA[Gaussian-Mixture Latent Flow for Stochastic 3D Human Motion Prediction]]></title>
+        <id>https://arxiv.org/abs/2608.21093</id>
+        <link href="https://arxiv.org/abs/2608.21093"/>
+        <updated>2026-08-21T13:39:51.000Z</updated>
+        <summary type="html"><![CDATA[Stochastic human motion prediction aims to forecast future motion distributions. Although recent studies have achieved strong performance in terms of accuracy and diversity, they often overlook plausibility (e.g., resulting in physically unrealistic predictions) and uncertainty quantification, both of which are essential for real-world applications and downstream tasks. To address these issues, we propose a latent flow-based model equipped with a data-driven Gaussian mixture prior that more effe]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Stochastic human motion prediction aims to forecast future motion distributions. Although recent studies have achieved strong performance in terms of accuracy and diversity, they often overlook plausibility (e.g., resulting in physically unrealistic predictions) and uncertainty quantification, both of which are essential for real-world applications and downstream tasks. To address these issues, we propose a latent flow-based model equipped with a data-driven Gaussian mixture prior that more effectively disentangles diverse human behaviors than conventional single-modal priors. This prior is derived from patterns in the training data without requiring additional annotations. Furthermore, the fully invertible nature of our model enables natural uncertainty quantification through tractable likelihood computation. Experiments on the Human3.6M and AMASS datasets demonstrate that our approach achieves state-of-the-art performance in both accuracy and plausibility.</p>
 <p><strong>Categories:</strong> cs.CV</p>
 <p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2608.14070">PDF</a> | <a href="https://arxiv.org/abs/2608.14070">arXiv</a></p>]]></content>
+<p><a href="https://arxiv.org/pdf/2608.21093">PDF</a> | <a href="https://arxiv.org/abs/2608.21093">arXiv</a></p>]]></content>
         <author>
-            <name>Dingbao Shao</name>
+            <name>Yue Ma</name>
         </author>
         <author>
-            <name>Song Wu</name>
+            <name>Frederick W. B. Li</name>
         </author>
         <author>
-            <name>Xinyu Chen</name>
-        </author>
-        <author>
-            <name>Qian Wang</name>
-        </author>
-        <author>
-            <name>Jiahang Li</name>
-        </author>
-        <author>
-            <name>Kuai Jiang</name>
-        </author>
-        <author>
-            <name>Jiang Lin</name>
-        </author>
-        <author>
-            <name>Yuhang Liu</name>
-        </author>
-        <author>
-            <name>Ziyu Chen</name>
-        </author>
-        <author>
-            <name>Duo Li</name>
-        </author>
-        <author>
-            <name>Jiaxin Hu</name>
-        </author>
-        <author>
-            <name>Shengrong Gu</name>
-        </author>
-        <author>
-            <name>Ziheng Tang</name>
-        </author>
-        <author>
-            <name>Rongrong Liu</name>
-        </author>
-        <author>
-            <name>Yanlun Peng</name>
-        </author>
-        <author>
-            <name>Liang Li</name>
-        </author>
-        <author>
-            <name>Junlan Feng</name>
-        </author>
-        <author>
-            <name>Lujia Jin</name>
-        </author>
-        <author>
-            <name>Ting Zhang</name>
-        </author>
-        <author>
-            <name>Jian Yang</name>
-        </author>
-        <author>
-            <name>Zili Yi</name>
+            <name>Xiaohui Liang</name>
         </author>
         <category label="cs.CV" term="cs.CV"/>
-        <published>2026-08-14T08:26:42.000Z</published>
+        <published>2026-08-21T13:39:51.000Z</published>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Massive Activations in Hybrid Linear Attention Large Language Models: Pre-Attention Spikes and Inter-Spike Plateaus]]></title>
-        <id>https://arxiv.org/abs/2608.12149</id>
-        <link href="https://arxiv.org/abs/2608.12149"/>
-        <updated>2026-08-12T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[We present the first systematic study of Massive activations (MAs) in layer-interleaved HLA LLMs and uncover two architecture-aligned morphologies: MAs consistently spike immediately before full attention layers, forming pre-attention spikes (PAS), and can persist through intervening linear attention layers, giving rise to inter-spike plateaus (ISP). As full attention becomes denser, successive PAS become increasingly connected through ISP, ultimately recovering the stable MA morphology of full ]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>We present the first systematic study of Massive activations (MAs) in layer-interleaved HLA LLMs and uncover two architecture-aligned morphologies: MAs consistently spike immediately before full attention layers, forming pre-attention spikes (PAS), and can persist through intervening linear attention layers, giving rise to inter-spike plateaus (ISP). As full attention becomes denser, successive PAS become increasingly connected through ISP, ultimately recovering the stable MA morphology of full attention LLMs. We establish the recurrence of this organization across five linear attention architectures, six hybridization configurations, five data domains, and representative open-source hybrid models spanning 1.2B to 397B total parameters. Controlled pretraining of GDN-based hybrids at scales up to 1.3B shows that both morphologies emerge early and respond asymmetrically to output gating: full attention output gating strongly attenuates their absolute magnitudes without eliminating their layerwise organization, whereas removing GDN gates yields comparatively modest amplification. Mechanistically, our systematic-outlier analysis supports a shared lifecycle account governed by the timing of MA cancellation. PAS follows a localized write-sink-cancel process, while the extended persistence of ISP is consistent with delayed cancellation. At the full attention limit, this account recovers the stable MA morphology characteristic of full attention LLMs. Our code is available at https://github.com/StartluxLabs/Massive-Activations-HLA.</p>
+        <title type="html"><![CDATA[When the Feature Pool Goes Algorithmic: Extending Mufwene's Ecology of Language Evolution to LLM-Mediated Exposure]]></title>
+        <id>https://arxiv.org/abs/2608.21088</id>
+        <link href="https://arxiv.org/abs/2608.21088"/>
+        <updated>2026-08-21T13:32:26.000Z</updated>
+        <summary type="html"><![CDATA[Mufwene's ecological model locates language evolution in competition among variants contributed by individual idiolects and in speakers' selection from linguistic material made available through interaction. Large language models (LLMs) complicate this architecture without requiring the locus of selection to move away from human speakers. This article argues that LLMs are best treated as distributional mediators: they aggregate language produced across human populations, transform its distributi]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Mufwene's ecological model locates language evolution in competition among variants contributed by individual idiolects and in speakers' selection from linguistic material made available through interaction. Large language models (LLMs) complicate this architecture without requiring the locus of selection to move away from human speakers. This article argues that LLMs are best treated as distributional mediators: they aggregate language produced across human populations, transform its distribution through training and post-training, and redistribute model-specific outputs at scale. I call the resulting ecological process algorithmic reweighting of the speaker-accessible distribution: model mediation can alter the relative frequencies with which competing variants reach human selectors. Emerging evidence on model-specific linguistic profiles and lexical uptake is consistent with parts of this pathway, but does not establish inevitable convergence. Human social evaluation remains decisive: model-associated forms may diffuse and become conventionalized, become socially recognizable as 'AI-like' and subsequently avoided, or fail to diffuse in the first place. The proposal extends Mufwene's feature-pool ecology one step upstream of speaker selection and yields testable predictions about uptake, model-version effects, convergence, and social reversal.</p>
+<p><strong>Categories:</strong> cs.CL</p>
 <p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2608.12149">PDF</a> | <a href="https://arxiv.org/abs/2608.12149">arXiv</a></p>]]></content>
+<p><a href="https://arxiv.org/pdf/2608.21088">PDF</a> | <a href="https://arxiv.org/abs/2608.21088">arXiv</a></p>]]></content>
         <author>
-            <name>Zunhai Su</name>
+            <name>Kunmei Han</name>
         </author>
-        <author>
-            <name>Bohan Sun</name>
-        </author>
-        <author>
-            <name>Xialie Zhuang</name>
-        </author>
-        <author>
-            <name>Shuibai Zhang</name>
-        </author>
-        <author>
-            <name>He Xiao</name>
-        </author>
-        <author>
-            <name>Jing Xiong</name>
-        </author>
-        <author>
-            <name>Hengyuan Zhang</name>
-        </author>
-        <author>
-            <name>Zhongzhu Zhou</name>
-        </author>
-        <author>
-            <name>Tiantian Zhang</name>
-        </author>
-        <author>
-            <name>Ngai Wong</name>
-        </author>
-        <author>
-            <name>Chuan-Wei Kuo</name>
-        </author>
-        <published>2026-08-12T00:00:00.000Z</published>
+        <category label="cs.CL" term="cs.CL"/>
+        <published>2026-08-21T13:32:26.000Z</published>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Full-bandwidth transformer]]></title>
-        <id>https://arxiv.org/abs/2608.08888</id>
-        <link href="https://arxiv.org/abs/2608.08888"/>
-        <updated>2026-08-09T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Autoregressive transformers compute along two axes: horizontally across generated tokens, and vertically through model depth. Dense attention gives each token broad horizontal access to the past, but the vertical feedback channel between decoding steps remains narrow: only the sampled token returns to the bottom of the stack, while the top-layer hidden state is discarded. We introduce the full-bandwidth transformer, which widens this channel with latent feedback: at each decoding step, the previ]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Autoregressive transformers compute along two axes: horizontally across generated tokens, and vertically through model depth. Dense attention gives each token broad horizontal access to the past, but the vertical feedback channel between decoding steps remains narrow: only the sampled token returns to the bottom of the stack, while the top-layer hidden state is discarded. We introduce the full-bandwidth transformer, which widens this channel with latent feedback: at each decoding step, the previous top-layer hidden state is fused with the sampled token embedding through a gated linear unit and fed back as the next input. Latent feedback lets non-verbalized computation re-enter the stack with a renewed depth budget, while preserving the standard transformer architecture, KV cache, and language-modeling objective. To train full-bandwidth transformers without losing parallel teacher forcing, we use a scheduled multi-pass objective that introduces latent feedback late in pretraining and mixes a small fraction of deeper feedback passes for stability. We train 1B-parameter full-bandwidth transformers up to 400B tokens and find that latent feedback improves validation loss, 5-shot language-model evaluation, math and coding generation, and instruction-tuned performance. With negligible per-token decoding overhead, full-bandwidth transformers match or approach standard transformers trained with roughly 1.5times more tokens, and manage to produce shorter reasoning traces at equal or better accuracy.</p>
+        <title type="html"><![CDATA[Jacobian-guided Noise Injection for Quantization Robustness in Large Language Models]]></title>
+        <id>https://arxiv.org/abs/2608.20988</id>
+        <link href="https://arxiv.org/abs/2608.20988"/>
+        <updated>2026-08-21T11:16:40.000Z</updated>
+        <summary type="html"><![CDATA[Quantization of Large Language Models (LLMs) is often hindered by the sensitivity of the self-attention mechanism to discretization errors. We identify the softmax operator as a bottleneck for quantization stability due to its sensitivity to outliers and state-dependent Jacobian. We theoretically establish that suppressing the norm of this Jacobian helps in bounding quantization-induced performance degradation. Based on this, we propose Jacobian-Guided Noise Injection, a training strategy that i]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Quantization of Large Language Models (LLMs) is often hindered by the sensitivity of the self-attention mechanism to discretization errors. We identify the softmax operator as a bottleneck for quantization stability due to its sensitivity to outliers and state-dependent Jacobian. We theoretically establish that suppressing the norm of this Jacobian helps in bounding quantization-induced performance degradation. Based on this, we propose Jacobian-Guided Noise Injection, a training strategy that injects zero-mean Gaussian noise into pre-attention logits, with variance derived directly from the Jacobian Frobenius norm. Unlike prior approaches that rely on heuristic or penalise jacobian directly, our method provides a way to identify the optimal noise variance based on the local attention sensitivity. We evaluate the method on SOTA LLM architectures, where it demonstrates improved robustness over popular PTQ methods. Empirical analysis reveals that the proposed method gives up to +37% relative gains on Top-1 accuracy on ImageNet-1K for SigLIP and improves relative perplexity by upto 40% on WikiText for language models in low bit quantisation settings, proving the efficacy of the approach.</p>
+<p><strong>Categories:</strong> cs.LG, cs.AI</p>
 <p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2608.08888">PDF</a> | <a href="https://arxiv.org/abs/2608.08888">arXiv</a></p>]]></content>
+<p><a href="https://arxiv.org/pdf/2608.20988">PDF</a> | <a href="https://arxiv.org/abs/2608.20988">arXiv</a></p>]]></content>
         <author>
-            <name>Xi Wang</name>
+            <name>Deepanshu Pandey</name>
         </author>
         <author>
-            <name>Ziyang Cai</name>
+            <name>Arnav Chavan</name>
         </author>
         <author>
-            <name>Zheng Zhan</name>
+            <name>Nahush Lele</name>
         </author>
         <author>
-            <name>Harry Dong</name>
+            <name>Sankalp Dayal</name>
         </author>
         <author>
-            <name>Ying Fan</name>
+            <name>Deepak Gupta</name>
         </author>
-        <author>
-            <name>Gustavo de Rosa</name>
-        </author>
-        <author>
-            <name>Tim Pearce</name>
-        </author>
-        <author>
-            <name>John Langford</name>
-        </author>
-        <published>2026-08-09T00:00:00.000Z</published>
+        <category label="cs.LG" term="cs.LG"/>
+        <category label="cs.AI" term="cs.AI"/>
+        <published>2026-08-21T11:16:40.000Z</published>
     </entry>
     <entry>
-        <title type="html"><![CDATA[ReRound: Reconstructive Rounding to Resolve Midpoint Ambiguity in Calibration-Free LLM Quantization]]></title>
-        <id>https://arxiv.org/abs/2608.11045</id>
-        <link href="https://arxiv.org/abs/2608.11045"/>
-        <updated>2026-08-11T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[ReRound (Reconstructive Rounding) is a post-training quantization method that addresses the midpoint ambiguity inherent in standard round-to-nearest (RTN) schemes when quantizing weights near the centers of quantization intervals.
-  Starting from a pretrained LLM, ReRound trains a conditional diffusion model to produce continuous reconstructions of low-bit weights for the LLM. These reconstructed weights act as a guidance signal to disambiguate the rounding direction of weights located close to ]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>ReRound (Reconstructive Rounding) is a post-training quantization method that addresses the midpoint ambiguity inherent in standard round-to-nearest (RTN) schemes when quantizing weights near the centers of quantization intervals.
-  Starting from a pretrained LLM, ReRound trains a conditional diffusion model to produce continuous reconstructions of low-bit weights for the LLM. These reconstructed weights act as a guidance signal to disambiguate the rounding direction of weights located close to interval midpoints.
-  To integrate this reconstruction-guided rounding with conventional RTN, ReRound introduces a tolerance metric measuring how far the quantized weight (not the final quantized integer) is away from the midpoint: quantized weights within a tolerance region around midpoints are quantized using diffusion-based reconstructions, whereas weights closer to quantization boundaries are quantized with RTN. By sweeping the tolerance parameter, ReRound generates multiple candidate quantized integer weight matrices and selects the de-quantized weight matrix candidate whose leading singular values most closely match those of the original full-precision weights. This selected candidate determines the tolerance parameter ReRound uses.
-  ReRound is particularly effective for smaller LLMs. Across a range of such models, it consistently outperforms standard RTN for 3-bit and 4-bit weight quantization. ReRound achieves superior accuracy compared to an extensive set of calibration-free methods, remains competitive with calibration-dependent approaches, and operates entirely offline, introducing no additional overhead during low-bit inference.
-  The ReRound strategy represents a new approach for low-bit quantization. The method applies to AI models beyond LLMs. This paper focuses on its applications to small LLMs.</p>
+        <title type="html"><![CDATA[InfinityEdit: Infinite Video Editing with a Lightweight Edit-Ignition Adapter]]></title>
+        <id>https://arxiv.org/abs/2608.20910</id>
+        <link href="https://arxiv.org/abs/2608.20910"/>
+        <updated>2026-08-21T09:27:49.000Z</updated>
+        <summary type="html"><![CDATA[With large pretrained models, existing methods have effectively improved instruction-based video editing. However, most of them rely on an in-place editing assumption. They align the edited video with the given source clip frame by frame over a fixed time span. This pattern fails for open-ended streams, e.g., restyling a live game or applying a camera move to an ongoing shot. In such cases, edits must extend to future frames as they arrive, rather than be applied to a static input clip. In this ]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>With large pretrained models, existing methods have effectively improved instruction-based video editing. However, most of them rely on an in-place editing assumption. They align the edited video with the given source clip frame by frame over a fixed time span. This pattern fails for open-ended streams, e.g., restyling a live game or applying a camera move to an ongoing shot. In such cases, edits must extend to future frames as they arrive, rather than be applied to a static input clip. In this paper, we study this setting and name it infinite video editing: given a preceding segment and an edit request, a model must generate the next segment that continues the stream while applying the requested edit. This process repeats as an unbounded sequence of edit instructions arrives. This task brings two challenges: the edit must be a faithful continuation rather than a frame-wise rewrite, and generation quality must remain stable as edits accumulate. To address them, we first design a data-collection pipeline for infinite video editing. Based on the collected data, we propose InfinityEdit, a lightweight edit adapter that equips a streaming video generator with unbounded editing ability. The adapter contains three attention modules. History cross-attention guides the denoising frames using the input frames. Temporal causal self-attention keeps temporal cues flowing only from earlier frames to later ones. Edit cross-attention injects the edit request into generation. During inference, the adapter is activated only in the chunk where an edit request arrives. Subsequent chunks are generated by the original model with a reset anchor frame. This scheme applies the edit while preserving the original model's infinite generation ability. Extensive experiments show that InfinityEdit faithfully continues the stream under each edit, and stays stable over unbounded edit sequences.</p>
+<p><strong>Categories:</strong> cs.CV</p>
 <p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2608.11045">PDF</a> | <a href="https://arxiv.org/abs/2608.11045">arXiv</a></p>]]></content>
+<p><a href="https://arxiv.org/pdf/2608.20910">PDF</a> | <a href="https://arxiv.org/abs/2608.20910">arXiv</a></p>]]></content>
         <author>
-            <name>He-Yen Hsieh</name>
+            <name>Yunze Tong</name>
         </author>
         <author>
-            <name>H. T. Kung</name>
+            <name>Mushui Liu</name>
         </author>
-        <published>2026-08-11T00:00:00.000Z</published>
+        <author>
+            <name>Canyu Zhao</name>
+        </author>
+        <author>
+            <name>Shiyi Zhang</name>
+        </author>
+        <author>
+            <name>Didi Zhu</name>
+        </author>
+        <author>
+            <name>Peng Zhang</name>
+        </author>
+        <author>
+            <name>Wanggui He</name>
+        </author>
+        <author>
+            <name>Jinlong Liu</name>
+        </author>
+        <author>
+            <name>Ying Chen</name>
+        </author>
+        <author>
+            <name>Hao Jiang</name>
+        </author>
+        <author>
+            <name>Pipei Huang</name>
+        </author>
+        <author>
+            <name>Bo Zheng</name>
+        </author>
+        <category label="cs.CV" term="cs.CV"/>
+        <published>2026-08-21T09:27:49.000Z</published>
     </entry>
     <entry>
-        <title type="html"><![CDATA[OasisKV: Scaling In-Decode KV Cache Beyond HBM with Lookahead Sparse Prefetching]]></title>
-        <id>https://arxiv.org/abs/2608.08097</id>
-        <link href="https://arxiv.org/abs/2608.08097"/>
-        <updated>2026-08-08T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Large language model (LLM) inference serving is increasingly constrained by memory rather than compute. As long-context and long-form reasoning workloads become more prevalent, the key-value (KV) cache dominates both memory footprint and memory traffic during LLM token generation, i.e., decode. In particular, HBM capacity has become a scarce and costly resource that heavily limits inference batch size and system throughput. This paper presents OasisKV, a memory-centric LLM inference system desig]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Large language model (LLM) inference serving is increasingly constrained by memory rather than compute. As long-context and long-form reasoning workloads become more prevalent, the key-value (KV) cache dominates both memory footprint and memory traffic during LLM token generation, i.e., decode. In particular, HBM capacity has become a scarce and costly resource that heavily limits inference batch size and system throughput. This paper presents OasisKV, a memory-centric LLM inference system design that alleviates HBM capacity pressure by decoupling full KV-cache storage from HBM during LLM decoding. Because decode-time attention is naturally sparse, OasisKV keeps only the KV entries of the most relevant tokens in HBMs for attention computation. We observe that future important tokens can be predicted accurately in advance using lookahead tokens drafted by speculative decoding (SD). OasisKV employs an efficient attention background pipeline to identify important KV blocks. They are then prefetched from higher-capacity memory tiers (e.g., host or remote memory) and staged in HBMs before being used in the next decode step.
-  We implement OasisKV based on vLLM. The lookahead prediction is accurate enough to keep accuracy within 0.7 points of full attention under a 2,048-token KV budget. This lets OasisKV turn sparsity into throughput gain: 1.69times over dense vLLM on the reasoning workload at 0.1 points of accuracy loss, and up to 2.1times on multi-GPU long-context serving. Under prefill--decode disaggregation, OasisKV reaches about 2times dense throughput while admitting each request with 6.5--9.7times less KV and holding 2.2-2.6 less decode-node host memory than full KV transfer.</p>
+        <title type="html"><![CDATA[Scaling Muon for Diffusion Transformers]]></title>
+        <id>https://arxiv.org/abs/2608.20818</id>
+        <link href="https://arxiv.org/abs/2608.20818"/>
+        <updated>2026-08-21T07:40:28.000Z</updated>
+        <summary type="html"><![CDATA[The matrix-aware optimizer Muon improves large model training by balancing updates across singular directions, yet its scaling behavior and end-to-end efficiency on large Diffusion Transformers (DiTs) remain unclear. We first establish Muon's scaling behavior on DiTs from 1.3B to 15B parameters, showing that its optimization and generative quality advantages over AdamW persist across model scales. However, at scale, the 5-step Newton--Schulz iteration (NS5) performed at every optimization step, ]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>The matrix-aware optimizer Muon improves large model training by balancing updates across singular directions, yet its scaling behavior and end-to-end efficiency on large Diffusion Transformers (DiTs) remain unclear. We first establish Muon's scaling behavior on DiTs from 1.3B to 15B parameters, showing that its optimization and generative quality advantages over AdamW persist across model scales. However, at scale, the 5-step Newton--Schulz iteration (NS5) performed at every optimization step, together with full-momentum materialization, introduces substantial computation and communication overhead that can offset Muon's step-efficiency advantage. We introduce \emph{Periodic Row-wise Muon}, which performs a full NS5 spectral update once every \(K\) steps and applies a low compute and communication cost row-wise constrained update based on the current momentum at the remaining steps. We further co-design a distributed implementation that operates directly on sharded momentum during non-refresh steps and accelerates spectral refreshes through bucketed all-gather and communication--computation overlap. Across all scales, Muon improves the best observed generative quality over AdamW by 12.9--19.1\%. Compared with vanilla Muon, Periodic Row-wise Muon remains within 0.5\% in best generative quality on the 1.3B--4B models and improves it by 4.5\% at 9B. It reduces optimizer time by 46.9--54.3\%, end-to-end step time by 15.7--24.3\%, and logical communication volume by 66.7\%, while reaching its respective best generative quality with 33.7--64.8\% less active training time. These results show that Periodic Row-wise Muon preserves Muon's generative quality advantage while translating it into end-to-end training efficiency for large DiTs.</p>
+<p><strong>Categories:</strong> cs.LG, cs.AI, cs.CV</p>
 <p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2608.08097">PDF</a> | <a href="https://arxiv.org/abs/2608.08097">arXiv</a></p>]]></content>
+<p><a href="https://arxiv.org/pdf/2608.20818">PDF</a> | <a href="https://arxiv.org/abs/2608.20818">arXiv</a></p>]]></content>
         <author>
-            <name>Can Xiao</name>
+            <name>Chenghao Li</name>
         </author>
         <author>
-            <name>Sukmin Cho</name>
+            <name>Xiao Han</name>
         </author>
         <author>
-            <name>Junbong We</name>
+            <name>Xinxin Huang</name>
         </author>
         <author>
-            <name>Zhixiong Niu</name>
+            <name>Wei Liu</name>
         </author>
         <author>
-            <name>Jianyi Cheng</name>
+            <name>Boyang Li</name>
         </author>
         <author>
-            <name>Yiren Zhao</name>
+            <name>Bing Xiao</name>
         </author>
         <author>
-            <name>Youngjin Kwon</name>
+            <name>Heran Zhang</name>
         </author>
         <author>
-            <name>Yongqiang Xiong</name>
+            <name>Juanma Perez Rua</name>
         </author>
         <author>
-            <name>Rui Ma</name>
+            <name>Ke Xu</name>
         </author>
         <author>
-            <name>Junyi Liu</name>
+            <name>Kangning Liu</name>
         </author>
-        <published>2026-08-08T00:00:00.000Z</published>
+        <author>
+            <name>Linjun Kuang</name>
+        </author>
+        <author>
+            <name>Na Li</name>
+        </author>
+        <author>
+            <name>Tan Wang</name>
+        </author>
+        <author>
+            <name>Tian Xie</name>
+        </author>
+        <author>
+            <name>Wei Peng</name>
+        </author>
+        <author>
+            <name>Yang Pei</name>
+        </author>
+        <author>
+            <name>Yifan Xu</name>
+        </author>
+        <author>
+            <name>Yuanhao Zhai</name>
+        </author>
+        <author>
+            <name>Yuwei Lin</name>
+        </author>
+        <author>
+            <name>Zhe Wang</name>
+        </author>
+        <author>
+            <name>Zihao He</name>
+        </author>
+        <author>
+            <name>Daniel Li</name>
+        </author>
+        <author>
+            <name>Junbiao Tang</name>
+        </author>
+        <author>
+            <name>Ziyang Jiang</name>
+        </author>
+        <author>
+            <name>Dake Chen</name>
+        </author>
+        <category label="cs.LG" term="cs.LG"/>
+        <category label="cs.AI" term="cs.AI"/>
+        <category label="cs.CV" term="cs.CV"/>
+        <published>2026-08-21T07:40:28.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[TinyCast: Probabilistic Zero-Shot Forecasting with Computed Periodicity]]></title>
+        <id>https://arxiv.org/abs/2608.15767</id>
+        <link href="https://arxiv.org/abs/2608.15767"/>
+        <updated>2026-08-16T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[We introduce TinyCast, an attention-free zero-shot forecaster that emits a predictive distribution from 146,505 parameters, on the premise that at this size the periodic structure of a context is worth computing rather than learning. A zero-parameter spectral detector supplies the dominant periods, the context is folded on their phase, and a dilated convolutional encoder and a block-autoregressive quantile decoder model the rest. It is smaller than every zero-shot entry on the GIFT-Eval board wh]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>We introduce TinyCast, an attention-free zero-shot forecaster that emits a predictive distribution from 146,505 parameters, on the premise that at this size the periodic structure of a context is worth computing rather than learning. A zero-parameter spectral detector supplies the dominant periods, the context is folded on their phase, and a dilated convolutional encoder and a block-autoregressive quantile decoder model the rest. It is smaller than every zero-shot entry on the GIFT-Eval board whose parameter count can be established. On probabilistic accuracy it defines the size-accuracy frontier. Among zero-shot entries declaring no test-data leakage it is the only one below 1.4M parameters that emits a predictive distribution, and every entry scoring better carries at least that budget. On Chronos-ZS and fev-bench every neural model ahead of it carries at least 28 times its parameters. Because the mixing path is convolutions and matrix multiplications only, it exports to static INT8 and forecasts end to end on an embedded device without per-signal fitting.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2608.15767">PDF</a> | <a href="https://arxiv.org/abs/2608.15767">arXiv</a></p>]]></content>
+        <author>
+            <name>Armin Steinhauser</name>
+        </author>
+        <published>2026-08-16T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[MoE-ViE: Mixture of Experts Vision Encoder for Efficient Image and Video Understanding]]></title>
+        <id>https://arxiv.org/abs/2608.17402</id>
+        <link href="https://arxiv.org/abs/2608.17402"/>
+        <updated>2026-08-18T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Vision encoders are a critical component of vision-language models, and scaling their capacity effectively improves performance. However, dense scaling increases compute cost and inference latency. Mixture-of-Experts (MoE) architectures offer a compelling alternative, having enabled efficient scaling in LLMs, yet the MoE design space for CLIP-style vision encoders remains underexplored at State-of-the-Art (SOTA) levels. In this work, we systematically study MoE designs for vision encoder scaling]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Vision encoders are a critical component of vision-language models, and scaling their capacity effectively improves performance. However, dense scaling increases compute cost and inference latency. Mixture-of-Experts (MoE) architectures offer a compelling alternative, having enabled efficient scaling in LLMs, yet the MoE design space for CLIP-style vision encoders remains underexplored at State-of-the-Art (SOTA) levels. In this work, we systematically study MoE designs for vision encoder scaling and find that fine-grained MoE topologies yield substantial gains over both dense and standard MoE counterparts. We further propose an auxiliary-loss-free balancing variant for better expert utilization, and design a specialized MoE kernel to mitigate inference latency overhead. To enhance video capabilities while preserving image knowledge, we introduce frame-level distillation paired with a novel freezing mechanism. We pretrain a series of Mixture-of-Experts Vision Encoders (MoE-ViE) across a range of sizes, all consistently outperforming their dense counterparts. Our largest model matches the zero-shot performance of a SOTA encoder 1.7x its size at 76% of its latency. When aligned with an LLM, MoE-ViE surpasses all compared encoders on image and video benchmarks, including those with up to 5x more activated parameters. Code is available at https://github.com/facebookresearch/moe_vie.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2608.17402">PDF</a> | <a href="https://arxiv.org/abs/2608.17402">arXiv</a></p>]]></content>
+        <author>
+            <name>Bonan Zhang</name>
+        </author>
+        <author>
+            <name>Shiyu Dong</name>
+        </author>
+        <author>
+            <name>Quan Hung Tran</name>
+        </author>
+        <author>
+            <name>Katharina Gschwind</name>
+        </author>
+        <author>
+            <name>Shuqi Yang</name>
+        </author>
+        <author>
+            <name>Sijia Chen</name>
+        </author>
+        <author>
+            <name>Adel Ahmadyan</name>
+        </author>
+        <author>
+            <name>Seungwhan Moon</name>
+        </author>
+        <author>
+            <name>Lu Zhang</name>
+        </author>
+        <author>
+            <name>Ahmed Kirmani</name>
+        </author>
+        <author>
+            <name>Babak Damavandi</name>
+        </author>
+        <author>
+            <name>Anuj Kumar</name>
+        </author>
+        <published>2026-08-18T00:00:00.000Z</published>
     </entry>
 </feed>
