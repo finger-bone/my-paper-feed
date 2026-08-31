@@ -2,296 +2,194 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://github.com/finger-bone/my-paper-feed</id>
     <title>LLM Acceleration Papers Weekly</title>
-    <updated>2026-08-21T10:31:15.000Z</updated>
+    <updated>2026-08-28T15:28:05.000Z</updated>
     <generator>paper-feed</generator>
     <link rel="alternate" href="https://github.com/finger-bone/my-paper-feed"/>
     <subtitle>每周精选大模型推理/训练加速相关论文</subtitle>
     <rights>All rights reserved 2026</rights>
     <entry>
-        <title type="html"><![CDATA[TreeWY: Speculative Verification for Gated DeltaNet Hybrids]]></title>
-        <id>https://arxiv.org/abs/2608.20961</id>
-        <link href="https://arxiv.org/abs/2608.20961"/>
-        <updated>2026-08-21T10:31:15.000Z</updated>
-        <summary type="html"><![CDATA[Modern open models are hybrids: most layers are linear-attention (Gated DeltaNet, GDN) layers carrying a small fixed-size recurrent state instead of a growing key-value (KV) cache. This makes ordinary decoding memory-efficient, but hurts speculative decoding. To verify a batch of draft tokens and then roll back the rejected ones, today's systems snapshot the full recurrent state at every draft position for GDN layers, and those snapshots cannot be shared across branches of a draft tree, so a wid]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Modern open models are hybrids: most layers are linear-attention (Gated DeltaNet, GDN) layers carrying a small fixed-size recurrent state instead of a growing key-value (KV) cache. This makes ordinary decoding memory-efficient, but hurts speculative decoding. To verify a batch of draft tokens and then roll back the rejected ones, today's systems snapshot the full recurrent state at every draft position for GDN layers, and those snapshots cannot be shared across branches of a draft tree, so a wide, high-acceptance tree becomes memory-infeasible. We remove the snapshots. Using a tree-structured WY transform of the gated delta rule, we compute every draft node's output with a single triangular solve and reconstruct only the one accepted state on commit, storing a small pseudo-value matrix instead of per-node states; the derivation depends only on the gated delta rule, not on any other architectural detail. In serving benchmarks on two scales of one hybrid model family (Qwen3.5 35B and 397B) this cuts speculative recurrent-state memory and KV-cache pressure at identical acceptance length, turning the freed HBM into higher throughput and much lower time-to-first-token (TTFT) wherever memory binds, and costing a few percent where it does not. For tree width the same memory buys affordability: a wider, higher-acceptance draft becomes possible, though not yet a throughput win.</p>
-<p><strong>Categories:</strong> cs.AI, cs.CL, cs.DC, cs.LG, cs.PF</p>
+        <title type="html"><![CDATA[Curvature-Conditioned Multiscale Momentum with Sphere Constraints for LLM Pretraining]]></title>
+        <id>https://arxiv.org/abs/2608.28442</id>
+        <link href="https://arxiv.org/abs/2608.28442"/>
+        <updated>2026-08-28T15:28:05.000Z</updated>
+        <summary type="html"><![CDATA[Pretraining accounts for a large fraction of the total computational cost in LLM training. However, noise-dominant gradients and the highly ill-conditioned loss landscape bring severe challenges. Although modern adaptive optimizers such as AdamW and Muon have achieved great success in large-scale pretraining, their reliance on gradient normalization offers limited mitigation of the ill-conditioned curvature. The progress along flat directions (eigen-directions of small eigenvalues), which domina]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Pretraining accounts for a large fraction of the total computational cost in LLM training. However, noise-dominant gradients and the highly ill-conditioned loss landscape bring severe challenges. Although modern adaptive optimizers such as AdamW and Muon have achieved great success in large-scale pretraining, their reliance on gradient normalization offers limited mitigation of the ill-conditioned curvature. The progress along flat directions (eigen-directions of small eigenvalues), which dominates the final loss reduction, remains relatively slow. To enhance training dynamics along flat directions, we propose a curvature-conditioned multiscale momentum method with sphere constraints, delivering steady acceleration in LLM pretraining. This multiscale momentum, applied only along flat directions, pairs a slow-decay component for noise reduction with a fast-decay component for rapid curvature adaptation, harnessing their complementary strengths. Crucially, we employ a sphere constraint technique to prevent parameter inflation and excessively rapid effective learning rate decay that would otherwise arise from a naive combination. Extensive experiments show that the proposed method significantly accelerates Muon across diverse architectures (dense, MoE) and model sizes (0.12B--2.3B parameters). Theoretically, we verify the acceleration effect and provide insight into the design principles underlying the flat-direction multiscale momentum.</p>
+<p><strong>Categories:</strong> cs.LG</p>
 <p><strong>Relevance:</strong> 9/10</p>
-<p><a href="https://arxiv.org/pdf/2608.20961">PDF</a> | <a href="https://arxiv.org/abs/2608.20961">arXiv</a></p>]]></content>
+<p><a href="https://arxiv.org/pdf/2608.28442">PDF</a> | <a href="https://arxiv.org/abs/2608.28442">arXiv</a></p>]]></content>
         <author>
-            <name>Sneha Murthy Ghantasala</name>
+            <name>Shuchen Zhu</name>
         </author>
-        <category label="cs.AI" term="cs.AI"/>
-        <category label="cs.CL" term="cs.CL"/>
-        <category label="cs.DC" term="cs.DC"/>
+        <author>
+            <name>Yuxin Fang</name>
+        </author>
+        <author>
+            <name>Mingze Wang</name>
+        </author>
+        <author>
+            <name>Kun Yuan</name>
+        </author>
         <category label="cs.LG" term="cs.LG"/>
-        <category label="cs.PF" term="cs.PF"/>
-        <published>2026-08-21T10:31:15.000Z</published>
+        <published>2026-08-28T15:28:05.000Z</published>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Gaussian-Mixture Latent Flow for Stochastic 3D Human Motion Prediction]]></title>
-        <id>https://arxiv.org/abs/2608.21093</id>
-        <link href="https://arxiv.org/abs/2608.21093"/>
-        <updated>2026-08-21T13:39:51.000Z</updated>
-        <summary type="html"><![CDATA[Stochastic human motion prediction aims to forecast future motion distributions. Although recent studies have achieved strong performance in terms of accuracy and diversity, they often overlook plausibility (e.g., resulting in physically unrealistic predictions) and uncertainty quantification, both of which are essential for real-world applications and downstream tasks. To address these issues, we propose a latent flow-based model equipped with a data-driven Gaussian mixture prior that more effe]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Stochastic human motion prediction aims to forecast future motion distributions. Although recent studies have achieved strong performance in terms of accuracy and diversity, they often overlook plausibility (e.g., resulting in physically unrealistic predictions) and uncertainty quantification, both of which are essential for real-world applications and downstream tasks. To address these issues, we propose a latent flow-based model equipped with a data-driven Gaussian mixture prior that more effectively disentangles diverse human behaviors than conventional single-modal priors. This prior is derived from patterns in the training data without requiring additional annotations. Furthermore, the fully invertible nature of our model enables natural uncertainty quantification through tractable likelihood computation. Experiments on the Human3.6M and AMASS datasets demonstrate that our approach achieves state-of-the-art performance in both accuracy and plausibility.</p>
-<p><strong>Categories:</strong> cs.CV</p>
+        <title type="html"><![CDATA[Sliding-window beats linear attention]]></title>
+        <id>https://arxiv.org/abs/2608.28444</id>
+        <link href="https://arxiv.org/abs/2608.28444"/>
+        <updated>2026-08-28T15:31:34.000Z</updated>
+        <summary type="html"><![CDATA[Due to the nature of quadratic attention, Large Language Models (LLMs) consume a lot of memory and energy. Every new token costs more than the previous one. For each additional token, the keys and values must be stored in memory indefinitely, which is unsustainable. Several alternatives have been proposed to fix the quadratic scaling problem, one of which is retrofitting LLMs to use Linear Attention. This idea has attracted a lot of attention, given its promise to solve the quadratic scaling pro]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Due to the nature of quadratic attention, Large Language Models (LLMs) consume a lot of memory and energy. Every new token costs more than the previous one. For each additional token, the keys and values must be stored in memory indefinitely, which is unsustainable. Several alternatives have been proposed to fix the quadratic scaling problem, one of which is retrofitting LLMs to use Linear Attention. This idea has attracted a lot of attention, given its promise to solve the quadratic scaling problem with state-of-the-art performance at low cost. However, this line of research has not been properly compared to simpler baselines. In this work, we show that Sliding Window Attention (SWA) with sinks performs as well or better than post-trained Linear Attention models. We observe this across multiple LLMs on various downstream tasks. For long-context reasoning tasks (Needle-in-a-Haystack and BABILong), SWA achieves massively higher performance (2 to 10 times higher than linear attention). SWA requires no post-training, is extremely fast, and requires low memory; therefore, making it an extremely cheap and reliable solution. To reduce inference memory cost, we strongly recommend switching to SWA instead of post-training linear models. Linear attention models may have shown some promise, but they likely require to be trained from scratch or extensive post-training in order to even match SWA.</p>
+<p><strong>Categories:</strong> cs.CL, cs.LG</p>
 <p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2608.21093">PDF</a> | <a href="https://arxiv.org/abs/2608.21093">arXiv</a></p>]]></content>
+<p><a href="https://arxiv.org/pdf/2608.28444">PDF</a> | <a href="https://arxiv.org/abs/2608.28444">arXiv</a></p>]]></content>
         <author>
-            <name>Yue Ma</name>
+            <name>Alexia Jolicoeur-Martineau</name>
         </author>
         <author>
-            <name>Frederick W. B. Li</name>
+            <name>Rhea Sanjay Sukthanker</name>
         </author>
         <author>
-            <name>Xiaohui Liang</name>
+            <name>Pashmina Cameron</name>
         </author>
-        <category label="cs.CV" term="cs.CV"/>
-        <published>2026-08-21T13:39:51.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[When the Feature Pool Goes Algorithmic: Extending Mufwene's Ecology of Language Evolution to LLM-Mediated Exposure]]></title>
-        <id>https://arxiv.org/abs/2608.21088</id>
-        <link href="https://arxiv.org/abs/2608.21088"/>
-        <updated>2026-08-21T13:32:26.000Z</updated>
-        <summary type="html"><![CDATA[Mufwene's ecological model locates language evolution in competition among variants contributed by individual idiolects and in speakers' selection from linguistic material made available through interaction. Large language models (LLMs) complicate this architecture without requiring the locus of selection to move away from human speakers. This article argues that LLMs are best treated as distributional mediators: they aggregate language produced across human populations, transform its distributi]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Mufwene's ecological model locates language evolution in competition among variants contributed by individual idiolects and in speakers' selection from linguistic material made available through interaction. Large language models (LLMs) complicate this architecture without requiring the locus of selection to move away from human speakers. This article argues that LLMs are best treated as distributional mediators: they aggregate language produced across human populations, transform its distribution through training and post-training, and redistribute model-specific outputs at scale. I call the resulting ecological process algorithmic reweighting of the speaker-accessible distribution: model mediation can alter the relative frequencies with which competing variants reach human selectors. Emerging evidence on model-specific linguistic profiles and lexical uptake is consistent with parts of this pathway, but does not establish inevitable convergence. Human social evaluation remains decisive: model-associated forms may diffuse and become conventionalized, become socially recognizable as 'AI-like' and subsequently avoided, or fail to diffuse in the first place. The proposal extends Mufwene's feature-pool ecology one step upstream of speaker selection and yields testable predictions about uptake, model-version effects, convergence, and social reversal.</p>
-<p><strong>Categories:</strong> cs.CL</p>
-<p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2608.21088">PDF</a> | <a href="https://arxiv.org/abs/2608.21088">arXiv</a></p>]]></content>
         <author>
-            <name>Kunmei Han</name>
+            <name>Emy Gervais</name>
         </author>
         <category label="cs.CL" term="cs.CL"/>
-        <published>2026-08-21T13:32:26.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Jacobian-guided Noise Injection for Quantization Robustness in Large Language Models]]></title>
-        <id>https://arxiv.org/abs/2608.20988</id>
-        <link href="https://arxiv.org/abs/2608.20988"/>
-        <updated>2026-08-21T11:16:40.000Z</updated>
-        <summary type="html"><![CDATA[Quantization of Large Language Models (LLMs) is often hindered by the sensitivity of the self-attention mechanism to discretization errors. We identify the softmax operator as a bottleneck for quantization stability due to its sensitivity to outliers and state-dependent Jacobian. We theoretically establish that suppressing the norm of this Jacobian helps in bounding quantization-induced performance degradation. Based on this, we propose Jacobian-Guided Noise Injection, a training strategy that i]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Quantization of Large Language Models (LLMs) is often hindered by the sensitivity of the self-attention mechanism to discretization errors. We identify the softmax operator as a bottleneck for quantization stability due to its sensitivity to outliers and state-dependent Jacobian. We theoretically establish that suppressing the norm of this Jacobian helps in bounding quantization-induced performance degradation. Based on this, we propose Jacobian-Guided Noise Injection, a training strategy that injects zero-mean Gaussian noise into pre-attention logits, with variance derived directly from the Jacobian Frobenius norm. Unlike prior approaches that rely on heuristic or penalise jacobian directly, our method provides a way to identify the optimal noise variance based on the local attention sensitivity. We evaluate the method on SOTA LLM architectures, where it demonstrates improved robustness over popular PTQ methods. Empirical analysis reveals that the proposed method gives up to +37% relative gains on Top-1 accuracy on ImageNet-1K for SigLIP and improves relative perplexity by upto 40% on WikiText for language models in low bit quantisation settings, proving the efficacy of the approach.</p>
-<p><strong>Categories:</strong> cs.LG, cs.AI</p>
-<p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2608.20988">PDF</a> | <a href="https://arxiv.org/abs/2608.20988">arXiv</a></p>]]></content>
-        <author>
-            <name>Deepanshu Pandey</name>
-        </author>
-        <author>
-            <name>Arnav Chavan</name>
-        </author>
-        <author>
-            <name>Nahush Lele</name>
-        </author>
-        <author>
-            <name>Sankalp Dayal</name>
-        </author>
-        <author>
-            <name>Deepak Gupta</name>
-        </author>
         <category label="cs.LG" term="cs.LG"/>
+        <published>2026-08-28T15:31:34.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[A Probabilistic Interpretation of KV Cache Eviction]]></title>
+        <id>https://arxiv.org/abs/2608.28293</id>
+        <link href="https://arxiv.org/abs/2608.28293"/>
+        <updated>2026-08-28T12:57:07.000Z</updated>
+        <summary type="html"><![CDATA[The premise and promise of KV (cache) eviction is simple: higher throughput can be achieved by evicting some entries from the KV cache, at a negligible cost to quality. This holds empirically for many existing methods, though most rely on creative heuristics for selecting which entries to drop. Despite recent advances, the problem of KV eviction has remained informal in the literature. This paper aims to properly formalize this problem through the lens of probabilistic reasoning and reveal what ]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>The premise and promise of KV (cache) eviction is simple: higher throughput can be achieved by evicting some entries from the KV cache, at a negligible cost to quality. This holds empirically for many existing methods, though most rely on creative heuristics for selecting which entries to drop. Despite recent advances, the problem of KV eviction has remained informal in the literature. This paper aims to properly formalize this problem through the lens of probabilistic reasoning and reveal what can be learned from this perspective. Concretely, we (1) formalize the problem of KV eviction and, unfortunately, prove that it is computationally hard, (2) show that by framing it probabilistically, KV eviction reduces to the problem of expectation estimation, which can be approximated through sampling, (3) show that through this probabilistic interpretation, correcting for evicted entries during decoding---a previously ignored problem---becomes feasible, and (4) reveal that existing methods in the literature are zero-variance biased estimators that can be easily adapted in order to enable decode time correction. In practice, we show that this probabilistic version of KV eviction coupled with decode time correction is more robust to different tasks compared to existing eviction methods and achieves competitive performance at the same compression budget.</p>
+<p><strong>Categories:</strong> cs.CL, cs.AI</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2608.28293">PDF</a> | <a href="https://arxiv.org/abs/2608.28293">arXiv</a></p>]]></content>
+        <author>
+            <name>Renato Geh</name>
+        </author>
+        <author>
+            <name>Alex Chen</name>
+        </author>
+        <author>
+            <name>Daniel Israel</name>
+        </author>
+        <author>
+            <name>Aditya Grover</name>
+        </author>
+        <author>
+            <name>Guy Van den Broeck</name>
+        </author>
+        <category label="cs.CL" term="cs.CL"/>
         <category label="cs.AI" term="cs.AI"/>
-        <published>2026-08-21T11:16:40.000Z</published>
+        <published>2026-08-28T12:57:07.000Z</published>
     </entry>
     <entry>
-        <title type="html"><![CDATA[InfinityEdit: Infinite Video Editing with a Lightweight Edit-Ignition Adapter]]></title>
-        <id>https://arxiv.org/abs/2608.20910</id>
-        <link href="https://arxiv.org/abs/2608.20910"/>
-        <updated>2026-08-21T09:27:49.000Z</updated>
-        <summary type="html"><![CDATA[With large pretrained models, existing methods have effectively improved instruction-based video editing. However, most of them rely on an in-place editing assumption. They align the edited video with the given source clip frame by frame over a fixed time span. This pattern fails for open-ended streams, e.g., restyling a live game or applying a camera move to an ongoing shot. In such cases, edits must extend to future frames as they arrive, rather than be applied to a static input clip. In this ]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>With large pretrained models, existing methods have effectively improved instruction-based video editing. However, most of them rely on an in-place editing assumption. They align the edited video with the given source clip frame by frame over a fixed time span. This pattern fails for open-ended streams, e.g., restyling a live game or applying a camera move to an ongoing shot. In such cases, edits must extend to future frames as they arrive, rather than be applied to a static input clip. In this paper, we study this setting and name it infinite video editing: given a preceding segment and an edit request, a model must generate the next segment that continues the stream while applying the requested edit. This process repeats as an unbounded sequence of edit instructions arrives. This task brings two challenges: the edit must be a faithful continuation rather than a frame-wise rewrite, and generation quality must remain stable as edits accumulate. To address them, we first design a data-collection pipeline for infinite video editing. Based on the collected data, we propose InfinityEdit, a lightweight edit adapter that equips a streaming video generator with unbounded editing ability. The adapter contains three attention modules. History cross-attention guides the denoising frames using the input frames. Temporal causal self-attention keeps temporal cues flowing only from earlier frames to later ones. Edit cross-attention injects the edit request into generation. During inference, the adapter is activated only in the chunk where an edit request arrives. Subsequent chunks are generated by the original model with a reset anchor frame. This scheme applies the edit while preserving the original model's infinite generation ability. Extensive experiments show that InfinityEdit faithfully continues the stream under each edit, and stays stable over unbounded edit sequences.</p>
-<p><strong>Categories:</strong> cs.CV</p>
+        <title type="html"><![CDATA[Nested Byte-Level Vocabularies Are Cheap to Deploy and Expensive to Share: A Pre-Registered Negative Result]]></title>
+        <id>https://arxiv.org/abs/2608.28151</id>
+        <link href="https://arxiv.org/abs/2608.28151"/>
+        <updated>2026-08-28T10:13:32.000Z</updated>
+        <summary type="html"><![CDATA[A byte-level BPE tokenizer is an ordered list of merge rules, so applying only a prefix yields a vocabulary whose token identifiers are the first rows of the full vocabulary. This prefix nesting allows one language model to operate at several vocabulary sizes, use a control token to indicate the active size, and be deployed at any trained size by slicing its embedding and output head. We pre-registered five claims, including margins, seeds, contrasts, and a stop rule, and trained 30 models with ]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>A byte-level BPE tokenizer is an ordered list of merge rules, so applying only a prefix yields a vocabulary whose token identifiers are the first rows of the full vocabulary. This prefix nesting allows one language model to operate at several vocabulary sizes, use a control token to indicate the active size, and be deployed at any trained size by slicing its embedding and output head. We pre-registered five claims, including margins, seeds, contrasts, and a stop rule, and trained 30 models with 3.1M- and 10.6M-parameter bodies on 200M tokens each. Slicing is numerically exact: across 76 checks, a sliced model reproduces the restricted full model's logits bit for bit and removes 66% of deployed weights without changing latency. However, the shared model trails a fixed-cap specialist by 3.64% bits per byte at 32k against a 1% margin, and by 2.96% at 8k against a 2% margin. A 2x2 ablation separating the control token from output restriction finds that the token changes performance by +0.07% to +0.13%, with all intervals crossing zero, while output restriction costs +0.47% to +1.19%; the factors are substitutes rather than complements. Multi-cap training nevertheless improves robustness: under typographical noise, the same checkpoint degrades 12.5--15.4 points less in its fine mode and outperforms each fixed-cap specialist at that specialist's vocabulary size. A control with neither cap token nor output restriction is equally robust, attributing this benefit to multi-granularity training rather than conditioning. The per-cap penalty tracks each cap's share of training rows, yielding a falsifiable prediction for future work.</p>
+<p><strong>Categories:</strong> cs.CL, cs.AI, cs.IR</p>
 <p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2608.20910">PDF</a> | <a href="https://arxiv.org/abs/2608.20910">arXiv</a></p>]]></content>
+<p><a href="https://arxiv.org/pdf/2608.28151">PDF</a> | <a href="https://arxiv.org/abs/2608.28151">arXiv</a></p>]]></content>
         <author>
-            <name>Yunze Tong</name>
+            <name>Christos Koutsiaris</name>
         </author>
-        <author>
-            <name>Mushui Liu</name>
-        </author>
-        <author>
-            <name>Canyu Zhao</name>
-        </author>
-        <author>
-            <name>Shiyi Zhang</name>
-        </author>
-        <author>
-            <name>Didi Zhu</name>
-        </author>
-        <author>
-            <name>Peng Zhang</name>
-        </author>
-        <author>
-            <name>Wanggui He</name>
-        </author>
-        <author>
-            <name>Jinlong Liu</name>
-        </author>
-        <author>
-            <name>Ying Chen</name>
-        </author>
-        <author>
-            <name>Hao Jiang</name>
-        </author>
-        <author>
-            <name>Pipei Huang</name>
-        </author>
-        <author>
-            <name>Bo Zheng</name>
-        </author>
-        <category label="cs.CV" term="cs.CV"/>
-        <published>2026-08-21T09:27:49.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Scaling Muon for Diffusion Transformers]]></title>
-        <id>https://arxiv.org/abs/2608.20818</id>
-        <link href="https://arxiv.org/abs/2608.20818"/>
-        <updated>2026-08-21T07:40:28.000Z</updated>
-        <summary type="html"><![CDATA[The matrix-aware optimizer Muon improves large model training by balancing updates across singular directions, yet its scaling behavior and end-to-end efficiency on large Diffusion Transformers (DiTs) remain unclear. We first establish Muon's scaling behavior on DiTs from 1.3B to 15B parameters, showing that its optimization and generative quality advantages over AdamW persist across model scales. However, at scale, the 5-step Newton--Schulz iteration (NS5) performed at every optimization step, ]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>The matrix-aware optimizer Muon improves large model training by balancing updates across singular directions, yet its scaling behavior and end-to-end efficiency on large Diffusion Transformers (DiTs) remain unclear. We first establish Muon's scaling behavior on DiTs from 1.3B to 15B parameters, showing that its optimization and generative quality advantages over AdamW persist across model scales. However, at scale, the 5-step Newton--Schulz iteration (NS5) performed at every optimization step, together with full-momentum materialization, introduces substantial computation and communication overhead that can offset Muon's step-efficiency advantage. We introduce \emph{Periodic Row-wise Muon}, which performs a full NS5 spectral update once every \(K\) steps and applies a low compute and communication cost row-wise constrained update based on the current momentum at the remaining steps. We further co-design a distributed implementation that operates directly on sharded momentum during non-refresh steps and accelerates spectral refreshes through bucketed all-gather and communication--computation overlap. Across all scales, Muon improves the best observed generative quality over AdamW by 12.9--19.1\%. Compared with vanilla Muon, Periodic Row-wise Muon remains within 0.5\% in best generative quality on the 1.3B--4B models and improves it by 4.5\% at 9B. It reduces optimizer time by 46.9--54.3\%, end-to-end step time by 15.7--24.3\%, and logical communication volume by 66.7\%, while reaching its respective best generative quality with 33.7--64.8\% less active training time. These results show that Periodic Row-wise Muon preserves Muon's generative quality advantage while translating it into end-to-end training efficiency for large DiTs.</p>
-<p><strong>Categories:</strong> cs.LG, cs.AI, cs.CV</p>
-<p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2608.20818">PDF</a> | <a href="https://arxiv.org/abs/2608.20818">arXiv</a></p>]]></content>
-        <author>
-            <name>Chenghao Li</name>
-        </author>
-        <author>
-            <name>Xiao Han</name>
-        </author>
-        <author>
-            <name>Xinxin Huang</name>
-        </author>
-        <author>
-            <name>Wei Liu</name>
-        </author>
-        <author>
-            <name>Boyang Li</name>
-        </author>
-        <author>
-            <name>Bing Xiao</name>
-        </author>
-        <author>
-            <name>Heran Zhang</name>
-        </author>
-        <author>
-            <name>Juanma Perez Rua</name>
-        </author>
-        <author>
-            <name>Ke Xu</name>
-        </author>
-        <author>
-            <name>Kangning Liu</name>
-        </author>
-        <author>
-            <name>Linjun Kuang</name>
-        </author>
-        <author>
-            <name>Na Li</name>
-        </author>
-        <author>
-            <name>Tan Wang</name>
-        </author>
-        <author>
-            <name>Tian Xie</name>
-        </author>
-        <author>
-            <name>Wei Peng</name>
-        </author>
-        <author>
-            <name>Yang Pei</name>
-        </author>
-        <author>
-            <name>Yifan Xu</name>
-        </author>
-        <author>
-            <name>Yuanhao Zhai</name>
-        </author>
-        <author>
-            <name>Yuwei Lin</name>
-        </author>
-        <author>
-            <name>Zhe Wang</name>
-        </author>
-        <author>
-            <name>Zihao He</name>
-        </author>
-        <author>
-            <name>Daniel Li</name>
-        </author>
-        <author>
-            <name>Junbiao Tang</name>
-        </author>
-        <author>
-            <name>Ziyang Jiang</name>
-        </author>
-        <author>
-            <name>Dake Chen</name>
-        </author>
-        <category label="cs.LG" term="cs.LG"/>
+        <category label="cs.CL" term="cs.CL"/>
         <category label="cs.AI" term="cs.AI"/>
-        <category label="cs.CV" term="cs.CV"/>
-        <published>2026-08-21T07:40:28.000Z</published>
+        <category label="cs.IR" term="cs.IR"/>
+        <published>2026-08-28T10:13:32.000Z</published>
     </entry>
     <entry>
-        <title type="html"><![CDATA[TinyCast: Probabilistic Zero-Shot Forecasting with Computed Periodicity]]></title>
-        <id>https://arxiv.org/abs/2608.15767</id>
-        <link href="https://arxiv.org/abs/2608.15767"/>
-        <updated>2026-08-16T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[We introduce TinyCast, an attention-free zero-shot forecaster that emits a predictive distribution from 146,505 parameters, on the premise that at this size the periodic structure of a context is worth computing rather than learning. A zero-parameter spectral detector supplies the dominant periods, the context is folded on their phase, and a dilated convolutional encoder and a block-autoregressive quantile decoder model the rest. It is smaller than every zero-shot entry on the GIFT-Eval board wh]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>We introduce TinyCast, an attention-free zero-shot forecaster that emits a predictive distribution from 146,505 parameters, on the premise that at this size the periodic structure of a context is worth computing rather than learning. A zero-parameter spectral detector supplies the dominant periods, the context is folded on their phase, and a dilated convolutional encoder and a block-autoregressive quantile decoder model the rest. It is smaller than every zero-shot entry on the GIFT-Eval board whose parameter count can be established. On probabilistic accuracy it defines the size-accuracy frontier. Among zero-shot entries declaring no test-data leakage it is the only one below 1.4M parameters that emits a predictive distribution, and every entry scoring better carries at least that budget. On Chronos-ZS and fev-bench every neural model ahead of it carries at least 28 times its parameters. Because the mixing path is convolutions and matrix multiplications only, it exports to static INT8 and forecasts end to end on an embedded device without per-signal fitting.</p>
+        <title type="html"><![CDATA[TorchMorph: CUDA-accelerated Morphological Transforms]]></title>
+        <id>https://arxiv.org/abs/2608.24738</id>
+        <link href="https://arxiv.org/abs/2608.24738"/>
+        <updated>2026-08-25T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Morphological transforms are long-standing tools for shape and mask processing, but the de facto reference implementation in the Python ecosystem, i.e. scipy.ndimage, is CPU-only, single-array, and therefore unusable inside a GPU training loop without an expensive device-to-host round trip. GPU vision libraries built on PyTorch cover a narrow subset of these operators, typically restricted to two spatial dimensions and flat structuring elements. We present TorchMorph, a lightweight PyTorch exten]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Morphological transforms are long-standing tools for shape and mask processing, but the de facto reference implementation in the Python ecosystem, i.e. scipy.ndimage, is CPU-only, single-array, and therefore unusable inside a GPU training loop without an expensive device-to-host round trip. GPU vision libraries built on PyTorch cover a narrow subset of these operators, typically restricted to two spatial dimensions and flat structuring elements. We present TorchMorph, a lightweight PyTorch extension that closes this gap. TorchMorph exposes 22 public operators covering binary morphology, greyscale morphology, exact and approximate distance transforms, and entropy-regularised optimal transport, all implemented as fused CUDA kernels that operate directly on (B, C, Spatial...) CUDA tensors with up to eight spatial dimensions. The API deliberately mirrors scipy.ndimage argument-for-argument, including border modes, structuring-element origins and pre-allocated outputs, so that existing pipelines port with a change of import. We describe the layered architecture and the kernel designs behind each operator family. Against single-threaded CPU references, batched execution reaches up to 1.1e3 times the throughput of scipy.ndimage on greyscale morphology and up to 350x on exact Euclidean distance transforms, while the Sinkhorn solver runs up to 42x faster than POT. Binary and chamfer operators reproduce their SciPy counterparts exactly, and every float-valued operator agrees with the CPU reference to within 1.8e-6 absolute error. TorchMorph is released under the MIT licence at https://intcomp.github.io/tm.</p>
 <p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2608.15767">PDF</a> | <a href="https://arxiv.org/abs/2608.15767">arXiv</a></p>]]></content>
+<p><a href="https://arxiv.org/pdf/2608.24738">PDF</a> | <a href="https://arxiv.org/abs/2608.24738">arXiv</a></p>]]></content>
         <author>
-            <name>Armin Steinhauser</name>
+            <name>Kai Zhao</name>
         </author>
-        <published>2026-08-16T00:00:00.000Z</published>
+        <published>2026-08-25T00:00:00.000Z</published>
     </entry>
     <entry>
-        <title type="html"><![CDATA[MoE-ViE: Mixture of Experts Vision Encoder for Efficient Image and Video Understanding]]></title>
-        <id>https://arxiv.org/abs/2608.17402</id>
-        <link href="https://arxiv.org/abs/2608.17402"/>
-        <updated>2026-08-18T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Vision encoders are a critical component of vision-language models, and scaling their capacity effectively improves performance. However, dense scaling increases compute cost and inference latency. Mixture-of-Experts (MoE) architectures offer a compelling alternative, having enabled efficient scaling in LLMs, yet the MoE design space for CLIP-style vision encoders remains underexplored at State-of-the-Art (SOTA) levels. In this work, we systematically study MoE designs for vision encoder scaling]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Vision encoders are a critical component of vision-language models, and scaling their capacity effectively improves performance. However, dense scaling increases compute cost and inference latency. Mixture-of-Experts (MoE) architectures offer a compelling alternative, having enabled efficient scaling in LLMs, yet the MoE design space for CLIP-style vision encoders remains underexplored at State-of-the-Art (SOTA) levels. In this work, we systematically study MoE designs for vision encoder scaling and find that fine-grained MoE topologies yield substantial gains over both dense and standard MoE counterparts. We further propose an auxiliary-loss-free balancing variant for better expert utilization, and design a specialized MoE kernel to mitigate inference latency overhead. To enhance video capabilities while preserving image knowledge, we introduce frame-level distillation paired with a novel freezing mechanism. We pretrain a series of Mixture-of-Experts Vision Encoders (MoE-ViE) across a range of sizes, all consistently outperforming their dense counterparts. Our largest model matches the zero-shot performance of a SOTA encoder 1.7x its size at 76% of its latency. When aligned with an LLM, MoE-ViE surpasses all compared encoders on image and video benchmarks, including those with up to 5x more activated parameters. Code is available at https://github.com/facebookresearch/moe_vie.</p>
+        <title type="html"><![CDATA[The Mask Is Not the Model: Auditing Prefix Invariance in Attention, State-Space, and Hybrid Sequence Models]]></title>
+        <id>https://arxiv.org/abs/2608.22876</id>
+        <link href="https://arxiv.org/abs/2608.22876"/>
+        <updated>2026-08-24T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[We formalize prefix invariance: representations at position t must not depend on future inputs. We give a lightweight audit, two forward passes, no training or gradients, that localizes exactly where causality breaks. Attention-mask inspection is incomplete: leaks can occur via scans or normalization despite correct masks. Across 192 injected-fault trials on eight checkpoints, mask inspection found none, while our audit localized all 192/192, also finding a defect in Zamba2 and Nemotron-H.]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>We formalize prefix invariance: representations at position t must not depend on future inputs. We give a lightweight audit, two forward passes, no training or gradients, that localizes exactly where causality breaks. Attention-mask inspection is incomplete: leaks can occur via scans or normalization despite correct masks. Across 192 injected-fault trials on eight checkpoints, mask inspection found none, while our audit localized all 192/192, also finding a defect in Zamba2 and Nemotron-H.</p>
 <p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2608.17402">PDF</a> | <a href="https://arxiv.org/abs/2608.17402">arXiv</a></p>]]></content>
+<p><a href="https://arxiv.org/pdf/2608.22876">PDF</a> | <a href="https://arxiv.org/abs/2608.22876">arXiv</a></p>]]></content>
         <author>
-            <name>Bonan Zhang</name>
+            <name>Taebong Kim</name>
         </author>
         <author>
-            <name>Shiyu Dong</name>
+            <name>Youngsik Hong</name>
         </author>
         <author>
-            <name>Quan Hung Tran</name>
+            <name>Minsik Kim</name>
         </author>
         <author>
-            <name>Katharina Gschwind</name>
+            <name>Sunyoung Choi</name>
         </author>
         <author>
-            <name>Shuqi Yang</name>
+            <name>Jaewon Jang</name>
         </author>
         <author>
-            <name>Sijia Chen</name>
+            <name>Minseo Kim</name>
+        </author>
+        <published>2026-08-24T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[ReWorld: An Interactive World Model with Long-Horizon Memory]]></title>
+        <id>https://arxiv.org/abs/2608.23565</id>
+        <link href="https://arxiv.org/abs/2608.23565"/>
+        <updated>2026-08-24T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[An interactive world model must follow the user's actions, remember the places it has shown, and stream in real time. The tension is structural: control wants a short horizon, memory wants an unbounded one. ReWorld separates the two during training and bounds them at inference. Mixed per-head attention windows confine most heads to the recent past while a small set of global heads attends over the entire history, and random head routing keeps either capability from binding to particular heads; r]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>An interactive world model must follow the user's actions, remember the places it has shown, and stream in real time. The tension is structural: control wants a short horizon, memory wants an unbounded one. ReWorld separates the two during training and bounds them at inference. Mixed per-head attention windows confine most heads to the recent past while a small set of global heads attends over the entire history, and random head routing keeps either capability from binding to particular heads; random chunk dropping makes sparse histories in-distribution. At inference the whole past lives under a fixed budget: a bounded KV cache backed by a pose-indexed landmark bank, from which the model retrieves the landmarks nearest the current pose. A metric-scale-aligned data engine places eight sources -- Unreal-rendered fly-throughs, game roaming, and real-world footage -- on one physical action scale, so the same key press moves the camera the same distance in every source, and palindrome trajectories supply the revisit evidence that memory training needs. Distribution-matching distillation confined to a LoRA adapter then compresses sampling to four steps: one backbone serves both a high-fidelity multi-step mode and a real-time interactive one, streaming 704x1280 video across photorealistic, game-style, and stylized worlds. Under a three-axis protocol covering action following, long-horizon recall, and video quality, against six recent interactive world models it attains the best control fidelity (11.95^circ rotation error and the best camera-motion consistency) and the best generation quality; and on minute-long out-and-back rollouts (64\,s, 384 latents), its fixed 12-chunk cache still regenerates the starting view -- at rollout lengths where a sliding window has long evicted the evidence and full-KV attention runs out of memory.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2608.23565">PDF</a> | <a href="https://arxiv.org/abs/2608.23565">arXiv</a></p>]]></content>
+        <author>
+            <name>Zhifei Chen</name>
         </author>
         <author>
-            <name>Adel Ahmadyan</name>
+            <name>Luozhou Wang</name>
         </author>
         <author>
-            <name>Seungwhan Moon</name>
+            <name>Guibao Shen</name>
         </author>
         <author>
-            <name>Lu Zhang</name>
+            <name>Dongyu Yan</name>
         </author>
         <author>
-            <name>Ahmed Kirmani</name>
+            <name>Shuai Yang</name>
         </author>
         <author>
-            <name>Babak Damavandi</name>
+            <name>Tianshuo Xu</name>
         </author>
         <author>
-            <name>Anuj Kumar</name>
+            <name>Yihua Du</name>
         </author>
-        <published>2026-08-18T00:00:00.000Z</published>
+        <author>
+            <name>Wei Wang</name>
+        </author>
+        <author>
+            <name>Tianyi Gui</name>
+        </author>
+        <author>
+            <name>Lianghua Huang</name>
+        </author>
+        <author>
+            <name>Yingcong Chen</name>
+        </author>
+        <published>2026-08-24T00:00:00.000Z</published>
     </entry>
 </feed>
