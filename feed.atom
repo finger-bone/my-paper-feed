@@ -2,194 +2,383 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://github.com/finger-bone/my-paper-feed</id>
     <title>LLM Acceleration Papers Weekly</title>
-    <updated>2026-08-28T15:28:05.000Z</updated>
+    <updated>2026-09-04T15:30:47.000Z</updated>
     <generator>paper-feed</generator>
     <link rel="alternate" href="https://github.com/finger-bone/my-paper-feed"/>
     <subtitle>每周精选大模型推理/训练加速相关论文</subtitle>
     <rights>All rights reserved 2026</rights>
     <entry>
-        <title type="html"><![CDATA[Curvature-Conditioned Multiscale Momentum with Sphere Constraints for LLM Pretraining]]></title>
-        <id>https://arxiv.org/abs/2608.28442</id>
-        <link href="https://arxiv.org/abs/2608.28442"/>
-        <updated>2026-08-28T15:28:05.000Z</updated>
-        <summary type="html"><![CDATA[Pretraining accounts for a large fraction of the total computational cost in LLM training. However, noise-dominant gradients and the highly ill-conditioned loss landscape bring severe challenges. Although modern adaptive optimizers such as AdamW and Muon have achieved great success in large-scale pretraining, their reliance on gradient normalization offers limited mitigation of the ill-conditioned curvature. The progress along flat directions (eigen-directions of small eigenvalues), which domina]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Pretraining accounts for a large fraction of the total computational cost in LLM training. However, noise-dominant gradients and the highly ill-conditioned loss landscape bring severe challenges. Although modern adaptive optimizers such as AdamW and Muon have achieved great success in large-scale pretraining, their reliance on gradient normalization offers limited mitigation of the ill-conditioned curvature. The progress along flat directions (eigen-directions of small eigenvalues), which dominates the final loss reduction, remains relatively slow. To enhance training dynamics along flat directions, we propose a curvature-conditioned multiscale momentum method with sphere constraints, delivering steady acceleration in LLM pretraining. This multiscale momentum, applied only along flat directions, pairs a slow-decay component for noise reduction with a fast-decay component for rapid curvature adaptation, harnessing their complementary strengths. Crucially, we employ a sphere constraint technique to prevent parameter inflation and excessively rapid effective learning rate decay that would otherwise arise from a naive combination. Extensive experiments show that the proposed method significantly accelerates Muon across diverse architectures (dense, MoE) and model sizes (0.12B--2.3B parameters). Theoretically, we verify the acceleration effect and provide insight into the design principles underlying the flat-direction multiscale momentum.</p>
-<p><strong>Categories:</strong> cs.LG</p>
+        <title type="html"><![CDATA[Don't Drop Dropout: Optimizing Layer Sparsity for Efficient LLM Training and Inference]]></title>
+        <id>https://arxiv.org/abs/2609.05275</id>
+        <link href="https://arxiv.org/abs/2609.05275"/>
+        <updated>2026-09-04T15:30:47.000Z</updated>
+        <summary type="html"><![CDATA[Layer dropout (a.k.a. stochastic depth) has been shown to enable faster training, higher accuracy, and robustness to zero-shot layer pruning in both language and vision transformers. However, as models and datasets have scaled, dropout - particularly layer dropout - has largely disappeared from large language models (LLMs) pre-training recipes. While some prior work has reported that dropout can degrade accuracy, no comprehensive study has quantified, let alone mitigated, this effect. In this st]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Layer dropout (a.k.a. stochastic depth) has been shown to enable faster training, higher accuracy, and robustness to zero-shot layer pruning in both language and vision transformers. However, as models and datasets have scaled, dropout - particularly layer dropout - has largely disappeared from large language models (LLMs) pre-training recipes. While some prior work has reported that dropout can degrade accuracy, no comprehensive study has quantified, let alone mitigated, this effect. In this study, we show that layer dropout should be used in state-of-the-art LLM training, establishing best practices and scaling analysis for both training and post-training benefits. Concretely, with optimal layer distribution, time schedule, and optimizer hyperparameters, we observe that at the same training FLOPs layer dropout leads to lower loss. For a given number of training steps, LLMs can achieve lower or similar validation loss while saving upto 25% of training FLOPs. Moreover, layer dropout enables significant post-training optimizations, such as early exit, intermediate-layer skipping, and self-speculative decoding, yielding up to 1.5x inference speedup with negligible accuracy loss. Across more than 2400 training experiments, spanning models from 271M to 8.2B parameters and datasets up to 160B tokens, we demonstrate that these findings extend reliably to large-scale training regimes. All pre-training experiments were run on Cerebras CS-3 systems.</p>
+<p><strong>Categories:</strong> cs.AI</p>
 <p><strong>Relevance:</strong> 9/10</p>
-<p><a href="https://arxiv.org/pdf/2608.28442">PDF</a> | <a href="https://arxiv.org/abs/2608.28442">arXiv</a></p>]]></content>
+<p><a href="https://arxiv.org/pdf/2609.05275">PDF</a> | <a href="https://arxiv.org/abs/2609.05275">arXiv</a></p>]]></content>
         <author>
-            <name>Shuchen Zhu</name>
+            <name>Mostafa Elhoushi</name>
         </author>
         <author>
-            <name>Yuxin Fang</name>
+            <name>Alex Pretko</name>
         </author>
         <author>
-            <name>Mingze Wang</name>
+            <name>Nolan Dey</name>
         </author>
         <author>
-            <name>Kun Yuan</name>
+            <name>Bin Claire Zhang</name>
+        </author>
+        <author>
+            <name>Gavia Gray</name>
+        </author>
+        <author>
+            <name>Gurpreet Gosal</name>
+        </author>
+        <author>
+            <name>Abdulrahman Mahmoud</name>
+        </author>
+        <author>
+            <name>Shane Bergsma</name>
+        </author>
+        <author>
+            <name>Joel Hestness</name>
+        </author>
+        <category label="cs.AI" term="cs.AI"/>
+        <published>2026-09-04T15:30:47.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Fast Gauss Sums via Flash Attention]]></title>
+        <id>https://arxiv.org/abs/2609.04910</id>
+        <link href="https://arxiv.org/abs/2609.04910"/>
+        <updated>2026-09-04T09:11:45.000Z</updated>
+        <summary type="html"><![CDATA[Gaussian kernel sums are the computational core of maximum mean discrepancies (MMDs), kernel gradient flows, Stein variational gradient descent (SVGD), and many other kernel methods. At the same time, softmax attention has received an extraordinary amount of hardware-aware code engineering, culminating in flash attention. We show that Gauss kernel sums with arbitrary, signed weights can be evaluated via flash attention: two small input augmentations turn the normalized softmax reduction into the]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Gaussian kernel sums are the computational core of maximum mean discrepancies (MMDs), kernel gradient flows, Stein variational gradient descent (SVGD), and many other kernel methods. At the same time, softmax attention has received an extraordinary amount of hardware-aware code engineering, culminating in flash attention. We show that Gauss kernel sums with arbitrary, signed weights can be evaluated via flash attention: two small input augmentations turn the normalized softmax reduction into the unnormalized Gauss sum, without writing a single line of custom GPU code. For feature dimension D&gt;8 in fp16, this approach beats compiled PyTorch code as well as PyKeOps kernels (often significantly) in speed, memory-overhead and accuracy. Indeed, its memory scaling remains linear.</p>
+<p><strong>Categories:</strong> cs.LG, math.NA</p>
+<p><strong>Relevance:</strong> 9/10</p>
+<p><a href="https://arxiv.org/pdf/2609.04910">PDF</a> | <a href="https://arxiv.org/abs/2609.04910">arXiv</a></p>]]></content>
+        <author>
+            <name>Nicolaj Rux</name>
+        </author>
+        <author>
+            <name>Sebastian Neumayer</name>
         </author>
         <category label="cs.LG" term="cs.LG"/>
-        <published>2026-08-28T15:28:05.000Z</published>
+        <category label="math.NA" term="math.NA"/>
+        <published>2026-09-04T09:11:45.000Z</published>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Sliding-window beats linear attention]]></title>
-        <id>https://arxiv.org/abs/2608.28444</id>
-        <link href="https://arxiv.org/abs/2608.28444"/>
-        <updated>2026-08-28T15:31:34.000Z</updated>
-        <summary type="html"><![CDATA[Due to the nature of quadratic attention, Large Language Models (LLMs) consume a lot of memory and energy. Every new token costs more than the previous one. For each additional token, the keys and values must be stored in memory indefinitely, which is unsustainable. Several alternatives have been proposed to fix the quadratic scaling problem, one of which is retrofitting LLMs to use Linear Attention. This idea has attracted a lot of attention, given its promise to solve the quadratic scaling pro]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Due to the nature of quadratic attention, Large Language Models (LLMs) consume a lot of memory and energy. Every new token costs more than the previous one. For each additional token, the keys and values must be stored in memory indefinitely, which is unsustainable. Several alternatives have been proposed to fix the quadratic scaling problem, one of which is retrofitting LLMs to use Linear Attention. This idea has attracted a lot of attention, given its promise to solve the quadratic scaling problem with state-of-the-art performance at low cost. However, this line of research has not been properly compared to simpler baselines. In this work, we show that Sliding Window Attention (SWA) with sinks performs as well or better than post-trained Linear Attention models. We observe this across multiple LLMs on various downstream tasks. For long-context reasoning tasks (Needle-in-a-Haystack and BABILong), SWA achieves massively higher performance (2 to 10 times higher than linear attention). SWA requires no post-training, is extremely fast, and requires low memory; therefore, making it an extremely cheap and reliable solution. To reduce inference memory cost, we strongly recommend switching to SWA instead of post-training linear models. Linear attention models may have shown some promise, but they likely require to be trained from scratch or extensive post-training in order to even match SWA.</p>
-<p><strong>Categories:</strong> cs.CL, cs.LG</p>
+        <title type="html"><![CDATA[Impact of Data Loss in Postprocessing on Training and Inference of Quantum Neural Networks]]></title>
+        <id>https://arxiv.org/abs/2609.05060</id>
+        <link href="https://arxiv.org/abs/2609.05060"/>
+        <updated>2026-09-04T12:22:13.000Z</updated>
+        <summary type="html"><![CDATA[As quantum hardware scales to larger devices, the classical software layers that interface with it must evolve in step. Postprocessing routines developed and tested primarily in simulator settings can encode assumptions that no longer hold on utility-scale devices, leading to data loss that can be difficult to detect from high-level model outputs alone. We present a case study of \texttt{SamplerQNN}, the sampling-based quantum neural network class in the Qiskit Machine Learning library. Here, th]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>As quantum hardware scales to larger devices, the classical software layers that interface with it must evolve in step. Postprocessing routines developed and tested primarily in simulator settings can encode assumptions that no longer hold on utility-scale devices, leading to data loss that can be difficult to detect from high-level model outputs alone. We present a case study of \texttt{SamplerQNN}, the sampling-based quantum neural network class in the Qiskit Machine Learning library. Here, the postprocessing method applies a filter that assumes measurement bit-strings are in virtual qubit space. On our quantum hardware runs, where bit-strings span over 100 physical qubits, this filter led to the loss of 85 to 99.6\% of valid measurement shots, depending on the transpiler's qubit placement. The resulting probability vector is unnormalised, allowing distorted prediction and loss values to propagate through the model without an API-level warning. We demonstrate the impact across five experiments on two IBM backends: for inference, accuracy drops from 0.94 to 0.39 on the same raw measurements; for training, the loss signal is compressed by 22 to 27$\times$, substantially reducing the sensitivity of the optimiser to the objective landscape. The behaviour arises in all released versions of the library (0.8.4 to 0.9.0). We implemented a layout-based marginalisation fix, merged into the GitHub codebase as Pull Request \#1041, that makes \texttt{SamplerQNN} postprocessing forward-compatible with current and upcoming hardware.</p>
+<p><strong>Categories:</strong> quant-ph, cs.ET, cs.LG, physics.comp-ph</p>
 <p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2608.28444">PDF</a> | <a href="https://arxiv.org/abs/2608.28444">arXiv</a></p>]]></content>
+<p><a href="https://arxiv.org/pdf/2609.05060">PDF</a> | <a href="https://arxiv.org/abs/2609.05060">arXiv</a></p>]]></content>
         <author>
-            <name>Alexia Jolicoeur-Martineau</name>
+            <name>Soraya V. Panambalom</name>
         </author>
         <author>
-            <name>Rhea Sanjay Sukthanker</name>
+            <name>Edoardo Altamura</name>
         </author>
         <author>
-            <name>Pashmina Cameron</name>
+            <name>Nick Chancellor</name>
         </author>
         <author>
-            <name>Emy Gervais</name>
+            <name>Jonte R. Hance</name>
         </author>
-        <category label="cs.CL" term="cs.CL"/>
+        <category label="quant-ph" term="quant-ph"/>
+        <category label="cs.ET" term="cs.ET"/>
         <category label="cs.LG" term="cs.LG"/>
-        <published>2026-08-28T15:31:34.000Z</published>
+        <category label="physics.comp-ph" term="physics.comp-ph"/>
+        <published>2026-09-04T12:22:13.000Z</published>
     </entry>
     <entry>
-        <title type="html"><![CDATA[A Probabilistic Interpretation of KV Cache Eviction]]></title>
-        <id>https://arxiv.org/abs/2608.28293</id>
-        <link href="https://arxiv.org/abs/2608.28293"/>
-        <updated>2026-08-28T12:57:07.000Z</updated>
-        <summary type="html"><![CDATA[The premise and promise of KV (cache) eviction is simple: higher throughput can be achieved by evicting some entries from the KV cache, at a negligible cost to quality. This holds empirically for many existing methods, though most rely on creative heuristics for selecting which entries to drop. Despite recent advances, the problem of KV eviction has remained informal in the literature. This paper aims to properly formalize this problem through the lens of probabilistic reasoning and reveal what ]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>The premise and promise of KV (cache) eviction is simple: higher throughput can be achieved by evicting some entries from the KV cache, at a negligible cost to quality. This holds empirically for many existing methods, though most rely on creative heuristics for selecting which entries to drop. Despite recent advances, the problem of KV eviction has remained informal in the literature. This paper aims to properly formalize this problem through the lens of probabilistic reasoning and reveal what can be learned from this perspective. Concretely, we (1) formalize the problem of KV eviction and, unfortunately, prove that it is computationally hard, (2) show that by framing it probabilistically, KV eviction reduces to the problem of expectation estimation, which can be approximated through sampling, (3) show that through this probabilistic interpretation, correcting for evicted entries during decoding---a previously ignored problem---becomes feasible, and (4) reveal that existing methods in the literature are zero-variance biased estimators that can be easily adapted in order to enable decode time correction. In practice, we show that this probabilistic version of KV eviction coupled with decode time correction is more robust to different tasks compared to existing eviction methods and achieves competitive performance at the same compression budget.</p>
-<p><strong>Categories:</strong> cs.CL, cs.AI</p>
+        <title type="html"><![CDATA[MCPO: Modality-Contrastive Preference Optimization for Multimodal Chain-of-Thought Compression]]></title>
+        <id>https://arxiv.org/abs/2609.04947</id>
+        <link href="https://arxiv.org/abs/2609.04947"/>
+        <updated>2026-09-04T09:54:53.000Z</updated>
+        <summary type="html"><![CDATA[Recently, multimodal large-scale reasoning models have demonstrated remarkable capabilities in solving complex tasks through long Chains-of-Thought (M-CoT). However, excessively long reasoning trajectories incur substantial computational costs and significant KV-cache pressure. Existing CoT compression and alignment paradigms mainly rely on static rules or single-dimensional preferences, lacking fine-grained cross-modal constraints; as a result, they are prone to inducing visual laziness and hal]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Recently, multimodal large-scale reasoning models have demonstrated remarkable capabilities in solving complex tasks through long Chains-of-Thought (M-CoT). However, excessively long reasoning trajectories incur substantial computational costs and significant KV-cache pressure. Existing CoT compression and alignment paradigms mainly rely on static rules or single-dimensional preferences, lacking fine-grained cross-modal constraints; as a result, they are prone to inducing visual laziness and hallucinatory reasoning. To address these issues, we propose Modality-Contrastive Preference Optimization (MCPO), a highly sample-efficient two-stage length-compression method that requires fewer than 900 training samples. In the compression stage, we introduce a step-level Normalized Cross-Modal Mutual Information (NCMI) pruning algorithm, which automatically identifies and removes visual-independent reasoning steps by comparing the reasoning discrepancies between with-image and no-image contexts. This significantly reduces redundancy and hallucinatory content in the reasoning chains. In the alignment stage, the model first undergoes supervised fine-tuning to achieve domain-adaptive initialization, followed by optimization using an asymmetric multimodal length-controlled preference loss. This objective adopts a highly nonlinear odds-ratio formulation that provides steep gradients in the with-image context to reinforce length constraints for preferred trajectories, while applying a scaled, flat-gradient linear difference in the no-image context to maintain modality consistency, thereby achieving stable cross-modal preference alignment. Extensive experiments on mainstream base models such as Qwen3-VL-Thinking show that our method can reduce CoT length by up to 69.5% and achieve up to 3.34x end-to-end inference speedup while preserving original accuracy.</p>
+<p><strong>Categories:</strong> cs.CV, cs.AI</p>
 <p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2608.28293">PDF</a> | <a href="https://arxiv.org/abs/2608.28293">arXiv</a></p>]]></content>
+<p><a href="https://arxiv.org/pdf/2609.04947">PDF</a> | <a href="https://arxiv.org/abs/2609.04947">arXiv</a></p>]]></content>
         <author>
-            <name>Renato Geh</name>
+            <name>Guangheng Yang</name>
         </author>
         <author>
-            <name>Alex Chen</name>
+            <name>Zhenliang Ni</name>
         </author>
         <author>
-            <name>Daniel Israel</name>
+            <name>Zhenkai Wu</name>
         </author>
         <author>
-            <name>Aditya Grover</name>
+            <name>Han Shu</name>
         </author>
         <author>
-            <name>Guy Van den Broeck</name>
+            <name>Juan Feng</name>
         </author>
-        <category label="cs.CL" term="cs.CL"/>
+        <author>
+            <name>Wenming Yang</name>
+        </author>
+        <author>
+            <name>Jie Hu</name>
+        </author>
+        <category label="cs.CV" term="cs.CV"/>
         <category label="cs.AI" term="cs.AI"/>
-        <published>2026-08-28T12:57:07.000Z</published>
+        <published>2026-09-04T09:54:53.000Z</published>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Nested Byte-Level Vocabularies Are Cheap to Deploy and Expensive to Share: A Pre-Registered Negative Result]]></title>
-        <id>https://arxiv.org/abs/2608.28151</id>
-        <link href="https://arxiv.org/abs/2608.28151"/>
-        <updated>2026-08-28T10:13:32.000Z</updated>
-        <summary type="html"><![CDATA[A byte-level BPE tokenizer is an ordered list of merge rules, so applying only a prefix yields a vocabulary whose token identifiers are the first rows of the full vocabulary. This prefix nesting allows one language model to operate at several vocabulary sizes, use a control token to indicate the active size, and be deployed at any trained size by slicing its embedding and output head. We pre-registered five claims, including margins, seeds, contrasts, and a stop rule, and trained 30 models with ]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>A byte-level BPE tokenizer is an ordered list of merge rules, so applying only a prefix yields a vocabulary whose token identifiers are the first rows of the full vocabulary. This prefix nesting allows one language model to operate at several vocabulary sizes, use a control token to indicate the active size, and be deployed at any trained size by slicing its embedding and output head. We pre-registered five claims, including margins, seeds, contrasts, and a stop rule, and trained 30 models with 3.1M- and 10.6M-parameter bodies on 200M tokens each. Slicing is numerically exact: across 76 checks, a sliced model reproduces the restricted full model's logits bit for bit and removes 66% of deployed weights without changing latency. However, the shared model trails a fixed-cap specialist by 3.64% bits per byte at 32k against a 1% margin, and by 2.96% at 8k against a 2% margin. A 2x2 ablation separating the control token from output restriction finds that the token changes performance by +0.07% to +0.13%, with all intervals crossing zero, while output restriction costs +0.47% to +1.19%; the factors are substitutes rather than complements. Multi-cap training nevertheless improves robustness: under typographical noise, the same checkpoint degrades 12.5--15.4 points less in its fine mode and outperforms each fixed-cap specialist at that specialist's vocabulary size. A control with neither cap token nor output restriction is equally robust, attributing this benefit to multi-granularity training rather than conditioning. The per-cap penalty tracks each cap's share of training rows, yielding a falsifiable prediction for future work.</p>
-<p><strong>Categories:</strong> cs.CL, cs.AI, cs.IR</p>
+        <title type="html"><![CDATA[Random Attention: Rethinking KV Cache Eviction for Efficient Reasoning]]></title>
+        <id>https://arxiv.org/abs/2609.03430</id>
+        <link href="https://arxiv.org/abs/2609.03430"/>
+        <updated>2026-09-03T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Large language models achieve superior performance on tasks that require extended reasoning, but long chains of thought make the KV cache a severe memory bottleneck. Existing KV cache compression methods share one paradigm: score each cached token by some estimate of how much it will matter later, and keep the top-scoring ones. We show that the selection signal contributes almost nothing. Random Attention keeps the prompt and evicts uniformly at random within each attention head, computing no sc]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Large language models achieve superior performance on tasks that require extended reasoning, but long chains of thought make the KV cache a severe memory bottleneck. Existing KV cache compression methods share one paradigm: score each cached token by some estimate of how much it will matter later, and keep the top-scoring ones. We show that the selection signal contributes almost nothing. Random Attention keeps the prompt and evicts uniformly at random within each attention head, computing no score at all; across four models and six reasoning tasks it matches the strongest prior evictor while serving 32-43% higher throughput than it in vLLM deployment. Controlled experiments explain this by showing that 1) the prompt is the fragile part of the cache, and most of the gap between selectors is just whether their selection signal happened to keep it; 2) the reasoning trace protects itself against eviction with redundancy at two levels, in the text (the model restates what it still needs as it works) and across attention heads (each keeps its own copy of the trace), so once the prompt is safe, a random draw retains enough copies of what the model still needs, and no score is required to pick them. Our code is publicly available at https://github.com/SalesforceAIResearch/Random-Attention.</p>
 <p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2608.28151">PDF</a> | <a href="https://arxiv.org/abs/2608.28151">arXiv</a></p>]]></content>
+<p><a href="https://arxiv.org/pdf/2609.03430">PDF</a> | <a href="https://arxiv.org/abs/2609.03430">arXiv</a></p>]]></content>
         <author>
-            <name>Christos Koutsiaris</name>
+            <name>Heng Wang</name>
         </author>
-        <category label="cs.CL" term="cs.CL"/>
-        <category label="cs.AI" term="cs.AI"/>
-        <category label="cs.IR" term="cs.IR"/>
-        <published>2026-08-28T10:13:32.000Z</published>
+        <author>
+            <name>Jielin Qiu</name>
+        </author>
+        <author>
+            <name>Wenting Zhao</name>
+        </author>
+        <author>
+            <name>Cheng Qian</name>
+        </author>
+        <author>
+            <name>Liangwei Yang</name>
+        </author>
+        <author>
+            <name>Jiawei Han</name>
+        </author>
+        <author>
+            <name>Heng Ji</name>
+        </author>
+        <author>
+            <name>Silvio Savarese</name>
+        </author>
+        <author>
+            <name>Shelby Heinecke</name>
+        </author>
+        <author>
+            <name>Huan Wang</name>
+        </author>
+        <published>2026-09-03T00:00:00.000Z</published>
     </entry>
     <entry>
-        <title type="html"><![CDATA[TorchMorph: CUDA-accelerated Morphological Transforms]]></title>
-        <id>https://arxiv.org/abs/2608.24738</id>
-        <link href="https://arxiv.org/abs/2608.24738"/>
-        <updated>2026-08-25T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Morphological transforms are long-standing tools for shape and mask processing, but the de facto reference implementation in the Python ecosystem, i.e. scipy.ndimage, is CPU-only, single-array, and therefore unusable inside a GPU training loop without an expensive device-to-host round trip. GPU vision libraries built on PyTorch cover a narrow subset of these operators, typically restricted to two spatial dimensions and flat structuring elements. We present TorchMorph, a lightweight PyTorch exten]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Morphological transforms are long-standing tools for shape and mask processing, but the de facto reference implementation in the Python ecosystem, i.e. scipy.ndimage, is CPU-only, single-array, and therefore unusable inside a GPU training loop without an expensive device-to-host round trip. GPU vision libraries built on PyTorch cover a narrow subset of these operators, typically restricted to two spatial dimensions and flat structuring elements. We present TorchMorph, a lightweight PyTorch extension that closes this gap. TorchMorph exposes 22 public operators covering binary morphology, greyscale morphology, exact and approximate distance transforms, and entropy-regularised optimal transport, all implemented as fused CUDA kernels that operate directly on (B, C, Spatial...) CUDA tensors with up to eight spatial dimensions. The API deliberately mirrors scipy.ndimage argument-for-argument, including border modes, structuring-element origins and pre-allocated outputs, so that existing pipelines port with a change of import. We describe the layered architecture and the kernel designs behind each operator family. Against single-threaded CPU references, batched execution reaches up to 1.1e3 times the throughput of scipy.ndimage on greyscale morphology and up to 350x on exact Euclidean distance transforms, while the Sinkhorn solver runs up to 42x faster than POT. Binary and chamfer operators reproduce their SciPy counterparts exactly, and every float-valued operator agrees with the CPU reference to within 1.8e-6 absolute error. TorchMorph is released under the MIT licence at https://intcomp.github.io/tm.</p>
+        <title type="html"><![CDATA[Percolation Dynamics in Optimization : Variance Cascades and Discrete Scale Invariance]]></title>
+        <id>https://arxiv.org/abs/2609.02373</id>
+        <link href="https://arxiv.org/abs/2609.02373"/>
+        <updated>2026-09-02T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[We study the dynamics of Stochastic Gradient Descent (SGD), which is known to steer deep neural networks toward invariant sets that correspond to simpler subnetworks. How this steering unfolds over time remains poorly understood. We answer this by modeling the stochastic gradient flow (SGF) as a percolation process, in which architectural symmetries force subnetworks to merge in discrete simultaneous blocks rather than one at a time. These structural transitions register as variance spikes in a ]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>We study the dynamics of Stochastic Gradient Descent (SGD), which is known to steer deep neural networks toward invariant sets that correspond to simpler subnetworks. How this steering unfolds over time remains poorly understood. We answer this by modeling the stochastic gradient flow (SGF) as a percolation process, in which architectural symmetries force subnetworks to merge in discrete simultaneous blocks rather than one at a time. These structural transitions register as variance spikes in a macroscopic order parameter, echoing physical phase transitions. We further show this trapping mechanism and its associated scaling cascade extend to Adam and AdamW under an explicit heavy-tailed noise model.</p>
 <p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2608.24738">PDF</a> | <a href="https://arxiv.org/abs/2608.24738">arXiv</a></p>]]></content>
+<p><a href="https://arxiv.org/pdf/2609.02373">PDF</a> | <a href="https://arxiv.org/abs/2609.02373">arXiv</a></p>]]></content>
         <author>
-            <name>Kai Zhao</name>
+            <name>Sai Niranjan Ramachandran</name>
         </author>
-        <published>2026-08-25T00:00:00.000Z</published>
+        <author>
+            <name>Suvrit Sra</name>
+        </author>
+        <published>2026-09-02T00:00:00.000Z</published>
     </entry>
     <entry>
-        <title type="html"><![CDATA[The Mask Is Not the Model: Auditing Prefix Invariance in Attention, State-Space, and Hybrid Sequence Models]]></title>
-        <id>https://arxiv.org/abs/2608.22876</id>
-        <link href="https://arxiv.org/abs/2608.22876"/>
-        <updated>2026-08-24T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[We formalize prefix invariance: representations at position t must not depend on future inputs. We give a lightweight audit, two forward passes, no training or gradients, that localizes exactly where causality breaks. Attention-mask inspection is incomplete: leaks can occur via scans or normalization despite correct masks. Across 192 injected-fault trials on eight checkpoints, mask inspection found none, while our audit localized all 192/192, also finding a defect in Zamba2 and Nemotron-H.]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>We formalize prefix invariance: representations at position t must not depend on future inputs. We give a lightweight audit, two forward passes, no training or gradients, that localizes exactly where causality breaks. Attention-mask inspection is incomplete: leaks can occur via scans or normalization despite correct masks. Across 192 injected-fault trials on eight checkpoints, mask inspection found none, while our audit localized all 192/192, also finding a defect in Zamba2 and Nemotron-H.</p>
+        <title type="html"><![CDATA[Repo-To-Skill: Distilling GitHub Repositories Into AI4AI Skills]]></title>
+        <id>https://arxiv.org/abs/2609.02749</id>
+        <link href="https://arxiv.org/abs/2609.02749"/>
+        <updated>2026-09-02T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Autonomous agents are beginning to carry out machine-learning (ML) research end to end. These agents combine a model backbone with a harness for planning, execution, memory, and verification, but this architecture still leaves domain-specific know-how outside the agent. We call this missing layer operational knowledge, the know-how that separates knowing a method from making it work. That knowledge is not absent from the field. It appears in repositories and papers, but in forms written for huma]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Autonomous agents are beginning to carry out machine-learning (ML) research end to end. These agents combine a model backbone with a harness for planning, execution, memory, and verification, but this architecture still leaves domain-specific know-how outside the agent. We call this missing layer operational knowledge, the know-how that separates knowing a method from making it work. That knowledge is not absent from the field. It appears in repositories and papers, but in forms written for human readers and too large to load during a task. Once distilled into compact, verified skills, this knowledge can be reused across tasks rather than rediscovered during each run.
+  We present DisCo, a skill-powered research agent that creates skills and uses them during research. Its distillation runs in two complementary forms: task-agnostic, condensing the field's widely used repositories into reusable skills, and task-oriented, producing the skills a concrete task calls for. The former, applied across the open ecosystem, yields the AREX-Skill Library, with 5,000+ verified skills distilled from 1,000 widely used ML repositories and organized into 20 areas and 178 capability families. With the GPT-5.5 backbone, research harness, and downstream execution budget held fixed, the skill-equipped research agent scores 134.3% higher on MLE-bench, 34.4% higher on PaperBench, 9.2% higher on FrontierCS, and 14.0% higher on PassNet than the same agent without skills. These gains come from adding distilled operating context under that fixed setup.</p>
 <p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2608.22876">PDF</a> | <a href="https://arxiv.org/abs/2608.22876">arXiv</a></p>]]></content>
+<p><a href="https://arxiv.org/pdf/2609.02749">PDF</a> | <a href="https://arxiv.org/abs/2609.02749">arXiv</a></p>]]></content>
         <author>
-            <name>Taebong Kim</name>
+            <name>Jianlyu Chen</name>
         </author>
         <author>
-            <name>Youngsik Hong</name>
+            <name>Yuyang Hu</name>
         </author>
         <author>
-            <name>Minsik Kim</name>
+            <name>Hongjin Qian</name>
         </author>
         <author>
-            <name>Sunyoung Choi</name>
+            <name>Jiawei Liu</name>
         </author>
         <author>
-            <name>Jaewon Jang</name>
+            <name>Wenqing Wei</name>
         </author>
         <author>
-            <name>Minseo Kim</name>
+            <name>Xiaolong Chen</name>
         </author>
-        <published>2026-08-24T00:00:00.000Z</published>
+        <author>
+            <name>Defu Lian</name>
+        </author>
+        <author>
+            <name>Zhicheng Dou</name>
+        </author>
+        <author>
+            <name>Chaozhuo Li</name>
+        </author>
+        <author>
+            <name>Qiwei Ye</name>
+        </author>
+        <author>
+            <name>Zheng Liu</name>
+        </author>
+        <published>2026-09-02T00:00:00.000Z</published>
     </entry>
     <entry>
-        <title type="html"><![CDATA[ReWorld: An Interactive World Model with Long-Horizon Memory]]></title>
-        <id>https://arxiv.org/abs/2608.23565</id>
-        <link href="https://arxiv.org/abs/2608.23565"/>
-        <updated>2026-08-24T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[An interactive world model must follow the user's actions, remember the places it has shown, and stream in real time. The tension is structural: control wants a short horizon, memory wants an unbounded one. ReWorld separates the two during training and bounds them at inference. Mixed per-head attention windows confine most heads to the recent past while a small set of global heads attends over the entire history, and random head routing keeps either capability from binding to particular heads; r]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>An interactive world model must follow the user's actions, remember the places it has shown, and stream in real time. The tension is structural: control wants a short horizon, memory wants an unbounded one. ReWorld separates the two during training and bounds them at inference. Mixed per-head attention windows confine most heads to the recent past while a small set of global heads attends over the entire history, and random head routing keeps either capability from binding to particular heads; random chunk dropping makes sparse histories in-distribution. At inference the whole past lives under a fixed budget: a bounded KV cache backed by a pose-indexed landmark bank, from which the model retrieves the landmarks nearest the current pose. A metric-scale-aligned data engine places eight sources -- Unreal-rendered fly-throughs, game roaming, and real-world footage -- on one physical action scale, so the same key press moves the camera the same distance in every source, and palindrome trajectories supply the revisit evidence that memory training needs. Distribution-matching distillation confined to a LoRA adapter then compresses sampling to four steps: one backbone serves both a high-fidelity multi-step mode and a real-time interactive one, streaming 704x1280 video across photorealistic, game-style, and stylized worlds. Under a three-axis protocol covering action following, long-horizon recall, and video quality, against six recent interactive world models it attains the best control fidelity (11.95^circ rotation error and the best camera-motion consistency) and the best generation quality; and on minute-long out-and-back rollouts (64\,s, 384 latents), its fixed 12-chunk cache still regenerates the starting view -- at rollout lengths where a sliding window has long evicted the evidence and full-KV attention runs out of memory.</p>
+        <title type="html"><![CDATA[Language Models Can Control Their Own Attention]]></title>
+        <id>https://arxiv.org/abs/2609.02737</id>
+        <link href="https://arxiv.org/abs/2609.02737"/>
+        <updated>2026-09-02T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Language models spend most of their attention on a small fraction of context, yet they read the entire KV cache to find the few tokens that matter. If the user asks about a previous detail in a 1M-token conversation, global attention layers must scan the full context to generate each token of the reply. A prominent approach mitigates this cost by pre-selecting relevant tokens via lightweight proxy scores, but this extrinsic scoring still incurs O(N) per step. We take an intrinsic approach motiva]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Language models spend most of their attention on a small fraction of context, yet they read the entire KV cache to find the few tokens that matter. If the user asks about a previous detail in a 1M-token conversation, global attention layers must scan the full context to generate each token of the reply. A prominent approach mitigates this cost by pre-selecting relevant tokens via lightweight proxy scores, but this extrinsic scoring still incurs O(N) per step. We take an intrinsic approach motivated by the simple question: wouldn't the model already know which parts of the context are relevant? To this end, we introduce Declarative Attention (DA), a protocol that elicits the model to declare where it needs to attend within its chain-of-thought, partitioning generation into three modes: &lt;global&gt; (full context), &lt;focus&gt; (a specific region), and &lt;local&gt; (recent output only). The inference engine parses these declarations like tool calls and skips most of the KV cache read. Under zero-shot evaluation across 15 long-context tasks, DA on off-the-shelf models (Gemma-4-31B, Qwen-3.6-27B) significantly reduces total attended tokens during decoding (52.0%, 31.1%) with modest accuracy drops (1.27pp, 2.75pp) that shrink with model scale. DA unlocks a new axis of sparse attention, with further potential under training-based methods that future work can explore.</p>
 <p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2608.23565">PDF</a> | <a href="https://arxiv.org/abs/2608.23565">arXiv</a></p>]]></content>
+<p><a href="https://arxiv.org/pdf/2609.02737">PDF</a> | <a href="https://arxiv.org/abs/2609.02737">arXiv</a></p>]]></content>
         <author>
-            <name>Zhifei Chen</name>
+            <name>Namgyu Ho</name>
         </author>
         <author>
-            <name>Luozhou Wang</name>
+            <name>Huzama Ahmad</name>
         </author>
         <author>
-            <name>Guibao Shen</name>
+            <name>Woosung Koh</name>
         </author>
         <author>
-            <name>Dongyu Yan</name>
+            <name>Se-Young Yun</name>
         </author>
         <author>
-            <name>Shuai Yang</name>
+            <name>Tal Schuster</name>
         </author>
         <author>
-            <name>Tianshuo Xu</name>
+            <name>Cicero Nogueira dos Santos</name>
+        </author>
+        <published>2026-09-02T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[On the Design of Qwen3.8-Next Architecture: Evaluation, Efficiency, and Training Stability]]></title>
+        <id>https://arxiv.org/abs/2608.30320</id>
+        <link href="https://arxiv.org/abs/2608.30320"/>
+        <updated>2026-08-31T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[We describe the architecture and ablations of Qwen3.8-Flash-Next, a sparse mixture-of-experts model with 125B parameters, 6B activated per token, and additional 51B parameters of n-gram embedding tables held off the accelerator. On fourteen pre-training benchmarks the model leads the 397B-A17B predecessor on eight and trails it on the rest by at most 2.6 points, at 1/3 the activated parameters, 1/3 the training tokens, and roughly 1/9 the training FLOPs. Token mixing uses a layer-wise hybrid of ]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>We describe the architecture and ablations of Qwen3.8-Flash-Next, a sparse mixture-of-experts model with 125B parameters, 6B activated per token, and additional 51B parameters of n-gram embedding tables held off the accelerator. On fourteen pre-training benchmarks the model leads the 397B-A17B predecessor on eight and trails it on the rest by at most 2.6 points, at 1/3 the activated parameters, 1/3 the training tokens, and roughly 1/9 the training FLOPs. Token mixing uses a layer-wise hybrid of Gated DeltaNet (GDN) and global attention, with one full-attention layer in every four; at continued-pretraining time those full-attention layers are replaced by Qwen Sparse Attention (QSA), which scores context at micro-block granularity with a compressed lightweight indexer. The residual stream is widened to four branches and read through an elementwise gate, a design we call the Gated Residual (GR). Capacity is added outside the backbone by a single n-gram embedding layer whose tables are prefetched from host memory. We evaluate every candidate change along three axes: loss together with downstream benchmarks; the cost of the change in training, prefill and decode; and its effect on the optimal hyperparameters and training stability. Loss and downstream accuracy do not always move together: enlarging the n-gram vocabulary lowers loss monotonically while downstream accuracy saturates. The architecture and the Muon optimizer together shift the optimal learning rate and batch size upwards, render batch-size warmup unnecessary, and substantially improve stability under stress tests. Loss, benchmarks, efficiency and stability form one design problem. Solved jointly, they yield a recipe that is simultaneously more efficient, more capable and more stable.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2608.30320">PDF</a> | <a href="https://arxiv.org/abs/2608.30320">arXiv</a></p>]]></content>
+        <author>
+            <name>Zihan Qiu</name>
         </author>
         <author>
-            <name>Yihua Du</name>
+            <name>Zekun Wang</name>
         </author>
         <author>
-            <name>Wei Wang</name>
+            <name>Xiao Li</name>
         </author>
         <author>
-            <name>Tianyi Gui</name>
+            <name>Yanpeng Li</name>
         </author>
         <author>
-            <name>Lianghua Huang</name>
+            <name>Yang Xu</name>
         </author>
         <author>
-            <name>Yingcong Chen</name>
+            <name>Yixuan Wang</name>
         </author>
-        <published>2026-08-24T00:00:00.000Z</published>
+        <author>
+            <name>Huaqing Zhang</name>
+        </author>
+        <author>
+            <name>Rui Men</name>
+        </author>
+        <author>
+            <name>Bochao Mao</name>
+        </author>
+        <author>
+            <name>Chengruidong Zhang</name>
+        </author>
+        <author>
+            <name>Fan Zhou</name>
+        </author>
+        <author>
+            <name>Hao Luo</name>
+        </author>
+        <author>
+            <name>Haofeng Huang</name>
+        </author>
+        <author>
+            <name>Haoran Lian</name>
+        </author>
+        <author>
+            <name>Haoyan Huang</name>
+        </author>
+        <author>
+            <name>Hongqing Chen</name>
+        </author>
+        <author>
+            <name>Jianwei Zhang</name>
+        </author>
+        <author>
+            <name>Jing Xu</name>
+        </author>
+        <author>
+            <name>Junjie Wang</name>
+        </author>
+        <author>
+            <name>Langshi Chen</name>
+        </author>
+        <author>
+            <name>Liangyu Wang</name>
+        </author>
+        <author>
+            <name>Linlang Jiang</name>
+        </author>
+        <author>
+            <name>Man Yuan</name>
+        </author>
+        <author>
+            <name>Minmin Sun</name>
+        </author>
+        <author>
+            <name>Peng Jin</name>
+        </author>
+        <author>
+            <name>Siqi Zhang</name>
+        </author>
+        <author>
+            <name>Siyu Wang</name>
+        </author>
+        <author>
+            <name>Xingzhang Ren</name>
+        </author>
+        <author>
+            <name>Yakai Wang</name>
+        </author>
+        <author>
+            <name>Yi Zhang</name>
+        </author>
+        <author>
+            <name>Yiming Dong</name>
+        </author>
+        <author>
+            <name>Yizhong Cao</name>
+        </author>
+        <author>
+            <name>Yubo Ma</name>
+        </author>
+        <author>
+            <name>Yunfei Mao</name>
+        </author>
+        <author>
+            <name>Bo Zheng</name>
+        </author>
+        <author>
+            <name>Dayiheng Liu</name>
+        </author>
+        <published>2026-08-31T00:00:00.000Z</published>
     </entry>
 </feed>
