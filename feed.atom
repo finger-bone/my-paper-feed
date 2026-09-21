@@ -2,84 +2,397 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://github.com/finger-bone/my-paper-feed</id>
     <title>LLM Acceleration Papers Weekly</title>
-    <updated>2026-09-07T00:00:00.000Z</updated>
+    <updated>2026-09-18T17:03:58.000Z</updated>
     <generator>paper-feed</generator>
     <link rel="alternate" href="https://github.com/finger-bone/my-paper-feed"/>
     <subtitle>每周精选大模型推理/训练加速相关论文</subtitle>
     <rights>All rights reserved 2026</rights>
     <entry>
-        <title type="html"><![CDATA[Kalman Delta Networks: Uncertainty-aware Associative Memory]]></title>
-        <id>https://arxiv.org/abs/2609.07816</id>
-        <link href="https://arxiv.org/abs/2609.07816"/>
-        <updated>2026-09-07T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Linear attention is increasingly used in frontier language models for efficient long-context inference and constant-memory decoding. Its fixed-size recurrent memory, however, requires an online decision at each token: what to write and how strongly to overwrite existing associations before knowing which information future queries will require. Delta-rule models learn this strength from the current token embedding but do not track confidence in the memory estimate, preventing each write from adap]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Linear attention is increasingly used in frontier language models for efficient long-context inference and constant-memory decoding. Its fixed-size recurrent memory, however, requires an online decision at each token: what to write and how strongly to overwrite existing associations before knowing which information future queries will require. Delta-rule models learn this strength from the current token embedding but do not track confidence in the memory estimate, preventing each write from adapting to accumulated evidence. To represent this uncertainty explicitly, we reformulate recurrent associative memory as a linear--Gaussian state-space model, for which the Kalman filter is the optimal recursive estimator, and introduce a new family of models, Kalman Delta Networks (KDNs). Within KDNs, the transition propagates both the memory state and its uncertainty, allowing the Kalman gain to weight each residual write by accumulated evidence and observation reliability. Under this formulation, Delta-style updates emerge as a special case that substitutes a token-wise isotropic surrogate for predictive covariance and omits covariance tracking. Exact tracking, however, entails a dense, state-dependent Riccati recursion that is poorly suited to GPU-parallel linear-attention scans. To address this issue, we introduce two scan-compatible KDN approximations. Diagonal KDN projects each one-step posterior onto the diagonal Gaussian family through online mean-field variational inference, whereas Isotropic KDN uses an isotropic approximation with a single uncertainty scalar per head. Their uncertainty recurrences are Mobius maps, enabling associative scans with logarithmic parallel depth. Across controlled pretraining at 750M and 1.3B parameters, KDN variants consistently improve perplexity and mean downstream accuracy over state-of-the-art linear-attention models.</p>
+        <title type="html"><![CDATA[Abstention and Noise Filtering: Two Missing Primitives of Softmax Attention]]></title>
+        <id>https://arxiv.org/abs/2609.22005</id>
+        <link href="https://arxiv.org/abs/2609.22005"/>
+        <updated>2026-09-18T17:03:58.000Z</updated>
+        <summary type="html"><![CDATA[Gating the value pathway of attention reportedly improves language model pretraining, and prior studies disagree on why. We argue and provide experimental evidence that such gates supply two different things that softmax attention lacks: abstention and noise filtering. The first is abstention, which allows an attention head to output nothing, bypassing the requirement that attention weights must sum to one. The second is noise filtering, which allows the value pathway of an attention head to sup]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Gating the value pathway of attention reportedly improves language model pretraining, and prior studies disagree on why. We argue and provide experimental evidence that such gates supply two different things that softmax attention lacks: abstention and noise filtering. The first is abstention, which allows an attention head to output nothing, bypassing the requirement that attention weights must sum to one. The second is noise filtering, which allows the value pathway of an attention head to suppress interference from superposed features in the residual stream. In our experiments in matched models from 10M to 350M parameters, we supply abstention through a learned per-head sink logit in the softmax and noise filtering through a gate on each value. We report three empirical findings. First, the benefit of abstention, measured as the reduction in validation loss relative to a matched baseline, declines as models grow, whereas the benefit of noise filtering increases with scale. In particular, abstention accounts for nearly all of the gain from gating at 10M and filtering for most of it at 350M. Second, the best model at every scale is the one with both primitives built in. Third, injecting controlled interference into the values a head reads confirms that the gate removes such interference, and reveals that each of the two gate forms we study has a characteristic blind spot. Supplying both primitives adds negligible parameters and remains compatible with the key-value cache.</p>
+<p><strong>Categories:</strong> cs.LG, cs.CL</p>
 <p><strong>Relevance:</strong> 9/10</p>
-<p><a href="https://arxiv.org/pdf/2609.07816">PDF</a> | <a href="https://arxiv.org/abs/2609.07816">arXiv</a></p>]]></content>
+<p><a href="https://arxiv.org/pdf/2609.22005">PDF</a> | <a href="https://arxiv.org/abs/2609.22005">arXiv</a></p>]]></content>
         <author>
-            <name>Ngoc Bui</name>
+            <name>Richard Zhe Wang</name>
         </author>
-        <author>
-            <name>Tinglin Huang</name>
-        </author>
-        <author>
-            <name>Rex Ying</name>
-        </author>
-        <published>2026-09-07T00:00:00.000Z</published>
+        <category label="cs.LG" term="cs.LG"/>
+        <category label="cs.CL" term="cs.CL"/>
+        <published>2026-09-18T17:03:58.000Z</published>
     </entry>
     <entry>
-        <title type="html"><![CDATA[What Did I Just Say? Self-Listening for Full-Duplex Speech Models]]></title>
-        <id>https://arxiv.org/abs/2609.05592</id>
-        <link href="https://arxiv.org/abs/2609.05592"/>
-        <updated>2026-09-04T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Full-duplex spoken language models can listen and speak simultaneously, enabling them to handle interruptions and backchannels in human conversation. However, text generation, speech synthesis, and audio playback proceed asynchronously. As a result, what a model believes it has said may not match what has actually been played to the user. We refer to the problem of recovering from an interruption while remaining aware of the model's realized speech as anchor interruption. To address this problem]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Full-duplex spoken language models can listen and speak simultaneously, enabling them to handle interruptions and backchannels in human conversation. However, text generation, speech synthesis, and audio playback proceed asynchronously. As a result, what a model believes it has said may not match what has actually been played to the user. We refer to the problem of recovering from an interruption while remaining aware of the model's realized speech as anchor interruption. To address this problem, we propose Self-Listening, a full-duplex modeling approach that interleaves user speech, model text, and the model's played speech. By feeding the realized speech output back to the model as an input stream, self-listening grounds interruption recovery in what the user has actually heard. We further introduce AnchorSpeech, a collection with homogeneous training and test splits for tracking which items of structured ordered responses have actually been spoken. AnchorSpeech-test evaluates whether a model can respond consistently with the last completed item before an interruption. Experiments show that, compared with full-duplex baselines, models equipped with self-listening mechanism achieve better anchoring performance.</p>
-<p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2609.05592">PDF</a> | <a href="https://arxiv.org/abs/2609.05592">arXiv</a></p>]]></content>
+        <title type="html"><![CDATA[Watermarkable Multi-Draft Speculative Sampling via Poisson Processes]]></title>
+        <id>https://arxiv.org/abs/2609.21858</id>
+        <link href="https://arxiv.org/abs/2609.21858"/>
+        <updated>2026-09-18T14:52:39.000Z</updated>
+        <summary type="html"><![CDATA[Large language models (LLMs) have achieved state-of-the-art performance across a wide range of tasks, motivating two important aspects of deployment: inference efficiency and output provenance, which can be tackled by speculative sampling and watermarking, respectively. However, recent works have shown that combining these two goals is highly nontrivial and can be potentially impossible. In this work, we develop a novel multi-draft speculative sampling algorithm based on Poisson processes that i]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Large language models (LLMs) have achieved state-of-the-art performance across a wide range of tasks, motivating two important aspects of deployment: inference efficiency and output provenance, which can be tackled by speculative sampling and watermarking, respectively. However, recent works have shown that combining these two goals is highly nontrivial and can be potentially impossible. In this work, we develop a novel multi-draft speculative sampling algorithm based on Poisson processes that improves the frontier of this fundamental trade-off. The proposed algorithm has strong sampling efficiency on its own and, more interestingly, is naturally watermarkable: we can embed an unbiased watermark without degrading speculative acceptance. Moreover, our algorithm is based on an exact list-coupling-without-communication scheme, which yields a drafter invariance property that benefits both sampling and watermarking. It is the first multi-draft, drafter-invariant speculative sampling scheme that maintains both watermark strength and sampling efficiency, and we experimentally verify its strong performance in both aspects.</p>
+<p><strong>Categories:</strong> cs.CR, cs.LG</p>
+<p><strong>Relevance:</strong> 9/10</p>
+<p><a href="https://arxiv.org/pdf/2609.21858">PDF</a> | <a href="https://arxiv.org/abs/2609.21858">arXiv</a></p>]]></content>
         <author>
-            <name>Xuanning Zhou</name>
+            <name>Yanxiao Liu</name>
         </author>
         <author>
-            <name>Junyi Ao</name>
+            <name>Sicheng Wan</name>
         </author>
         <author>
-            <name>Xiaotong Liu</name>
+            <name>Zhan Gao</name>
         </author>
         <author>
-            <name>Tom Ko</name>
+            <name>Deniz Gündüz</name>
         </author>
-        <author>
-            <name>Benyou Wang</name>
-        </author>
-        <author>
-            <name>Haizhou Li</name>
-        </author>
-        <published>2026-09-04T00:00:00.000Z</published>
+        <category label="cs.CR" term="cs.CR"/>
+        <category label="cs.LG" term="cs.LG"/>
+        <published>2026-09-18T14:52:39.000Z</published>
     </entry>
     <entry>
-        <title type="html"><![CDATA[RenderFormer-V2: Neural Rendering with Heterogeneous Scene Primitives]]></title>
-        <id>https://arxiv.org/abs/2609.05738</id>
-        <link href="https://arxiv.org/abs/2609.05738"/>
-        <updated>2026-09-04T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[We present 'RenderFormer-V2', a unified learned transformer-based neural rendering model, complementary to modern physics-based rendering systems, that can handle diverse light-transport effects such as caustics, volumetric scattering, environment lighting, textured and displaced surfaces and out-of-distribution materials without per-scene training or specialized code. RenderFormer-V2 models global light transport as a sequence-to-sequence transformation. Following its predecessor, RenderFormer-]]></summary>
-        <content type="html"><![CDATA[<h3>原始摘要</h3><p>We present 'RenderFormer-V2', a unified learned transformer-based neural rendering model, complementary to modern physics-based rendering systems, that can handle diverse light-transport effects such as caustics, volumetric scattering, environment lighting, textured and displaced surfaces and out-of-distribution materials without per-scene training or specialized code. RenderFormer-V2 models global light transport as a sequence-to-sequence transformation. Following its predecessor, RenderFormer-V2 also employs a two stage process: a view-independent stage that resolves intra-scene primitive to primitive transport, and a view-dependent stage that transforms the internal neural scene representation into image pixels. Different from RenderFormer, our model employs a novel combined windowed-attention and rendering-informed attention sink in the view-independent stage to improve scalability while maintaining render accuracy. To further improve versatility, RenderFormerV2 supports heterogeneous scene primitives, including environment maps and participating media, and it employs a material encoding independent of the underlying surface reflectance model that encodes material appearance via a novel neural embedding. We demonstrate the versatility of RenderFormer-V2 on a variety of scenes and perform an extensive ablation of the improved attention mechanism.</p>
+        <title type="html"><![CDATA[Understanding LLM Quantization through Activation-Guided Compensation and Orthogonal Residuals]]></title>
+        <id>https://arxiv.org/abs/2609.21450</id>
+        <link href="https://arxiv.org/abs/2609.21450"/>
+        <updated>2026-09-18T08:00:27.000Z</updated>
+        <summary type="html"><![CDATA[Post-training weight-activation quantization reduces the memory and inference costs of large language models, but aggressive W4A4 quantization remains difficult because activation outliers degrade effective quantization resolution. Although weight optimization, channel-wise scaling, and orthogonal rotation mitigate this problem, the error components they address and their relationship remain unclear. Using an exact decomposition of local weight-activation quantization error into an activation-gu]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Post-training weight-activation quantization reduces the memory and inference costs of large language models, but aggressive W4A4 quantization remains difficult because activation outliers degrade effective quantization resolution. Although weight optimization, channel-wise scaling, and orthogonal rotation mitigate this problem, the error components they address and their relationship remain unclear. Using an exact decomposition of local weight-activation quantization error into an activation-guided weight compensation term and an orthogonal residual, we bound the residual using persistent channel-wise outlier and regular activation quantities. This decomposition clarifies which error components can be addressed by weight compensation and which require transformation design. We then use the residual bounds to derive practical guidelines for applying randomized Hadamard rotation, sign selection, and channel scaling. In particular, the analysis explains how random signs suppress constructive interference among persistent outlier channels, how sampling multiple sign patterns can improve transformation selection, and how second-moment balancing leads to an $L_2$ scaling rule while a further relaxation recovers SmoothQuant-style $L_\infty$ scaling. We evaluate these guidelines through backpropagation-free configurations across eight Llama and Mistral models, obtaining performance competitive with gradient-trained SpinQuant.</p>
+<p><strong>Categories:</strong> cs.LG</p>
+<p><strong>Relevance:</strong> 9/10</p>
+<p><a href="https://arxiv.org/pdf/2609.21450">PDF</a> | <a href="https://arxiv.org/abs/2609.21450">arXiv</a></p>]]></content>
+        <author>
+            <name>Yamato Narita</name>
+        </author>
+        <author>
+            <name>Issei Sato</name>
+        </author>
+        <category label="cs.LG" term="cs.LG"/>
+        <published>2026-09-18T08:00:27.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[End-to-End Hard-Label Cryptanalytic Model Extraction Using Efficient Sign Recovery]]></title>
+        <id>https://arxiv.org/abs/2609.21941</id>
+        <link href="https://arxiv.org/abs/2609.21941"/>
+        <updated>2026-09-18T15:56:29.000Z</updated>
+        <summary type="html"><![CDATA[The importance of deep neural networks (DNNs) is widely recognized, and the parameters obtained through training are regarded as valuable assets. Recently, attacks that extract these parameters using only oracle queries to a DNN have been actively studied at IACR conferences. The hard-label setting is the most challenging setting for model extraction, where an adversary can observe only the final output label, such as "dog" or "cat." At Eurocrypt 2025, Carlini et al. proposed polynomial-time har]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>The importance of deep neural networks (DNNs) is widely recognized, and the parameters obtained through training are regarded as valuable assets. Recently, attacks that extract these parameters using only oracle queries to a DNN have been actively studied at IACR conferences. The hard-label setting is the most challenging setting for model extraction, where an adversary can observe only the final output label, such as &quot;dog&quot; or &quot;cat.&quot; At Eurocrypt 2025, Carlini et al. proposed polynomial-time hard-label extraction of ReLU-based MLPs. However, one step of this attack process, i.e., sign recovery, requires a large number of queries and substantial computation. Implementing this step in a black-box setting remains difficult. Consequently, a fully black-box end-to-end demonstration on trained deep ReLU MLPs has remained a challenge. In this paper, we propose a new sign-recovery algorithm based on a completely different principle from the existing method. Our method requires no dedicated queries for sign recovery. In our experiments, it achieves higher sign-recovery accuracy than the existing method. Consequently, it enables efficient sign recovery even for trained models. With our sign-recovery algorithm, all steps of hard-label model extraction can be implemented in a black-box setting. By combining these implementations, we demonstrate end-to-end model extraction from models trained on MNIST and Fashion-MNIST, with width 16 and 4 or 6 hidden layers, achieving over 98% label agreement.</p>
+<p><strong>Categories:</strong> cs.CR, cs.LG</p>
 <p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2609.05738">PDF</a> | <a href="https://arxiv.org/abs/2609.05738">arXiv</a></p>]]></content>
+<p><a href="https://arxiv.org/pdf/2609.21941">PDF</a> | <a href="https://arxiv.org/abs/2609.21941">arXiv</a></p>]]></content>
         <author>
-            <name>Chong Zeng</name>
+            <name>Akira Ito</name>
         </author>
         <author>
-            <name>Yue Dong</name>
+            <name>Takayuki Miura</name>
         </author>
         <author>
-            <name>Pieter Peers</name>
+            <name>Yosuke Todo</name>
+        </author>
+        <category label="cs.CR" term="cs.CR"/>
+        <category label="cs.LG" term="cs.LG"/>
+        <published>2026-09-18T15:56:29.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[RheoSampling: Resolving the One-Hot Dilemma in Stochastic Dynamic-Tree Speculative Decoding]]></title>
+        <id>https://arxiv.org/abs/2609.21827</id>
+        <link href="https://arxiv.org/abs/2609.21827"/>
+        <updated>2026-09-18T14:28:28.000Z</updated>
+        <summary type="html"><![CDATA[Speculative decoding accelerates LLM inference by drafting multiple tokens in parallel, with tree-based methods further improving efficiency through hierarchical structures. Dynamic-tree methods such as EAGLE-3 perform well under greedy decoding via deterministic top-K expansion and global pruning. However, in stochastic decoding (T>0), this mechanism collapses the draft distribution into one-hot probabilities, causing a severe drop in acceptance rate. This creates a dilemma: dynamic-tree method]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Speculative decoding accelerates LLM inference by drafting multiple tokens in parallel, with tree-based methods further improving efficiency through hierarchical structures. Dynamic-tree methods such as EAGLE-3 perform well under greedy decoding via deterministic top-K expansion and global pruning. However, in stochastic decoding (T&gt;0), this mechanism collapses the draft distribution into one-hot probabilities, causing a severe drop in acceptance rate. This creates a dilemma: dynamic-tree methods sacrifice stochastic sampling to preserve context-aware topology, while static-tree methods preserve stochastic sampling with context-agnostic structures. The issue arises because the same probability distribution is used for two conflicting tasks: constructing the tree and verifying tokens. This coupling makes direct injection of randomness challenging due to the resulting stochastic process. We resolve this by decoupling these roles: RheoSampling assigns a token sampled from the draft distribution a proxy probability for tree expansion and pruning alongside its true sampling probability for verification. Specifically, we inject a sampled token among the deterministic top-K slots and treat it with different probabilities during construction and verification, making RheoSampling the first dynamic-tree method with both context-aware top-K construction and stochastic sampling while maintaining losslessness. We establish the lossless guarantee through an equivalence-class analysis that compresses the stochastic tree space into tractable classes. An OT-based verification strategy and a sparse draft mechanism ensure that theoretical gains translate into practical efficiency. Experiments across LLMs and benchmarks demonstrate improvements in acceptance rate and speedup over state-of-the-art dynamic tree methods. This framework may provide a template for analyzing stochastic tree structures.</p>
+<p><strong>Categories:</strong> cs.CL, cs.LG</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2609.21827">PDF</a> | <a href="https://arxiv.org/abs/2609.21827">arXiv</a></p>]]></content>
+        <author>
+            <name>Qiao Hu</name>
         </author>
         <author>
-            <name>Lvmin Zhang</name>
+            <name>Yepeng Weng</name>
         </author>
         <author>
-            <name>Maneesh Agrawala</name>
+            <name>Bo Zhang</name>
         </author>
-        <published>2026-09-04T00:00:00.000Z</published>
+        <author>
+            <name>Takehisa Yairi</name>
+        </author>
+        <category label="cs.CL" term="cs.CL"/>
+        <category label="cs.LG" term="cs.LG"/>
+        <published>2026-09-18T14:28:28.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Classification-oriented adaptive sensing via posterior sampling]]></title>
+        <id>https://arxiv.org/abs/2609.21812</id>
+        <link href="https://arxiv.org/abs/2609.21812"/>
+        <updated>2026-09-18T14:21:41.000Z</updated>
+        <summary type="html"><![CDATA[Recent advances in diffusion models have enabled high-performance, instance-adaptive compressed sensing through posterior sampling, without task-specific policy training. Existing methods select sensing probes by maximizing total posterior signal variance and are therefore primarily reconstruction-driven. We introduce a classification-driven extension motivated by the closed-form posterior covariance of a class-conditional Gaussian mixture model, which decomposes into within-class and between-cl]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Recent advances in diffusion models have enabled high-performance, instance-adaptive compressed sensing through posterior sampling, without task-specific policy training. Existing methods select sensing probes by maximizing total posterior signal variance and are therefore primarily reconstruction-driven. We introduce a classification-driven extension motivated by the closed-form posterior covariance of a class-conditional Gaussian mixture model, which decomposes into within-class and between-class uncertainty. Using calibrated soft classifier outputs, we estimate these uncertainty terms from diffusion posterior samples and propose a classification-oriented criterion for selecting the dominant sensing direction in the unmeasured subspace. Experiments on MNIST and CIFAR-10 compare the resulting classification accuracy, measurement cost, and reconstruction quality with those of reconstruction-oriented counterparts. The results identify regimes in which semantic posterior uncertainty yields a more favorable classification--measurement trade-off and quantify the associated reconstruction cost.</p>
+<p><strong>Categories:</strong> eess.SP, cs.CV</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2609.21812">PDF</a> | <a href="https://arxiv.org/abs/2609.21812">arXiv</a></p>]]></content>
+        <author>
+            <name>Andriy Enttsel</name>
+        </author>
+        <author>
+            <name>Maxime Rousselot</name>
+        </author>
+        <author>
+            <name>Vincent Corlay</name>
+        </author>
+        <category label="eess.SP" term="eess.SP"/>
+        <category label="cs.CV" term="cs.CV"/>
+        <published>2026-09-18T14:21:41.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Accelerating Dense LLMs via L0-regularized Mixture-of-Experts]]></title>
+        <id>https://arxiv.org/abs/2609.21672</id>
+        <link href="https://arxiv.org/abs/2609.21672"/>
+        <updated>2026-09-18T12:08:31.000Z</updated>
+        <summary type="html"><![CDATA[Large language models (LLMs) achieve strong performance but suffer from slow and costly inference. Existing acceleration methods often lead to noticeable performance degradation, while Mixture-of-Experts (MoE) models require extensive computational resources. In this paper, we propose L0-MoE, a lightweight MoE approach using L0-regularization to accelerate dense LLMs nearly without performance loss. Our method introduces a cluster confusion matrix for domain-aware dataset curation and applies dy]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Large language models (LLMs) achieve strong performance but suffer from slow and costly inference. Existing acceleration methods often lead to noticeable performance degradation, while Mixture-of-Experts (MoE) models require extensive computational resources. In this paper, we propose L0-MoE, a lightweight MoE approach using L0-regularization to accelerate dense LLMs nearly without performance loss. Our method introduces a cluster confusion matrix for domain-aware dataset curation and applies dynamic batching for efficient training. Experiments show that L0-MoE achieves up to 2.5x speedup over dense models while maintaining competitive performance, outperforming existing LLM acceleration baselines.</p>
+<p><strong>Categories:</strong> cs.AI, cs.CL</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2609.21672">PDF</a> | <a href="https://arxiv.org/abs/2609.21672">arXiv</a></p>]]></content>
+        <author>
+            <name>Zhenyu Zhang</name>
+        </author>
+        <author>
+            <name>Jiudong Yang</name>
+        </author>
+        <author>
+            <name>Zhaowen Tao</name>
+        </author>
+        <author>
+            <name>Meng Chen</name>
+        </author>
+        <category label="cs.AI" term="cs.AI"/>
+        <category label="cs.CL" term="cs.CL"/>
+        <published>2026-09-18T12:08:31.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Trading Depth for Time in Recurrent Transformers]]></title>
+        <id>https://arxiv.org/abs/2609.21605</id>
+        <link href="https://arxiv.org/abs/2609.21605"/>
+        <updated>2026-09-18T10:34:51.000Z</updated>
+        <summary type="html"><![CDATA[Recurrent Transformers increase computational depth through temporal recurrence, feeding each token's high-level hidden state into the computation of the next. This raises a natural question: is additional computation better spent on more temporal steps or greater physical depth? We investigate this question using Latent Recurrent Transformers (LRTs), which retain one backbone forward pass per vocabulary token during decoding and provide a controlled setting for comparing these two ways of addin]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Recurrent Transformers increase computational depth through temporal recurrence, feeding each token's high-level hidden state into the computation of the next. This raises a natural question: is additional computation better spent on more temporal steps or greater physical depth? We investigate this question using Latent Recurrent Transformers (LRTs), which retain one backbone forward pass per vocabulary token during decoding and provide a controlled setting for comparing these two ways of adding computation. Specifically, we insert a latent thought token between consecutive vocabulary tokens. Each thought token passes through the same $L$ layers as a vocabulary token, sharing the backbone parameters and providing an additional stage of hidden-state refinement before predicting the next token. We compare this $L$-layer LRT against a $2L$-layer LRT without thought tokens. Both execute $2L$ Transformer blocks per vocabulary token during decoding, but the thought-token model uses fewer parameters. On 16- and 20-layer mixture-of-experts NanoChat backbones, one thought token brings the shallower model within 0.006 and 0.004 bits per byte of its double-depth counterpart, recovering 67% and 81% of the improvement with approximately 48% fewer total parameters. These results suggest that temporal thinking offers a parameter-efficient alternative to increasing physical depth in recurrent Transformers.</p>
+<p><strong>Categories:</strong> cs.LG</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2609.21605">PDF</a> | <a href="https://arxiv.org/abs/2609.21605">arXiv</a></p>]]></content>
+        <author>
+            <name>Zeyi Huang</name>
+        </author>
+        <author>
+            <name>Xuehai He</name>
+        </author>
+        <author>
+            <name>Yong Jae Lee</name>
+        </author>
+        <author>
+            <name>Yelong Shen</name>
+        </author>
+        <category label="cs.LG" term="cs.LG"/>
+        <published>2026-09-18T10:34:51.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[WS-NeRF: A Mamba-Driven World-State-Aware Adaptive Deblurring Neural Radiance Field]]></title>
+        <id>https://arxiv.org/abs/2609.21391</id>
+        <link href="https://arxiv.org/abs/2609.21391"/>
+        <updated>2026-09-18T07:00:35.000Z</updated>
+        <summary type="html"><![CDATA[Neural Radiance Fields (NeRF) have attracted extensive attention in recent years due to their strong capability for high-quality 3D reconstruction and novel view synthesis from multi-view images. Existing methods usually rely on high-quality sharp inputs, while real-world image acquisition is highly susceptible to blur degradation, which severely affects the reconstruction quality of NeRF. In this paper, we propose a novel Mamba-driven world-state-aware adaptive deblurring neural radiance field,]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Neural Radiance Fields (NeRF) have attracted extensive attention in recent years due to their strong capability for high-quality 3D reconstruction and novel view synthesis from multi-view images. Existing methods usually rely on high-quality sharp inputs, while real-world image acquisition is highly susceptible to blur degradation, which severely affects the reconstruction quality of NeRF. In this paper, we propose a novel Mamba-driven world-state-aware adaptive deblurring neural radiance field, termed WS-NeRF, to address image degradation and 3D inconsistency. We formulate the alternating optimization of radiance fields as a dynamic evolution process with temporal memory, and jointly exploit comprehensive multi-dimensional world states and a mixture-of-experts mechanism to dynamically adjust the confidence of deblurring priors. Experimental results show that WS-NeRF significantly improves blurry radiance field reconstruction quality, achieving better performance on PSNR, SSIM, and LPIPS, while exhibiting more stable iterative recovery behavior.</p>
+<p><strong>Categories:</strong> eess.IV, cs.AI, cs.CV</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2609.21391">PDF</a> | <a href="https://arxiv.org/abs/2609.21391">arXiv</a></p>]]></content>
+        <author>
+            <name>Hang Jiang</name>
+        </author>
+        <author>
+            <name>Jinghao Wang</name>
+        </author>
+        <author>
+            <name>Yiming Zhang</name>
+        </author>
+        <author>
+            <name>Xinhong Wang</name>
+        </author>
+        <author>
+            <name>Luwei Ran</name>
+        </author>
+        <author>
+            <name>Yinfeng Yu</name>
+        </author>
+        <category label="eess.IV" term="eess.IV"/>
+        <category label="cs.AI" term="cs.AI"/>
+        <category label="cs.CV" term="cs.CV"/>
+        <published>2026-09-18T07:00:35.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[MoME: Mixture-of-Memory Embeddings for Context-Aware Sparse Lookup]]></title>
+        <id>https://arxiv.org/abs/2609.15126</id>
+        <link href="https://arxiv.org/abs/2609.15126"/>
+        <updated>2026-09-14T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Scaling large language models efficiently has motivated sparse capacity mechanisms such as Mixture-of-Experts and, more recently, conditional memory: token-indexed embedding tables that augment the backbone with cheap parametric lookups. Existing memory-embedding methods retrieve via a deterministic function of the surface form, which collapses different contextual senses of the same token (e.g., python the language vs. the animal) into a single fixed entry. We introduce Mixture of Memory Embedd]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Scaling large language models efficiently has motivated sparse capacity mechanisms such as Mixture-of-Experts and, more recently, conditional memory: token-indexed embedding tables that augment the backbone with cheap parametric lookups. Existing memory-embedding methods retrieve via a deterministic function of the surface form, which collapses different contextual senses of the same token (e.g., python the language vs. the animal) into a single fixed entry. We introduce Mixture of Memory Embeddings (MoME), a context-aware memory mechanism that replaces each token's single memory row with a mixture of M slots and uses a learned gate over the hidden state to choose which slots to read at each position. In controlled pretraining experiments across nanochat, Llama-3/MobileLLM, and Qwen3 backbones, MoME improves over Value Embedding, Bigram, and STEM baselines in iso-parameter and iso-training-FLOP settings, shows a more promising memory-size scaling trend at sub-billion scale, and remains efficient in training and inference. Qualitative routing analyses on polysemous tokens further suggest that the learned mixture exhibits a degree of semantic interpretability, dispatching the same surface token to distinct memory slots under different senses.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2609.15126">PDF</a> | <a href="https://arxiv.org/abs/2609.15126">arXiv</a></p>]]></content>
+        <author>
+            <name>Muchen Li</name>
+        </author>
+        <author>
+            <name>Leonid Sigal</name>
+        </author>
+        <author>
+            <name>Renjie Liao</name>
+        </author>
+        <published>2026-09-14T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Retention-Constrained Post-Training Quantization of Cellpose-SAM for Stem Cell Microscopy]]></title>
+        <id>https://arxiv.org/abs/2609.21038</id>
+        <link href="https://arxiv.org/abs/2609.21038"/>
+        <updated>2026-09-17T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Induced pluripotent stem cell (iPSC) culture increasingly relies on segmentation foundation models, yet deployment on laboratory CPUs and edge hardware requires compression schemes that are both efficient and auditable. We present a deployment-oriented evaluation of compressed Cellpose-SAM using a pre-specified retention criterion: the 95% cluster-bootstrap interval of mean change from FP32 must remain above a fixed -0.02 margin for every imaging modality. On a stratified 176-field panel spannin]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Induced pluripotent stem cell (iPSC) culture increasingly relies on segmentation foundation models, yet deployment on laboratory CPUs and edge hardware requires compression schemes that are both efficient and auditable. We present a deployment-oriented evaluation of compressed Cellpose-SAM using a pre-specified retention criterion: the 95% cluster-bootstrap interval of mean change from FP32 must remain above a fixed -0.02 margin for every imaging modality. On a stratified 176-field panel spanning BBBC038 nuclei, BBBC039 U2OS fluorescence, and NIST iPSC images across density regimes, weight-only W8A16 preserves instance F1 across all modalities. A sensitivity-guided mixed W4/W8 scheme, using four INT8 exceptions, achieves a 6.76x reduction in weight storage with no observed catastrophic failures (0/176 fields), matching W8A16 at this sample size. In contrast, ternary weight-only quantization achieves 12.08x compression but fails catastrophically on 169/176 fields. These results demonstrate that compression should be evaluated by modality-stratified downstream retention rather than single-number accuracy, and establish a reproducible protocol for auditing compressed foundation models in regulated stem-cell imaging.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2609.21038">PDF</a> | <a href="https://arxiv.org/abs/2609.21038">arXiv</a></p>]]></content>
+        <author>
+            <name>Sebastián A. Cruz Romero</name>
+        </author>
+        <published>2026-09-17T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[ActionPiece: Rethinking Action Tokenization for Autoregressive Vision-Language-Action Models]]></title>
+        <id>https://arxiv.org/abs/2609.18487</id>
+        <link href="https://arxiv.org/abs/2609.18487"/>
+        <updated>2026-09-16T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Action tokenizers play a central role in autoregressive vision-language-action (VLA) models, determining both the targets for policy training and the executable commands recovered from predicted tokens. Their fidelity is commonly evaluated using pointwise reconstruction metrics such as mean squared error (MSE), yet small individual errors do not fully characterize how faithfully action adjustments across demonstrations are preserved. After compression, similar actions may still cluster around a ]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Action tokenizers play a central role in autoregressive vision-language-action (VLA) models, determining both the targets for policy training and the executable commands recovered from predicted tokens. Their fidelity is commonly evaluated using pointwise reconstruction metrics such as mean squared error (MSE), yet small individual errors do not fully characterize how faithfully action adjustments across demonstrations are preserved. After compression, similar actions may still cluster around a representative motion, while the adjustments needed for different contexts are diminished, distorted, or even reversed. We introduce physical rank consistency (PRC) to measure how well tokenization preserves local physical distance rankings after reconstruction. Evaluating decoded actions provides a common reference across token vocabularies and decoder architectures, complementing pointwise accuracy with a measure of relational fidelity. We further present ActionPiece, which preserves physical action relationships through joint supervision of representation learning and quantization. Physical rank preservation supervises near-far ordering in encoder and quantized feature distances, while quantization regularization applies the same ordering to codeword assignment distributions. Both objectives augment reconstruction, producing discrete action tokens for standard autoregressive policy learning and execution through a frozen decoder. Under the same Qwen3-VL-4B policy training setup, ActionPiece achieves 94.8% on LIBERO and 68.8% on unseen LIBERO-Plus, with additional evaluations reaching 71.9% on SimplerEnv and 51.5% across VLA-Arena L0-L2. Component ablations show that the two objectives jointly improve PRC and policy success, demonstrating the value of physical relationship supervision for action tokenization.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2609.18487">PDF</a> | <a href="https://arxiv.org/abs/2609.18487">arXiv</a></p>]]></content>
+        <author>
+            <name>Shijie Lian</name>
+        </author>
+        <author>
+            <name>Bin Yu</name>
+        </author>
+        <author>
+            <name>Zhaolong Shen</name>
+        </author>
+        <author>
+            <name>Xiaopeng Lin</name>
+        </author>
+        <author>
+            <name>Yichao Du</name>
+        </author>
+        <author>
+            <name>Zhirui Zhang</name>
+        </author>
+        <author>
+            <name>Laurence T. Yang</name>
+        </author>
+        <author>
+            <name>Kai Chen</name>
+        </author>
+        <published>2026-09-16T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[SpectralShift: Effective Context Window Extension of Gated DeltaNet via Spectral Reparameterization]]></title>
+        <id>https://arxiv.org/abs/2609.14320</id>
+        <link href="https://arxiv.org/abs/2609.14320"/>
+        <updated>2026-09-13T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Recently, linear attention layers have been increasingly adopted to replace softmax attention at scale for long-context modeling. However, existing context extension approaches typically apply continued pretraining directly without modifying these layers, overlooking the spectral properties of linear attention state dynamics. In this work, we study long-context extension of Gated DeltaNet (GDN) from a spectral perspective of transition matrix and identify two essential factors governing long-ran]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Recently, linear attention layers have been increasingly adopted to replace softmax attention at scale for long-context modeling. However, existing context extension approaches typically apply continued pretraining directly without modifying these layers, overlooking the spectral properties of linear attention state dynamics. In this work, we study long-context extension of Gated DeltaNet (GDN) from a spectral perspective of transition matrix and identify two essential factors governing long-range information retrieval: (1) a sufficiently broad slow spectral band aligned with the target dependency length, and (2) the preservation of fast-decaying modes for state clearing and context switching. Based on this observation, we propose SpectralShift, a spectral reparameterization approach for long-context continual pretraining of GDNs. Specifically, SpectralShift reparameterizes the alpha projections initialization to reshape the decay spectrum by enhancing slow propagation capacity, and further introduces a learning-rate scaling for alpha projections to facilitate long-context training. Experiments show that SpectralShift consistently improves long-context capabilities over training, providing an effective and efficient solution for extending context windows of linear attention models. The code has been open-sourced at https://github.com/RUCAIBox/GDN-SpectralShift.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2609.14320">PDF</a> | <a href="https://arxiv.org/abs/2609.14320">arXiv</a></p>]]></content>
+        <author>
+            <name>Zian Liu</name>
+        </author>
+        <author>
+            <name>Yiwen Hu</name>
+        </author>
+        <author>
+            <name>Zican Dong</name>
+        </author>
+        <author>
+            <name>Tian Xie</name>
+        </author>
+        <author>
+            <name>Wayne Xin Zhao</name>
+        </author>
+        <author>
+            <name>Yucheng Ding</name>
+        </author>
+        <author>
+            <name>Ran Tao</name>
+        </author>
+        <author>
+            <name>Bryan Dai</name>
+        </author>
+        <published>2026-09-13T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Flattening Every Memory Peak in Long-Context Mixture-of-Experts Training]]></title>
+        <id>https://arxiv.org/abs/2609.14306</id>
+        <link href="https://arxiv.org/abs/2609.14306"/>
+        <updated>2026-09-13T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Training a Mixture-of-Experts (MoE) model at long context or large batch size fails as soon as any one component's peak allocation exceeds device memory, so the target is every peak at once, not the average footprint. Four are left unbounded by the parallelism plans in common use, and each grows differently: expert dispatch with the routing matrix, the vocabulary projection with tokens times vocabulary, gradient checkpoint boundaries with depth times sequence length, and optimizer state with par]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Training a Mixture-of-Experts (MoE) model at long context or large batch size fails as soon as any one component's peak allocation exceeds device memory, so the target is every peak at once, not the average footprint. Four are left unbounded by the parallelism plans in common use, and each grows differently: expert dispatch with the routing matrix, the vocabulary projection with tokens times vocabulary, gradient checkpoint boundaries with depth times sequence length, and optimizer state with parameter count. Which one runs out first changes with the model, the context length, and the device count, so lowering the largest only exposes the next. We bound all four with schedules whose GPU working set is fixed at launch: PipelinedLLEP extends least-loaded expert parallelism with a cap on the tokens each source contributes to a dispatch chunk, Ring-DTP circulates activations or weight shards around a ring at the vocabulary projection and folds each block of logits into an online log-sum-exp, Selective checkpoint offload (SCO) keeps the one long-lived tensor of each checkpoint boundary in CPU memory, and OffloadStreamAdamW turns the serial CPU Adam update of optimizer offload into a bucket pipeline. All four change only the order and granularity of computation and data movement, so the loss and gradients stay exact. In matched component tests, they cut the MoE dispatch peak by up to 59.3% without losing throughput, the vocabulary projection peak by 86.6%, and the offloaded optimizer step by 2.05times faster. Composed on MoE models from 120B to 667B parameters, they train at 1M context length, 8--32times the reach of a tuned FSDP2 baseline, and up to 10.4times its throughput.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2609.14306">PDF</a> | <a href="https://arxiv.org/abs/2609.14306">arXiv</a></p>]]></content>
+        <author>
+            <name>Shrey Pandit</name>
+        </author>
+        <author>
+            <name>Xuan-Phi Nguyen</name>
+        </author>
+        <author>
+            <name>Yiran Zhao</name>
+        </author>
+        <author>
+            <name>Shafiq Joty</name>
+        </author>
+        <published>2026-09-13T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[How Lossless Is Lossless Speculative Decoding? The Role of Numerical Precision in Orthrus]]></title>
+        <id>https://arxiv.org/abs/2609.15504</id>
+        <link href="https://arxiv.org/abs/2609.15504"/>
+        <updated>2026-09-14T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Orthrus is a hybrid autoregressive-diffusion architecture that accelerates autoregressive language-model inference by generating multiple tokens in parallel while using a frozen autoregressive backbone. Its central claim is that an intra-model consensus mechanism enables lossless speculative decoding, producing the same output sequence as the autoregressive model.
+  We independently reproduce Orthrus and examine this claim under different numerical precisions. Under BF16 inference, exact traject]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Orthrus is a hybrid autoregressive-diffusion architecture that accelerates autoregressive language-model inference by generating multiple tokens in parallel while using a frozen autoregressive backbone. Its central claim is that an intra-model consensus mechanism enables lossless speculative decoding, producing the same output sequence as the autoregressive model.
+  We independently reproduce Orthrus and examine this claim under different numerical precisions. Under BF16 inference, exact trajectory matching occurs in only 45% of cases for the authors' checkpoint and 43% for our independently trained model across 1,190 prompts from 12 domains. The probability of exact matching is also strongly associated with the response-conditional perplexity of the reference model. Despite this trajectory divergence, Orthrus does not show systematic degradation on downstream lm-eval-harness benchmarks. In contrast, repeating the trajectory evaluation with FP32 yields exact trajectory matching on all evaluated prompts.
+  These results show that the practical losslessness of Orthrus depends on numerical precision and that exact trajectory equivalence should be evaluated separately from downstream task performance.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2609.15504">PDF</a> | <a href="https://arxiv.org/abs/2609.15504">arXiv</a></p>]]></content>
+        <author>
+            <name>Ilya Koziev</name>
+        </author>
+        <author>
+            <name>Leonid Sinev</name>
+        </author>
+        <author>
+            <name>Ivan Oseledets</name>
+        </author>
+        <published>2026-09-14T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Learning Sparse Decision Trees via Transformer Variational Auto-Encoders]]></title>
+        <id>https://arxiv.org/abs/2609.01430</id>
+        <link href="https://arxiv.org/abs/2609.01430"/>
+        <updated>2026-09-01T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Decision trees are among the most widely used models in machine learning, largely due to their transparent decision logic, making them well-suited for high-stakes decision-making contexts. However, most existing learning algorithms focus on predictive performance, overlooking the joint optimization of other desirable properties, such as structural sparsity. In this work we propose TREVIS, an approach for learning decision trees with respect to complex objectives, based on the exploration of the ]]></summary>
+        <content type="html"><![CDATA[<h3>原始摘要</h3><p>Decision trees are among the most widely used models in machine learning, largely due to their transparent decision logic, making them well-suited for high-stakes decision-making contexts. However, most existing learning algorithms focus on predictive performance, overlooking the joint optimization of other desirable properties, such as structural sparsity. In this work we propose TREVIS, an approach for learning decision trees with respect to complex objectives, based on the exploration of the latent space of a Tree Transformer Variational Auto-Encoder (TTVAE). By mapping decision trees onto latent representations, TREVIS replaces the discrete search space with a continuous one, enabling gradient-based optimization via a differentiable surrogate model. We experiment with TREVIS for learning decision trees that jointly optimize predictive performance and sparsity. Results show that TREVIS discovers decision trees matching the predictive performance of existing near-optimal algorithms while improving their structural sparsity.</p>
+<p><strong>Relevance:</strong> 8/10</p>
+<p><a href="https://arxiv.org/pdf/2609.01430">PDF</a> | <a href="https://arxiv.org/abs/2609.01430">arXiv</a></p>]]></content>
+        <author>
+            <name>Giacomo Fidone</name>
+        </author>
+        <author>
+            <name>Alessio Cascione</name>
+        </author>
+        <author>
+            <name>Riccardo Guidotti</name>
+        </author>
+        <published>2026-09-01T00:00:00.000Z</published>
     </entry>
 </feed>
