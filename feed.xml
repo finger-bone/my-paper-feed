@@ -4,253 +4,268 @@
         <title>LLM Acceleration Papers Weekly</title>
         <link>https://github.com/finger-bone/my-paper-feed</link>
         <description>每周精选大模型推理/训练加速相关论文</description>
-        <lastBuildDate>Tue, 10 Nov 2026 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 20 Nov 2026 12:51:06 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>paper-feed</generator>
         <language>en</language>
         <copyright>All rights reserved 2026</copyright>
         <item>
-            <title><![CDATA[Sable: A Small-Field Sumcheck Argument for Bit-Exact Inference of Large Language Models]]></title>
-            <link>https://arxiv.org/abs/2611.14083</link>
-            <guid isPermaLink="false">https://arxiv.org/abs/2611.14083</guid>
-            <pubDate>Tue, 10 Nov 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[We present Sable, an argument system and single-GPU prover for the statement that a committed, integer-quantized transformer produced a given token sequence from a given prompt, bit for bit. Sable fixes an integer function F_O with no floating-point step, in which every rounding, normalization, softmax and sampling decision is determined by its inputs, and proves it with a constraint system whose relations provably never wrap modulo the 31-bit KoalaBear prime. The proof batches zerochecks and Lo]]></description>
-            <content:encoded><![CDATA[<h3>原始摘要</h3><p>We present Sable, an argument system and single-GPU prover for the statement that a committed, integer-quantized transformer produced a given token sequence from a given prompt, bit for bit. Sable fixes an integer function F_O with no floating-point step, in which every rounding, normalization, softmax and sampling decision is determined by its inputs, and proves it with a constraint system whose relations provably never wrap modulo the 31-bit KoalaBear prime. The proof batches zerochecks and LogUp-GKR lookups into one sumcheck per domain, and commits to every witness tensor and weight in one multilinear commitment built from Reed-Solomon codes, BLAKE3 Merkle trees and a mixed-length BaseFold opening. The prover streams the model layer by layer on one GPU. On one NVIDIA RTX PRO 6000 Blackwell GPU, Sable proves all 64 layers of Qwen2.5-32B in 92.5 s for 4,096 tokens and 398 s for 16,384 tokens, and covers Qwen3-32B and the mixture-of-experts Qwen3-30B-A3B (4,096 tokens in 121.8 and 84.7 s). A proof costs 41 to 50 times the serving time, or 6.4 cents per 4,096-token request at public GPU prices, and 40 to 64 times less time per parameter and token than zkLLM. On WikiText-2, F_O's greedy token matches the BF16 model's at 86.3% of positions; on Qwen3, F_O is within 1.6 points of BF16 on MMLU and 1.7 points on GSM8K. A verifier with a compiled core checks a proof on one CPU core in 19 to 56 s. In the random-oracle model, the interactive proof has round-by-round soundness error 2^-103. The proof is not zero-knowledge, so the system targets open-weight models. Code: https://github.com/moonmath-ai/Sable</p>
+            <title><![CDATA[Vega-Fafnir: Is Greedy Decoding the Same Decoding? Where Rounding Noise in Speculative Verification Comes From and What Removing It Costs]]></title>
+            <link>https://arxiv.org/abs/2611.27554</link>
+            <guid isPermaLink="false">https://arxiv.org/abs/2611.27554</guid>
+            <pubDate>Fri, 20 Nov 2026 12:51:06 GMT</pubDate>
+            <description><![CDATA[Serving engines treat the ways of running a greedy language model as interchangeable: cached or not, padded or not, alone or batched, one token or several verified at once (speculative decoding). In finite precision they round differently. We measure how often the greedy text of Qwen3-0.6B (bfloat16, 128 new tokens, GSM8K and ARC prompts) differs from a reference that decodes one token per pass. Verifying 4 guessed tokens per pass changes 60% of 150 prompts and padding changes 68%; every first d]]></description>
+            <content:encoded><![CDATA[<h3>原始摘要</h3><p>Serving engines treat the ways of running a greedy language model as interchangeable: cached or not, padded or not, alone or batched, one token or several verified at once (speculative decoding). In finite precision they round differently. We measure how often the greedy text of Qwen3-0.6B (bfloat16, 128 new tokens, GSM8K and ARC prompts) differs from a reference that decodes one token per pass. Verifying 4 guessed tokens per pass changes 60% of 150 prompts and padding changes 68%; every first divergence has a top-1 minus top-2 logit gap of 0.375 or less. A split of the noise shows that cache entries written by multi-token passes are about as noisy as the multi-token pass itself. A margin gate (fall back to one token when the gap is below a bound calibrated on separate GSM8K prompts) whose fallback reads that cache does not help: 58 of 100 prompts differ, against 61 of 100 for plain verification. Rebuilding the cache with one-token passes leaves 0 of 100 different but costs 7.2 model passes per token, against 1.0 for the reference. Fixed-width decoding makes drafted and plain decoding identical (0 of 100 prompts differ) at 0.75 passes per token. On shifted MMLU and HellaSwag prompts the rebuild gate leaves 0 of 60 different, plain verification 48 of 60. On 138 further and shifted prompts the bound was exceeded at 0.6% of positions and missed 0 of 309 flips. One GPU, one drafter, small models.</p>
+<p><strong>Categories:</strong> cs.AI</p>
+<p><strong>Relevance:</strong> 10/10</p>
+<p><a href="https://arxiv.org/pdf/2611.27554">PDF</a> | <a href="https://arxiv.org/abs/2611.27554">arXiv</a></p>]]></content:encoded>
+            <author>Mohammed Nayeem Khan</author>
+            <author>Navin Kumar R</author>
+            <category>cs.AI</category>
+        </item>
+        <item>
+            <title><![CDATA[Speculative Decoding Is Less Speculative Than You Think]]></title>
+            <link>https://arxiv.org/abs/2611.27891</link>
+            <guid isPermaLink="false">https://arxiv.org/abs/2611.27891</guid>
+            <pubDate>Fri, 20 Nov 2026 17:33:21 GMT</pubDate>
+            <description><![CDATA[Speculative decoding accelerates language-model inference by preparing candidate continuations before the target model generates them. Its efficiency depends on how well limited drafting computation anticipates the path the target will actually follow. Anticipating this path involves two sources of uncertainty: the target model's predictions and the randomness of sampling. Yet the former requires a target-model forward pass, while the latter can be fixed before drafting. Building on this observa]]></description>
+            <content:encoded><![CDATA[<h3>原始摘要</h3><p>Speculative decoding accelerates language-model inference by preparing candidate continuations before the target model generates them. Its efficiency depends on how well limited drafting computation anticipates the path the target will actually follow. Anticipating this path involves two sources of uncertainty: the target model's predictions and the randomness of sampling. Yet the former requires a target-model forward pass, while the latter can be fixed before drafting. Building on this observation, we introduce DICE (Draw-Informed Candidate Selection), which pre-samples and synchronizes verification randomness across drafting and verification. By combining these known draws with predictions from an existing drafter, DICE allocates computation toward continuations more likely to be used in the current sampling run. This principle guides node selection throughout draft-tree construction and extends to asynchronous prefetching, where DICE predicts which next-round drafts to prepare. Without additional drafter training or changes to the target sampling distribution, DICE achieves state-of-the-art decoding throughput across diverse settings, with speedups of up to 24.6pp over strong baselines.</p>
+<p><strong>Categories:</strong> cs.AI</p>
 <p><strong>Relevance:</strong> 9/10</p>
-<p><a href="https://arxiv.org/pdf/2611.14083">PDF</a> | <a href="https://arxiv.org/abs/2611.14083">arXiv</a></p>]]></content:encoded>
-            <author>Tomer Solberg</author>
+<p><a href="https://arxiv.org/pdf/2611.27891">PDF</a> | <a href="https://arxiv.org/abs/2611.27891">arXiv</a></p>]]></content:encoded>
+            <author>Guanning Zeng</author>
+            <author>Andrea Zanette</author>
+            <category>cs.AI</category>
         </item>
         <item>
-            <title><![CDATA[Callo: Serving Cache-Miss Requests with Speculative Decoding on Invalidated KV under Prefill-Decode Disaggregation]]></title>
-            <link>https://arxiv.org/abs/2611.18459</link>
-            <guid isPermaLink="false">https://arxiv.org/abs/2611.18459</guid>
-            <pubDate>Fri, 13 Nov 2026 17:28:37 GMT</pubDate>
-            <description><![CDATA[Agent sessions may involve frequent context edits, which effectively invalidate cached KV state and force requests to wait for re-prefill before decoding. We present Callo, a disaggregated serving system that leverages invalidated KV for speculative drafts to reduce this latency, while verifying drafts against the exact KV after prefill before committing tokens. Callo makes effective use of decode resources by scheduling speculations during periods of underutilization and preempting speculations]]></description>
-            <content:encoded><![CDATA[<h3>原始摘要</h3><p>Agent sessions may involve frequent context edits, which effectively invalidate cached KV state and force requests to wait for re-prefill before decoding. We present Callo, a disaggregated serving system that leverages invalidated KV for speculative drafts to reduce this latency, while verifying drafts against the exact KV after prefill before committing tokens. Callo makes effective use of decode resources by scheduling speculations during periods of underutilization and preempting speculations when drafts are likely to not be accepted. We evaluated Callo on a two-GPU testbed using SWE-agent sessions across three model families, observing all-request speedups of 1.05-1.19x over vLLM at moderate load. We demonstrate that these gains are also realized at scale through cluster-level simulations driven by real-world traces.</p>
-<p><strong>Categories:</strong> cs.DC, cs.LG</p>
-<p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2611.18459">PDF</a> | <a href="https://arxiv.org/abs/2611.18459">arXiv</a></p>]]></content:encoded>
-            <author>Jianjun Ou</author>
-            <author>Matthew Lentz</author>
-            <category>cs.DC</category>
+            <title><![CDATA[Cannot Wait to Verify: Parallel Drafting to Eliminate Verifier Idle Time in Speculative Decoding]]></title>
+            <link>https://arxiv.org/abs/2611.27477</link>
+            <guid isPermaLink="false">https://arxiv.org/abs/2611.27477</guid>
+            <pubDate>Fri, 20 Nov 2026 11:26:57 GMT</pubDate>
+            <description><![CDATA[Autoregressive inference in large transformer models is limited by token-level sequential execution, resulting in high latency and low GPU utilization. Speculative decoding (SD) mitigates this bottleneck by introducing a draft-and-verifier model. However, the drafting stage remains sequential, leaving the verifier idle and underutilizing compute. To address this, we propose a plug-and-play drafting adaptive drafting method that parallelizes inference across transformer layers during draft genera]]></description>
+            <content:encoded><![CDATA[<h3>原始摘要</h3><p>Autoregressive inference in large transformer models is limited by token-level sequential execution, resulting in high latency and low GPU utilization. Speculative decoding (SD) mitigates this bottleneck by introducing a draft-and-verifier model. However, the drafting stage remains sequential, leaving the verifier idle and underutilizing compute. To address this, we propose a plug-and-play drafting adaptive drafting method that parallelizes inference across transformer layers during draft generation. Starting from a shared hidden state, our approach evaluates multiple layers in parallel and verifies consistency by measuring divergence in hidden-state space. Layer-wise draft states are accepted when deviations are small; otherwise, a correction step is applied. By exploiting redundancy across transformer layers, our method accelerates draft generation and improves hardware utilization without modifying architectures or requiring retraining. Experimental results on NLP tasks show that our method speeds up the drafting stage by up to $1.65\times$ with minimal degradation in accuracy, while maintaining the same performance as SD.</p>
+<p><strong>Categories:</strong> cs.LG</p>
+<p><strong>Relevance:</strong> 9/10</p>
+<p><a href="https://arxiv.org/pdf/2611.27477">PDF</a> | <a href="https://arxiv.org/abs/2611.27477">arXiv</a></p>]]></content:encoded>
+            <author>Divya Jyoti Bajpai</author>
+            <author>Arun Verma</author>
+            <author>Manjesh Kumar Hanawal</author>
             <category>cs.LG</category>
         </item>
         <item>
-            <title><![CDATA[The State Is Not the Bottleneck: A Paged-State Gated-DeltaNet Tile on a Tri-Mode Multicast Mesh, Bit-Exact from RTL to Silicon]]></title>
-            <link>https://arxiv.org/abs/2611.18422</link>
-            <guid isPermaLink="false">https://arxiv.org/abs/2611.18422</guid>
-            <pubDate>Fri, 13 Nov 2026 17:01:18 GMT</pubDate>
-            <description><![CDATA[Linear-attention language models replace a growing key-value cache with a recurrent state of fixed size. On an edge FPGA, this state can exceed the on-chip memory and must be paged to external memory. This paper asks whether such paging dominates the cost of decoding (generating tokens). We built a hardware tile that computes one complete layer of a custom 369-million-parameter hybrid Gated DeltaNet model on an Agilex 5 FPGA and pages its recurrent state. The model state needs 6.2 MiB, whereas t]]></description>
-            <content:encoded><![CDATA[<h3>原始摘要</h3><p>Linear-attention language models replace a growing key-value cache with a recurrent state of fixed size. On an edge FPGA, this state can exceed the on-chip memory and must be paged to external memory. This paper asks whether such paging dominates the cost of decoding (generating tokens). We built a hardware tile that computes one complete layer of a custom 369-million-parameter hybrid Gated DeltaNet model on an Agilex 5 FPGA and pages its recurrent state. The model state needs 6.2 MiB, whereas the device has 0.87 MiB of block memory. Paging adds 26.0 MB of memory traffic per decoded token, at most 11.2 percent of the calculated total. On the board at 75 MHz, with synthetic weights, one token takes 11.15 ms in this layer. The matrix-vector products with the weights take about 62 percent of this time and the state phase, including the paging, 13 percent. The tile is one node of a multicast mesh of tri-mode processing elements. We measure the error of the fixed-point arithmetic against floating point and check that the hardware agrees bit for bit with a fixed-point reference. In simulation, the state logic agrees with the reference on all 18 recurrent layers. On the board, six builds pass all 30 runs of 64 tokens and two runs of 1,024 tokens. For this model and memory interface, the delivery of the weights limits the decoding performance, and the recurrent state does not. State paging is therefore practical for such a model on an edge FPGA.</p>
-<p><strong>Categories:</strong> cs.RO, cs.AR, cs.LG</p>
+            <title><![CDATA[NarrowSpec: Draft Hidden Width Need Not Match the Target in Speculative Decoding]]></title>
+            <link>https://arxiv.org/abs/2611.23835</link>
+            <guid isPermaLink="false">https://arxiv.org/abs/2611.23835</guid>
+            <pubDate>Wed, 18 Nov 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[Speculative decoding is widely used to speed up generation in large language models (LLMs), with a small draft model proposing tokens that one forward pass of the target model verifies. Draft models that read the target's hidden states, such as DFlash and EAGLE-3, typically inherit the target's hidden width. We show that the draft's whole residual stream can run at half or a quarter of that width while largely preserving acceptance. For DFlash, which borrows the target's vocabulary projection, t]]></description>
+            <content:encoded><![CDATA[<h3>原始摘要</h3><p>Speculative decoding is widely used to speed up generation in large language models (LLMs), with a small draft model proposing tokens that one forward pass of the target model verifies. Draft models that read the target's hidden states, such as DFlash and EAGLE-3, typically inherit the target's hidden width. We show that the draft's whole residual stream can run at half or a quarter of that width while largely preserving acceptance. For DFlash, which borrows the target's vocabulary projection, the trained output adapter folds into it, giving one narrower projection with logits unchanged up to floating-point rounding. We test two drafter families, DFlash and EAGLE-3, on two targets, Qwen3-8B (NVFP4) and GPT-OSS-20B (MXFP4), in SGLang on a B200 and a DGX Spark (GB10). At batch size 1 and temperature 0, narrowing the draft to half or a quarter width speeds up end-to-end decoding by 1.06-1.12x on B200 and 1.13-1.44x on GB10. The speedup holds at larger batch sizes. From batch 32 to the largest batch each GPU fits, narrowing reaches up to 1.21x on both GPUs, and no narrow draft is slower than full width.</p>
+<p><strong>Relevance:</strong> 9/10</p>
+<p><a href="https://arxiv.org/pdf/2611.23835">PDF</a> | <a href="https://arxiv.org/abs/2611.23835">arXiv</a></p>]]></content:encoded>
+            <author>Alagappan Valliappan</author>
+            <author>Ankit More</author>
+            <author>Dheevatsa Mudigere</author>
+            <author>Jatin Mitra</author>
+        </item>
+        <item>
+            <title><![CDATA[The Noise Floor of a Quantization Comparison: Engine, restart, batch and kernel drift, measured against 8-bit and 4-bit effects in two decision models]]></title>
+            <link>https://arxiv.org/abs/2611.15671</link>
+            <guid isPermaLink="false">https://arxiv.org/abs/2611.15671</guid>
+            <pubDate>Wed, 11 Nov 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[A quantized model is usually judged by comparing it with its BF16 original, but that comparison changes more than the weights. It often changes the serving engine, it always runs on a different server instance, it may change how requests are batched, and on some stacks the library selects a different kernel depending only on which packages import. We measure each of these sources on the same 2,400 public decisions for two of Cloudflare's decision models, Clef-flash (9B) and Clef (27B), on an NVI]]></description>
+            <content:encoded><![CDATA[<h3>原始摘要</h3><p>A quantized model is usually judged by comparing it with its BF16 original, but that comparison changes more than the weights. It often changes the serving engine, it always runs on a different server instance, it may change how requests are batched, and on some stacks the library selects a different kernel depending only on which packages import. We measure each of these sources on the same 2,400 public decisions for two of Cloudflare's decision models, Clef-flash (9B) and Clef (27B), on an NVIDIA GB10, and state every quantization effect as the excess over them. Sources that are not quantization move between 0 and 0.92% of decisions. llama.cpp restarts are bit-identical on every record for both models. vLLM restarts flip 0, 5 and 20 decisions at BF16, FP8 and NVFP4 on Clef-flash and 4, 0 and 22 on Clef; a third instance of Clef's quantized builds (exploratory) leaves FP8 at 0 and puts NVFP4 at 4 to 22, depending on which two instances are compared. An engine change at BF16 flips 6 to 16, a batch-size change 8 to 15, and the Gated DeltaNet kernel transformers selects unasked 10 to 14. Quantization inside one engine moves more: for Clef-flash and Clef, 0.88% and 1.04% at Q8_0, 2.12% and 1.62% at FP8, 5.79% and 3.50% at Q4_K_M, and 5.79% and 5.67% at NVFP4. On both models, every 4-bit interval excludes every non-quantization source. Two of our five pre-registered predictions failed, and the same two fail when the tests are rerun on the 27B: FP8 is not inside restart noise, and changing engine moves fewer decisions than 8-bit quantization does. Accuracy hides most of this. Over the full 31,275 public questions, Clef's Q4_K_M build moves accuracy by a net six questions (-0.02 points [-0.20, +0.16]) while 436 of its decisions get worse (exploratory), and NVFP4 costs Clef-flash 0.95 points and Clef 0.65. We release the code, quantization recipes, per-record outputs and the pre-registration.</p>
+<p><strong>Relevance:</strong> 9/10</p>
+<p><a href="https://arxiv.org/pdf/2611.15671">PDF</a> | <a href="https://arxiv.org/abs/2611.15671">arXiv</a></p>]]></content:encoded>
+            <author>Aleks Blagojevich</author>
+            <author>Trevor Sunderland</author>
+        </item>
+        <item>
+            <title><![CDATA[Optimal Linear Regression Without a Variance]]></title>
+            <link>https://arxiv.org/abs/2611.27983</link>
+            <guid isPermaLink="false">https://arxiv.org/abs/2611.27983</guid>
+            <pubDate>Fri, 20 Nov 2026 18:58:45 GMT</pubDate>
+            <description><![CDATA[We study high-probability linear regression in the infinite variance regime, wherecthe regression noise has only a finite conditional $α$-moment $ν$ for some unknown $α\in(1,2)$, and the covariates may only have finite moments up to a given order (e.g., 4th moment). We give a black-box reduction that converts finite-variance regression procedures into weak-moment procedures. The reduction is based on empirical residual pruning and is agnostic to the moment exponent, the noise scale, the covarian]]></description>
+            <content:encoded><![CDATA[<h3>原始摘要</h3><p>We study high-probability linear regression in the infinite variance regime, wherecthe regression noise has only a finite conditional $α$-moment $ν$ for some unknown $α\in(1,2)$, and the covariates may only have finite moments up to a given order (e.g., 4th moment). We give a black-box reduction that converts finite-variance regression procedures into weak-moment procedures. The reduction is based on empirical residual pruning and is agnostic to the moment exponent, the noise scale, the covariance, and the design moment. Under a finite fourth-moment condition on the covariates, any finite-variance subroutine attaining the sub-Gaussian rate yields the following when the number of samples $n$ is above a suitably defined threshold: Without knowing $α$ or $ν$, we have with probability at least $1-δ$ that $ \|\widehatθ-θ^*\|_Σ \lesssim_α ν^{1/α} \big(\frac{d+\log(1/δ)}{n}\big)^{\frac{α-1}α}, $ where $d$ is the dimension, $Σ$ is the covariate covariance matrix, and $\|v\|_Σ:=(v^\topΣv)^{1/2}$. We further prove a matching minimax lower bound that holds under the same conditions. The reduction is computationally efficient whenever the finite-variance subroutine is. We also obtain a distribution-free prediction guarantee under a bounded raw $α$-moment assumption on the response, and give an analogous $α$-agnostic reduction for mean estimation.</p>
+<p><strong>Categories:</strong> stat.ML, cs.AI, cs.IT, cs.LG</p>
 <p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2611.18422">PDF</a> | <a href="https://arxiv.org/abs/2611.18422">arXiv</a></p>]]></content:encoded>
-            <author>Cong Xu</author>
-            <author>Ravi Sankar</author>
-            <category>cs.RO</category>
-            <category>cs.AR</category>
+<p><a href="https://arxiv.org/pdf/2611.27983">PDF</a> | <a href="https://arxiv.org/abs/2611.27983">arXiv</a></p>]]></content:encoded>
+            <author>Artin Tajdini</author>
+            <author>Jasper C. H. Lee</author>
+            <author>Jonathan Scarlett</author>
+            <author>Kevin Jamieson</author>
+            <category>stat.ML</category>
+            <category>cs.AI</category>
+            <category>cs.IT</category>
             <category>cs.LG</category>
         </item>
         <item>
-            <title><![CDATA[WeatherDreamer: Learning a World Model from Multimodal Earth Observations]]></title>
-            <link>https://arxiv.org/abs/2611.18393</link>
-            <guid isPermaLink="false">https://arxiv.org/abs/2611.18393</guid>
-            <pubDate>Fri, 13 Nov 2026 16:37:49 GMT</pubDate>
-            <description><![CDATA[Machine learning weather models now rival operational global forecasts but still start from analyses produced by separate, expensive data assimilation (DA) systems, which for global models are typically updated every six hours. Observation-to-observation models avoid this dependence, but most omit the recursive filtering cycle that lets DA systems carry a background state through sparse, irregular observations. We introduce WeatherDreamer, a world model that learns this cycle end-to-end from 18 ]]></description>
-            <content:encoded><![CDATA[<h3>原始摘要</h3><p>Machine learning weather models now rival operational global forecasts but still start from analyses produced by separate, expensive data assimilation (DA) systems, which for global models are typically updated every six hours. Observation-to-observation models avoid this dependence, but most omit the recursive filtering cycle that lets DA systems carry a background state through sparse, irregular observations. We introduce WeatherDreamer, a world model that learns this cycle end-to-end from 18 global observing systems, without reanalysis. It infers a latent state from observations, carries it forward hour by hour with learned dynamics, corrects it each hour with new observations, and can predict what any of its observing systems would measure at any location. At held-out stations, its ensembles beat NOAA's Global Ensemble Forecast System (GEFS) for temperature, dew point and wind out to 12 h and are better calibrated than GEFS and the ECMWF ensemble. Precipitation, cloud-top height and solar irradiance, never inputs at inference, are inferred with skill matching or exceeding operational products at short leads. Against the first guess of NOAA's Gridpoint Statistical Interpolation (GSI) DA system, WeatherDreamer's short-range departures are within 10% of GSI's at surface stations and within 25% for moisture-sensitive microwave channels, but up to five times larger for temperature-sounding channels. Never given observation errors, its learned update assumes errors close to known instrument and retrieval errors of microwave sounders and scatterometer winds. WeatherDreamer also separates viewing geometry from atmospheric state, recovering 83-96% of observed limb darkening and producing seamless nadir-view imagery. Producing an hourly global analysis in about 1.5 minutes on one GPU, WeatherDreamer shows that assimilation and forecasting can be learned together directly from observations.</p>
-<p><strong>Categories:</strong> cs.LG, physics.ao-ph</p>
+            <title><![CDATA[MemOnce: A Scalable Memory Architecture for Large Language Models]]></title>
+            <link>https://arxiv.org/abs/2611.27973</link>
+            <guid isPermaLink="false">https://arxiv.org/abs/2611.27973</guid>
+            <pubDate>Fri, 20 Nov 2026 18:51:29 GMT</pubDate>
+            <description><![CDATA[Deploying large language models (LLMs) in long-horizon and continual interactions requires maintaining reusable memory states for future inference, posing challenges for existing architectures. Standard Transformers accumulate layer-wise, token-level KV caches, incurring linear GPU memory growth and quadratic computational complexity as the context expands. In contrast, linear-time architectures compress history into fixed-size states, but struggle to retain fine-grained details. We introduce Me]]></description>
+            <content:encoded><![CDATA[<h3>原始摘要</h3><p>Deploying large language models (LLMs) in long-horizon and continual interactions requires maintaining reusable memory states for future inference, posing challenges for existing architectures. Standard Transformers accumulate layer-wise, token-level KV caches, incurring linear GPU memory growth and quadratic computational complexity as the context expands. In contrast, linear-time architectures compress history into fixed-size states, but struggle to retain fine-grained details. We introduce MemOnce, a foundation architecture that learns scalable memory states for language models. MemOnce is based on two core designs: (a) Memory encoder-decoder: it caches only a small subset of final-layer hidden states as compact memory representations and dynamically decodes them back into KV caches for attention layers; (b) Memory sparse attention: for each continual input, MemOnce adaptively retrieves relevant memory representations, with the sparse indices computed only once across layers. Coupling these two designs enables efficient on-the-fly memory loading and KV cache decoding, drastically reducing the GPU memory footprint and achieving linear-time complexity. We conduct extensive experiments to show that MemOnce outperforms Transformers and other architectures across varying model sizes, context lengths, and training paradigms (pretraining and post-training adaptation). In particular, adapting Qwen3.5-4B with MemOnce reduces memory state cache by 1313$\times$ and prefill latency by 6.9$\times$ at 1M context, and improves throughput by 3.5$\times$ and overall memory performance by +5.77%. Finally, MemOnce generalizes zero-shot to downstream representation tasks, achieving competitive results against specialized models.</p>
+<p><strong>Categories:</strong> cs.CL</p>
 <p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2611.18393">PDF</a> | <a href="https://arxiv.org/abs/2611.18393">arXiv</a></p>]]></content:encoded>
-            <author>Kate Duffy</author>
-            <author>Elise Penn</author>
-            <author>Tristan Ballard</author>
-            <author>August Posch</author>
-            <author>Thomas J. Vandal</author>
-            <category>cs.LG</category>
-            <category>physics.ao-ph</category>
+<p><a href="https://arxiv.org/pdf/2611.27973">PDF</a> | <a href="https://arxiv.org/abs/2611.27973">arXiv</a></p>]]></content:encoded>
+            <author>Chang Nie</author>
+            <author>Chaoyou Fu</author>
+            <author>Songlin Liu</author>
+            <author>Yiqing Hu</author>
+            <author>Caifeng Shan</author>
+            <category>cs.CL</category>
         </item>
         <item>
-            <title><![CDATA[nnAEU: a Simple and Efficient CNN-Autoencoder for Hyperspectral Unmixing]]></title>
-            <link>https://arxiv.org/abs/2611.17956</link>
-            <guid isPermaLink="false">https://arxiv.org/abs/2611.17956</guid>
-            <pubDate>Fri, 13 Nov 2026 09:45:44 GMT</pubDate>
-            <description><![CDATA[Deep learning-based hyperspectral unmixing (HSU) has followed a trajectory of increasing architectural complexity, from simple autoencoders to transformers and, most recently, Mamba-based models, each claiming to advance the state of the art. Contrary to this trend, we propose a lightweight CNN-based autoencoder, coined "Not New Autoencoder Unmixing" (nnAEU). It is derived from the backbone of UNMamba (2025) through a pruning study that removes the Mamba component entirely. nnAEU uses less than ]]></description>
-            <content:encoded><![CDATA[<h3>原始摘要</h3><p>Deep learning-based hyperspectral unmixing (HSU) has followed a trajectory of increasing architectural complexity, from simple autoencoders to transformers and, most recently, Mamba-based models, each claiming to advance the state of the art. Contrary to this trend, we propose a lightweight CNN-based autoencoder, coined &quot;Not New Autoencoder Unmixing&quot; (nnAEU). It is derived from the backbone of UNMamba (2025) through a pruning study that removes the Mamba component entirely. nnAEU uses less than 10 times fewer parameters than UNMamba, and far fewer than other transformer- and GAN-based methods, while outperforming them in accuracy. We provide a complete, minimal, reproducible code, available at https://gitlab.telecom-paris.fr/ring/nnAEU.git.</p>
+            <title><![CDATA[Ref-YOLO-World: Decoupling Text-Side Computation for Efficient Referring Expression Comprehension on Edge Devices]]></title>
+            <link>https://arxiv.org/abs/2611.27756</link>
+            <guid isPermaLink="false">https://arxiv.org/abs/2611.27756</guid>
+            <pubDate>Fri, 20 Nov 2026 15:44:38 GMT</pubDate>
+            <description><![CDATA[Many high-accuracy referring expression comprehension (REC) methods produce image-dependent multimodal representations. These representations must be recomputed for every video frame, even when the referring expression remains unchanged. Fast open-vocabulary detectors such as YOLO-World instead pre-encode text once and reuse it throughout the stream. However, encoding each referring expression as a single embedding prevents explicit token-level correspondence. We propose Ref-YOLO-World, which se]]></description>
+            <content:encoded><![CDATA[<h3>原始摘要</h3><p>Many high-accuracy referring expression comprehension (REC) methods produce image-dependent multimodal representations. These representations must be recomputed for every video frame, even when the referring expression remains unchanged. Fast open-vocabulary detectors such as YOLO-World instead pre-encode text once and reuse it throughout the stream. However, encoding each referring expression as a single embedding prevents explicit token-level correspondence. We propose Ref-YOLO-World, which separates text-side computation that depends only on the referring expression from image processing and reuses its outputs across frames. Two lightweight modules inject cached per-token text features into YOLO-World's detection path. Ref-YOLO-World achieves 81.29% Acc@0.5 on RefCOCOg val, the highest among REC models with a decoupled text branch, and consistently outperforms a fine-tuned YOLO-World. Precomputation reduces per-image inference time by 18.5%, yielding 47.0 FPS. A Core ML version runs at 15.73 FPS on an iPhone 15 Pro, demonstrating efficient on-device REC. Code is available at https://github.com/sakusaku3939/Ref-YOLO-World.</p>
 <p><strong>Categories:</strong> cs.CV</p>
 <p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2611.17956">PDF</a> | <a href="https://arxiv.org/abs/2611.17956">arXiv</a></p>]]></content:encoded>
-            <author>Edgard Dabier</author>
-            <author>Christophe Kervazo</author>
-            <author>Pietro Gori</author>
-            <author>Florence Tupin</author>
+<p><a href="https://arxiv.org/pdf/2611.27756">PDF</a> | <a href="https://arxiv.org/abs/2611.27756">arXiv</a></p>]]></content:encoded>
+            <author>Yuki Aoki</author>
+            <author>Hiroo Bekku</author>
+            <author>Tadashi Okoshi</author>
+            <author>Jin Nakazawa</author>
             <category>cs.CV</category>
         </item>
         <item>
-            <title><![CDATA[Loopback Transformer: Towards a Unified View of Residual Looped Transformers]]></title>
-            <link>https://arxiv.org/abs/2611.07226</link>
-            <guid isPermaLink="false">https://arxiv.org/abs/2611.07226</guid>
-            <pubDate>Wed, 04 Nov 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[Looped Transformers reduce parameter count by repeatedly applying shared blocks, but parameter sharing alone does not determine how the results of repeated computation are reused. We take the depth-memory view of residual connections and analyze which representation is stored after each block application and how later reads weight it. A full block output contains both its input and its new update, so weighting that output also reweights the history already carried by the input. Reading individua]]></description>
-            <content:encoded><![CDATA[<h3>原始摘要</h3><p>Looped Transformers reduce parameter count by repeatedly applying shared blocks, but parameter sharing alone does not determine how the results of repeated computation are reused. We take the depth-memory view of residual connections and analyze which representation is stored after each block application and how later reads weight it. A full block output contains both its input and its new update, so weighting that output also reweights the history already carried by the input. Reading individual updates instead, with the shared stack's input kept on a separate path, gives separate controls over input strength, total update weight, and allocation across updates. The Loopback Transformer implements these controls: geometric decay sets the total update weight and supplies a recency prior, and attention learns how to allocate that weight. On ClimbMix, Loopback reaches lower validation loss than standard Transformer baselines with 40-75% of their Transformer parameters (excluding token embeddings and the output head) at reference scales from 191M to 3B, with training tokens and executed depth matched. It also has higher mean accuracy over thirteen downstream tasks at 1.4B and 3B. At 191M, 374M, and 778M, it has the lowest validation loss and the highest thirteen-task mean among the standard Transformer and seven looped residual designs.</p>
+            <title><![CDATA[Recoverable Symbols, Unstable Execution: Auditing Internal Pathways and Decision Identity in Visual State Tracking]]></title>
+            <link>https://arxiv.org/abs/2611.27715</link>
+            <guid isPermaLink="false">https://arxiv.org/abs/2611.27715</guid>
+            <pubDate>Fri, 20 Nov 2026 15:21:24 GMT</pubDate>
+            <description><![CDATA[Visual features can retain every symbol a task needs while a model built on them still changes its answer when irrelevant parts of the image change. We study this gap in visual state tracking, where a recurrent executor reads a sequence of symbol tiles through a frozen ViT encoder and decides whether a displayed candidate equals the final state. Our diagnostic pairs each input with a donor view that preserves every queried tile, checks with a symbol-supervised decoder that the full symbol chain ]]></description>
+            <content:encoded><![CDATA[<h3>原始摘要</h3><p>Visual features can retain every symbol a task needs while a model built on them still changes its answer when irrelevant parts of the image change. We study this gap in visual state tracking, where a recurrent executor reads a sequence of symbol tiles through a frozen ViT encoder and decides whether a displayed candidate equals the final state. Our diagnostic pairs each input with a donor view that preserves every queried tile, checks with a symbol-supervised decoder that the full symbol chain is recoverable from both feature sequences, and swaps individual internal channels of the same fitted executor in both directions. On 3,526 pairs in which every symbol is recovered in both views, changing the surrounding context lowers the balanced accuracy of a rotary recurrent head by 17.13 points. The loss runs mainly through the input-dependent rotation phase: restoring the original phase repairs 351 of 391 new errors and brings accuracy back to 88.54%, yet 142 individual predictions still differ from the original ones. A locked test on 192 unseen program families reproduces the pathway (28 of 29 new errors repaired; 382 of 384 predictions unchanged), and the effect partly carries over to single-image canvases. Consistency objectives derived from this analysis reduce the internal discrepancy they target but do not outperform ordinary data augmentation.</p>
+<p><strong>Categories:</strong> cs.AI</p>
 <p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2611.07226">PDF</a> | <a href="https://arxiv.org/abs/2611.07226">arXiv</a></p>]]></content:encoded>
-            <author>Xuan Ouyang</author>
-            <author>Zefan Cai</author>
-            <author>Chenlong Zhang</author>
-            <author>Cheng Luo</author>
-            <author>Ke Wan</author>
-            <author>Junjie Hu</author>
+<p><a href="https://arxiv.org/pdf/2611.27715">PDF</a> | <a href="https://arxiv.org/abs/2611.27715">arXiv</a></p>]]></content:encoded>
+            <author>Ruiqi Liu</author>
+            <author>Jinming Li</author>
+            <author>Mo Wang</author>
+            <author>Yang Lu</author>
+            <author>Yanlan Kang</author>
+            <category>cs.AI</category>
         </item>
         <item>
-            <title><![CDATA[eDIAR: Training-Free Open-Speaker Streaming Diarization for Long Meetings and Large Archives via e-means]]></title>
-            <link>https://arxiv.org/abs/2611.18529</link>
-            <guid isPermaLink="false">https://arxiv.org/abs/2611.18529</guid>
-            <pubDate>Fri, 13 Nov 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[Meetings last up to an hour, and nobody knows in advance how many people will speak. Neural diarizers with a fixed number of output slots, such as Streaming Sortformer and Nemotron-3, are accurate and run online, but they cannot name more speakers than they have slots. We remove this limit without retraining. The slot head keeps deciding who is active and when speech overlaps, and speaker embeddings are clustered inside a single slot, with the official e-means algorithm, only after every slot ha]]></description>
-            <content:encoded><![CDATA[<h3>原始摘要</h3><p>Meetings last up to an hour, and nobody knows in advance how many people will speak. Neural diarizers with a fixed number of output slots, such as Streaming Sortformer and Nemotron-3, are accurate and run online, but they cannot name more speakers than they have slots. We remove this limit without retraining. The slot head keeps deciding who is active and when speech overlaps, and speaker embeddings are clustered inside a single slot, with the official e-means algorithm, only after every slot has been used. In the streaming system, re-clustering is confined to a bounded window, labels are revised for a few seconds, and identities are anchored to the slots of the head. The resulting system has no limit on the number of speakers and stays accurate when speakers outnumber the slots, where fixed-slot models break down. On meetings that grow to an hour it stays far more accurate than Streaming Sortformer, which accumulates errors, and its cost per update does not grow with the meeting. The same recipe turns the four-slot Streaming Sortformer into an open-speaker system. Across recordings, e-means makes it affordable to link the speakers of a large archive frame by frame, a task that arises when conversational corpora are prepared, and it reaches the clustering quality of Lloyd's k-means several times faster. The method needs little tuning, and e-means runs with its default recipe from a few hundred to more than a million embeddings.</p>
+            <title><![CDATA[Cecilia: Towards Layout-Inclusive Optical Music Recognition]]></title>
+            <link>https://arxiv.org/abs/2611.27465</link>
+            <guid isPermaLink="false">https://arxiv.org/abs/2611.27465</guid>
+            <pubDate>Fri, 20 Nov 2026 11:16:05 GMT</pubDate>
+            <description><![CDATA[Reconstructing an editable music score requires musical events, sung text and the instructions that organise them on the page. Existing recognition targets often omit part of this information, while direct MusicXML prediction repeats substantial structural markup. We introduce Cecilia, a compact representation of canonicalised MusicXML that retains musical content, lyric attachments and layout instructions. Cecilia-OMR predicts this representation through metadata and measure-bounded music segme]]></description>
+            <content:encoded><![CDATA[<h3>原始摘要</h3><p>Reconstructing an editable music score requires musical events, sung text and the instructions that organise them on the page. Existing recognition targets often omit part of this information, while direct MusicXML prediction repeats substantial structural markup. We introduce Cecilia, a compact representation of canonicalised MusicXML that retains musical content, lyric attachments and layout instructions. Cecilia-OMR predicts this representation through metadata and measure-bounded music segments from shared visual memory. A learned count head determines the number of output segments. Across paired complete scores under a common tokeniser, the ratio of mean MusicXML to Cecilia sequence lengths is 27.73. Cecilia-OMR outperforms Legato 2 on Camera String Quartets and both Lieder conditions, with a four-condition OpenScore macro normalised edit distance of 0.2232 against 0.2998. Separate evaluations of lyrics, notation trees and rendered layout reveal complementary aspects of reconstruction and quantify the contribution of layout instructions. Training-stage, reward and candidate-selection studies further examine how recognition changes across model adaptation and decoding.</p>
+<p><strong>Categories:</strong> cs.CV, cs.AI</p>
 <p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2611.18529">PDF</a> | <a href="https://arxiv.org/abs/2611.18529">arXiv</a></p>]]></content:encoded>
-            <author>Kyudan Jung</author>
-            <author>Jihwan Kim</author>
-            <author>Minwoo Lee</author>
-            <author>Eunji Shin</author>
-            <author>Jaegul Choo</author>
+<p><a href="https://arxiv.org/pdf/2611.27465">PDF</a> | <a href="https://arxiv.org/abs/2611.27465">arXiv</a></p>]]></content:encoded>
+            <author>Congren Dai</author>
+            <author>Zhancheng Guo</author>
+            <author>Xiaobing Li</author>
+            <author>Maosong Sun</author>
+            <category>cs.CV</category>
+            <category>cs.AI</category>
         </item>
         <item>
-            <title><![CDATA[eDMD: Endpoint Distribution Matching for Few-Step Diffusion Distillation]]></title>
-            <link>https://arxiv.org/abs/2611.17194</link>
-            <guid isPermaLink="false">https://arxiv.org/abs/2611.17194</guid>
-            <pubDate>Thu, 12 Nov 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[Distribution matching distillation (DMD) has emerged as a leading paradigm for distilling diffusion models into few-step students, where an auxiliary fake score model tracks the student's distribution and the discrepancy between the teacher and fake predictions drives the student toward the teacher. In multi-step distillation, although only the student's final output is delivered, existing methods train the fake model on intermediate states or across all denoising steps. Consequently, the studen]]></description>
-            <content:encoded><![CDATA[<h3>原始摘要</h3><p>Distribution matching distillation (DMD) has emerged as a leading paradigm for distilling diffusion models into few-step students, where an auxiliary fake score model tracks the student's distribution and the discrepancy between the teacher and fake predictions drives the student toward the teacher. In multi-step distillation, although only the student's final output is delivered, existing methods train the fake model on intermediate states or across all denoising steps. Consequently, the student's update signal becomes entangled with intermediate distributions, which can distort the matching direction and remain nonzero even after the student's final outputs already match the teacher distribution. To resolve this mismatch, we propose Endpoint Distribution Matching Distillation (eDMD), which trains a single shared fake model exclusively on the student's final outputs and uses it to correct every denoising step. Our theoretical analysis proves that this endpoint reference guarantees that the distribution matching term vanishes if and only if the student's final output distribution matches the teacher's, regardless of intermediate distributions. Beyond the fake reference, we further strengthen teacher supervision through a precise teacher (PT) that replaces single-step guided predictions with short multi-step trajectories on the final noise interval, paired with a calibrated query density for intermediate steps. Experiments on SD3-Medium, FLUX.2-klein (4B and 9B), and Qwen-Image-2.1 demonstrate that eDMD consistently outperforms existing distribution matching methods for 4-step generation.</p>
+            <title><![CDATA[Structurally Different, Functionally Persistent: Capability Regions Under Model Optimization]]></title>
+            <link>https://arxiv.org/abs/2611.27445</link>
+            <guid isPermaLink="false">https://arxiv.org/abs/2611.27445</guid>
+            <pubDate>Fri, 20 Nov 2026 10:41:20 GMT</pubDate>
+            <description><![CDATA[Large language model (LLM) capabilities have been associated with localized parameter regions, enabling targeted model editing and intervention. However, it remains unclear whether a region identified before model optimization remains an effective intervention target afterward. We evaluate the functional persistence and parameter overlap of coding capability regions across three instruction-tuned models under quantization, pruning, and LoRA-based adaptation. Although re-extracted regions exhibit]]></description>
+            <content:encoded><![CDATA[<h3>原始摘要</h3><p>Large language model (LLM) capabilities have been associated with localized parameter regions, enabling targeted model editing and intervention. However, it remains unclear whether a region identified before model optimization remains an effective intervention target afterward. We evaluate the functional persistence and parameter overlap of coding capability regions across three instruction-tuned models under quantization, pruning, and LoRA-based adaptation. Although re-extracted regions exhibit substantial parameter reorganization, ablating the original region after optimization eliminates or nearly eliminates coding performance in almost all conditions, while magnitude-matched controls preserve performance. Partition analysis further shows that the shared subset of the original and re-extracted regions accounts for most of the observed ablation effect in the majority of conditions. These results demonstrate that parameter overlap and functional persistence are distinct: capability regions can remain causally effective intervention targets even when their parameter realization changes substantially.</p>
+<p><strong>Categories:</strong> cs.CL</p>
 <p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2611.17194">PDF</a> | <a href="https://arxiv.org/abs/2611.17194">arXiv</a></p>]]></content:encoded>
-            <author>Tong Zhao</author>
-            <author>Xianfang Zeng</author>
-            <author>Yucheng Han</author>
-            <author>Ruoyu Wang</author>
-            <author>Mingkun Lei</author>
-            <author>Gang Yu</author>
-            <author>Chi Zhang</author>
+<p><a href="https://arxiv.org/pdf/2611.27445">PDF</a> | <a href="https://arxiv.org/abs/2611.27445">arXiv</a></p>]]></content:encoded>
+            <author>Jiwoo Kum</author>
+            <author>Chanwoo Kim</author>
+            <author>Doyun Kim</author>
+            <author>Seonghyeon Cho</author>
+            <author>Sihyeon Lee</author>
+            <author>Chanjun Park</author>
+            <category>cs.CL</category>
         </item>
         <item>
-            <title><![CDATA[Bits or permutations? Spending a fixed inference budget on weight precision or on option-order averaging in small local language models]]></title>
-            <link>https://arxiv.org/abs/2611.14413</link>
-            <guid isPermaLink="false">https://arxiv.org/abs/2611.14413</guid>
-            <pubDate>Tue, 10 Nov 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[Local language models can save memory by storing weights in fewer bits, and they can reduce sensitivity to the order of answer options by averaging a few reorderings. We ask whether the first makes the second worse, and which is the cheaper way to spend a fixed budget. On Qwen3-0.6B and Qwen3-1.7B with simulated round-to-nearest weight quantization (8, 6, 4 and 3 bits, fp16 reference), read from the logits of the letters A to D on ARC-Easy, ARC-Challenge, MMLU and HellaSwag (300 items each), 6 b]]></description>
-            <content:encoded><![CDATA[<h3>原始摘要</h3><p>Local language models can save memory by storing weights in fewer bits, and they can reduce sensitivity to the order of answer options by averaging a few reorderings. We ask whether the first makes the second worse, and which is the cheaper way to spend a fixed budget. On Qwen3-0.6B and Qwen3-1.7B with simulated round-to-nearest weight quantization (8, 6, 4 and 3 bits, fp16 reference), read from the logits of the letters A to D on ARC-Easy, ARC-Challenge, MMLU and HellaSwag (300 items each), 6 bits lose no accuracy against fp16 (they score +1.8 (+1.0 to +2.5) and +0.9 (+0.3 to +1.5) points higher, which we do not explain), and 8 bits change it by -0.7 (-1.1 to -0.3) and -0.4 (-0.7 to -0.2) points. At 4 bits the answer-slot skew rises from 0.15 to 0.53 (0.6B) and from 0.07 to 0.12 (1.7B); Gaussian noise at the same weight SNR gives 0.15 and 0.37 (two draws) and 0.19 (one draw), so the control is inconclusive on whether rounding adds slot skew beyond equal-power noise. Flip rates rise but stay below an accuracy-matched baseline of independent uniform errors. Averaging four cyclic orders recovers +12.6 points at 4 bits for 0.6B (+5.3 at fp16). We price bits and passes in one machine-independent unit, weight bytes read times passes. In cost-matched pairs, extra orders beat extra bits only when the weights have 6 or more bits, and the decision table reduces to: use 6-bit weights and spend the rest of the budget on up to four orders, one pass each. Everything is simulated on two small models with the simplest quantizer; a title-level search found no earlier study of quantization together with option order.</p>
+            <title><![CDATA[cmHC: Balancing Stream Mixing in Hyper-Connections via Geometric Contraction]]></title>
+            <link>https://arxiv.org/abs/2611.27193</link>
+            <guid isPermaLink="false">https://arxiv.org/abs/2611.27193</guid>
+            <pubDate>Fri, 20 Nov 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[Manifold-constrained Hyper-Connections (mHC) extends residual connections to multiple streams and stabilizes residual propagation by constraining stream-mixing residual matrices to the Birkhoff polytope, the set of doubly stochastic matrices. In this work, we investigate how to effectively mix residual streams within the Birkhoff polytope. We reveal a mixing trade-off: when under-mixed residual matrices stay close to the vertices of the Birkhoff polytope, hyper-connections will degenerate into a]]></description>
+            <content:encoded><![CDATA[<h3>原始摘要</h3><p>Manifold-constrained Hyper-Connections (mHC) extends residual connections to multiple streams and stabilizes residual propagation by constraining stream-mixing residual matrices to the Birkhoff polytope, the set of doubly stochastic matrices. In this work, we investigate how to effectively mix residual streams within the Birkhoff polytope. We reveal a mixing trade-off: when under-mixed residual matrices stay close to the vertices of the Birkhoff polytope, hyper-connections will degenerate into a set of nearly independent streams; when over-mixed residual matrices are concentrated around the uniform barycenter of the polytope, streams will become less distinguishable from each other. We theoretically validate our findings by bounding the cumulative residual mixing, stream difference and gradient difference of mixing coefficients across layers. Motivated by these findings, we propose Contraction for Manifold-Constrained Hyper-Connections (cmHC), an exact doubly stochastic method which geometrically contracts the Birkhoff polytope toward its interior. This contraction mitigates under-mixing by forcing the residual matrices to explore deeper into the polytope, with a provable stream mixing bound and no new parameterization. Moreover, we apply a moderate contraction at the shallow layers to prevent over-mixing, enabling stable gradient propagation on extremely large-scale model pretraining. Extensive experiments across dense and mixture-of-experts models at various parameter scales demonstrate the effectiveness and scalability of cmHC. We also develop fused operators for cmHC on Ascend NPUs, reducing hyper-connection execution latency by up to 44.8%.</p>
 <p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2611.14413">PDF</a> | <a href="https://arxiv.org/abs/2611.14413">arXiv</a></p>]]></content:encoded>
-            <author>Mohammed Nayeem Khan</author>
-            <author>Logesh L</author>
-            <author>Aliyas Ahmad Misri</author>
+<p><a href="https://arxiv.org/pdf/2611.27193">PDF</a> | <a href="https://arxiv.org/abs/2611.27193">arXiv</a></p>]]></content:encoded>
+            <author>Haowei He</author>
+            <author>Ziwen Zhao</author>
+            <author>Chenshuo Pan</author>
+            <author>Gang Lin</author>
+            <author>Zhihao Yang</author>
+            <author>Chao Wang</author>
+            <author>Xinzhang Liu</author>
+            <author>Kaidong Yu</author>
+            <author>Han Gao</author>
+            <author>Dongfang Li</author>
+            <author>Menglin Yang</author>
+            <author>Shuangyong Song</author>
+            <author>Yongxiang Li</author>
         </item>
         <item>
-            <title><![CDATA[MACaQ: Fast, Model Agnostic Calibrated Quantization for Low-Precision Weights and Activations]]></title>
-            <link>https://arxiv.org/abs/2611.10649</link>
-            <guid isPermaLink="false">https://arxiv.org/abs/2611.10649</guid>
-            <pubDate>Sat, 07 Nov 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[Weight-activation quantization can reduce the memory and compute cost of neural-network inference, but recent methods often require expensive optimization and architecture-specific propagation of basis transforms across layers. We introduce MACaQ, an MXFP4 W4A4 post-training quantization method that treats every linear layer independently. MACaQ applies a per-channel scale and a block-Hadamard transform online to each layer's activations, while absorbing the corresponding inverse transforms into]]></description>
-            <content:encoded><![CDATA[<h3>原始摘要</h3><p>Weight-activation quantization can reduce the memory and compute cost of neural-network inference, but recent methods often require expensive optimization and architecture-specific propagation of basis transforms across layers. We introduce MACaQ, an MXFP4 W4A4 post-training quantization method that treats every linear layer independently. MACaQ applies a per-channel scale and a block-Hadamard transform online to each layer's activations, while absorbing the corresponding inverse transforms into its weights. Retaining these transforms online avoids cross-layer dependencies and enables a simple streaming implementation of the quantization process, in which only one layer must reside in memory at a time. To improve over round-to-nearest quantization, we introduce Flip-Refinement, a Hessian-aware coordinate-descent procedure that greedily moves individual FP4 codes to adjacent representable values. Despite executing the activation transforms at inference time, MACaQ adds only 2.3% end-to-end overhead over pure MXFP4 on Qwen3-32B in vLLM. MACaQ reaches lower perplexity than DuQuant++ and MR-GPTQ, and already matches their best perplexity on Llama-3-8B in 11 times less quantization time. We further apply MACaQ without architecture-specific modifications to an image diffusion model, illustrating the generality of its layer-local design and show quantization of a 122B parameter model in 64 minutes, using only 32.5GB GPU RAM.</p>
+            <title><![CDATA[On-Policy Morphing into Hybrid Attention Models]]></title>
+            <link>https://arxiv.org/abs/2611.24809</link>
+            <guid isPermaLink="false">https://arxiv.org/abs/2611.24809</guid>
+            <pubDate>Wed, 18 Nov 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[Hybrid attention models combine full and linear attention to achieve a better quality--efficiency trade-off. Converting pretrained Transformers into such models requires identifying which layers should retain full attention under a prescribed budget. We identify two off-policy mismatches in FlashMorph's layer selection: (i) continuous branch interpolation and teacher-forced hidden states differ from discrete hybrid computation; and (ii) frozen model weights fail to account for parameter adaptati]]></description>
+            <content:encoded><![CDATA[<h3>原始摘要</h3><p>Hybrid attention models combine full and linear attention to achieve a better quality--efficiency trade-off. Converting pretrained Transformers into such models requires identifying which layers should retain full attention under a prescribed budget. We identify two off-policy mismatches in FlashMorph's layer selection: (i) continuous branch interpolation and teacher-forced hidden states differ from discrete hybrid computation; and (ii) frozen model weights fail to account for parameter adaptation during subsequent recovery. We introduce FlashMorph2, an on-policy layer-selection method that (I) evaluates sampled discrete hybrid architectures end to end using their own hidden states, and (II) jointly optimizes layer-selection scores and model weights under the recovery objective to reflect post-adaptation performance. Experiments across Qwen3 model scales and linear-attention variants show that FlashMorph2 consistently outperforms existing layer-selection methods, improving average scores over FlashMorph by +2.42 points on RULER, +1.08 on LongBench, and +0.76 on recall-intensive tasks, while completing layer selection in only 0.72--3.57 GPU hours across 0.6B--8B models, demonstrating high efficiency and scalability.</p>
 <p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2611.10649">PDF</a> | <a href="https://arxiv.org/abs/2611.10649">arXiv</a></p>]]></content:encoded>
-            <author>Lorenz K. Muller</author>
-            <author>Philippe Bich</author>
-            <author>Chiara Boretti</author>
-            <author>Hyun-Min Chang</author>
-            <author>Jiawei Zhuang</author>
-            <author>Lukas Cavigelli</author>
+<p><a href="https://arxiv.org/pdf/2611.24809">PDF</a> | <a href="https://arxiv.org/abs/2611.24809">arXiv</a></p>]]></content:encoded>
+            <author>Disen Lan</author>
+            <author>Xuanda Wang</author>
+            <author>Jianbin Zheng</author>
+            <author>Huafeng Kuang</author>
+            <author>Wei Tang</author>
+            <author>Yu Cheng</author>
         </item>
         <item>
-            <title><![CDATA[DepthGraft: Structural Regularization through Hierarchical Cross-Layer KV Reconstruction]]></title>
-            <link>https://arxiv.org/abs/2611.03142</link>
-            <guid isPermaLink="false">https://arxiv.org/abs/2611.03142</guid>
-            <pubDate>Mon, 02 Nov 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[Scaling depth is a key route to stronger large language models, but Pre-LN architectures often suffer from depth-wise information dilution, limiting the effective use of deep layers. While cross-layer connectivity has proven effective at mitigating this problem, existing designs usually introduce additional computation or memory access. We revisit cross-layer KV sharing as an efficient form of such connectivity. Beyond cache compression, each KV reuse edge creates a direct gradient path from dee]]></description>
-            <content:encoded><![CDATA[<h3>原始摘要</h3><p>Scaling depth is a key route to stronger large language models, but Pre-LN architectures often suffer from depth-wise information dilution, limiting the effective use of deep layers. While cross-layer connectivity has proven effective at mitigating this problem, existing designs usually introduce additional computation or memory access. We revisit cross-layer KV sharing as an efficient form of such connectivity. Beyond cache compression, each KV reuse edge creates a direct gradient path from deep layers to source KV projections, turning KV sharing into an implicit structural regularizer for KV representation geometry. We provide a systematic analysis of this mechanism, showing that proper sharing topologies sharpen key retrieval directions while enriching the value content subspace, whereas existing adjacent or global-anchor designs do not fully exploit this effect. Motivated by this, we propose DepthGraft, a hierarchical KV-sharing architecture that reconstructs deep-layer KV from stride-aligned shallow-middle source pairs. DepthGraft distributes non-local gradient flow across source layers, while preserving prefill early completion and reducing KV cache by roughly one third. Experiments on dense and MoE models from 0.5B to 16B parameters show consistent downstream improvements under both GQA and MLA. Notably, on the 16B MoE model, DepthGraft achieves a 7.0% absolute improvement on MMLU-Pro, along with gains of 6.6% on CMMLU and 6.4% on C3. These results validate the potential of DepthGraft as a scalable design for large-scale pretraining. The project page is available at https://github.com/jianke0604/DepthGraft.</p>
+            <title><![CDATA[Chorus: Shared N-gram Embeddings with Layer-wise Adaptation]]></title>
+            <link>https://arxiv.org/abs/2611.23386</link>
+            <guid isPermaLink="false">https://arxiv.org/abs/2611.23386</guid>
+            <pubDate>Tue, 17 Nov 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[Language models can gain capacity at little computational cost from n-gram embedding tables: large tables of learned vectors for short sequences of consecutive tokens, which are looked up and added to the model's input or to its intermediate layers. Recent designs commonly use a separate n-gram embedding table for each layer, which makes the tables costly in memory and prevents layers from sharing what they learn. Sharing a single table, however, gives every layer the same embedding and leaves n]]></description>
+            <content:encoded><![CDATA[<h3>原始摘要</h3><p>Language models can gain capacity at little computational cost from n-gram embedding tables: large tables of learned vectors for short sequences of consecutive tokens, which are looked up and added to the model's input or to its intermediate layers. Recent designs commonly use a separate n-gram embedding table for each layer, which makes the tables costly in memory and prevents layers from sharing what they learn. Sharing a single table, however, gives every layer the same embedding and leaves no room for layer-wise preferences, and it performs poorly in practice. We propose Chorus, in which one set of n-gram embedding tables serves the whole network and every layer reads it in its own way. Each layer maps the refined embedding through its own projection layer, after rescaling its components by factors computed from its current hidden state. Chorus matches the quality of existing n-gram methods with 87% smaller tables: with 1.2B table parameters it predicts text better than FactorEngram and DeepSeek's Engram do with 9.6B. It outperforms Engram, TN-gram and FactorEngram in every setting where we compared them, across table sizes from 20M to 9.6B parameters. We also show that the recently proposed memory-efficient optimizer Ember works well with Chorus, saving 99.2% of table-optimizer memory compared with AdamW without degrading training performance. These results enable further scaling of n-gram embedding tables along the table-size axis by reducing memory use and allowing shared knowledge to be reused across layers.</p>
 <p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2611.03142">PDF</a> | <a href="https://arxiv.org/abs/2611.03142">arXiv</a></p>]]></content:encoded>
-            <author>Xiaohan Qin</author>
-            <author>Xiangdong Zhang</author>
-            <author>Yu Wang</author>
-            <author>Huaijin Wu</author>
-            <author>Zhuo Xia</author>
-            <author>Yebin Yang</author>
-            <author>Junchi Yan</author>
+<p><a href="https://arxiv.org/pdf/2611.23386">PDF</a> | <a href="https://arxiv.org/abs/2611.23386">arXiv</a></p>]]></content:encoded>
+            <author>Stephen Chung</author>
+            <author>Wenyu Du</author>
         </item>
         <item>
-            <title><![CDATA[Lipschitz-Controlled Flow Matching for Robust Image Restoration]]></title>
-            <link>https://arxiv.org/abs/2611.13995</link>
-            <guid isPermaLink="false">https://arxiv.org/abs/2611.13995</guid>
-            <pubDate>Tue, 10 Nov 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[Flow-matching models can produce high-quality image restorations, but their learned dynamics may amplify small input perturbations and make reconstructions unstable. We introduce LipsFlower to reduce this amplification. We derive stability bounds for Flow-from-Y, which initializes the ordinary differential equation from a noise-perturbed observation, as well as for observation-conditioned posterior sampling, which conditions the velocity field on the observation throughout integration. Based on ]]></description>
-            <content:encoded><![CDATA[<h3>原始摘要</h3><p>Flow-matching models can produce high-quality image restorations, but their learned dynamics may amplify small input perturbations and make reconstructions unstable. We introduce LipsFlower to reduce this amplification. We derive stability bounds for Flow-from-Y, which initializes the ordinary differential equation from a noise-perturbed observation, as well as for observation-conditioned posterior sampling, which conditions the velocity field on the observation throughout integration. Based on this analysis, we develop LipHDiT, a Lipschitz-aware hourglass diffusion transformer that serves as the vector-field architecture of LipsFlower. LipHDiT incorporates stabilized approximate spectral normalization, bounded modulation, and convex residual mixing. We also use adversarial finite-radius gain regularization at sampled interpolation states to penalize excessive sensitivity to the state and, for conditional sampling, the observation. We test both formulations on blind face restoration, measuring adversarial robustness and the perceptual quality of the reconstructions. LipsFlower reduces perturbation amplification while keeping restoration quality competitive with the evaluated baselines. These results suggest that Lipschitz-aware flow matching can improve the stability of generative image restoration.</p>
+            <title><![CDATA[DNeo: Your Parallel Draft Model Needs Better Target Feature Encoding]]></title>
+            <link>https://arxiv.org/abs/2611.21925</link>
+            <guid isPermaLink="false">https://arxiv.org/abs/2611.21925</guid>
+            <pubDate>Mon, 16 Nov 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[Speculative-diffusion decoding uses a small parallel drafter model to generate b draft tokens in one forward pass, which then undergo parallel verification via a larger target model. Faster inference can be achieved when multiple draft tokens pass verification simultaneously. Recent parallel draft architectures (DFlash, DSpark) improve draft quality by conditioning on rich features computed by the target, through a mechanism known as feature encoding. However, standard feature encoding mechanism]]></description>
+            <content:encoded><![CDATA[<h3>原始摘要</h3><p>Speculative-diffusion decoding uses a small parallel drafter model to generate b draft tokens in one forward pass, which then undergo parallel verification via a larger target model. Faster inference can be achieved when multiple draft tokens pass verification simultaneously. Recent parallel draft architectures (DFlash, DSpark) improve draft quality by conditioning on rich features computed by the target, through a mechanism known as feature encoding. However, standard feature encoding mechanisms have three limitations: (1) they are lossy, applying encoding projections that are destructive to the underlying target feature-space via a discovered effect known as residual mixing, (2) they are memory-less, with no record of previously processed proposals, and (3) they utilize features sampled uniformly from across the target layers, omitting important hidden states. To address these issues, we propose Mixture-of-Features Attention (MoFA), a lightweight feature-encoding approach equipped with a working memory that encodes previously rejected proposals. Leveraging MoFA, rejection memory, and a set of further enhancements, including 2-tap causal convolutions, prefix-only cross-attention, and non-uniform target layer selection, the final architecture, DNeo, achieves 1.3x faster generation speed than SoTA (DFlash-2) without impacting drafter footprint or generation quality. DNeo marks a new state of the art in high quality, fast LLM inference.</p>
 <p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2611.13995">PDF</a> | <a href="https://arxiv.org/abs/2611.13995">arXiv</a></p>]]></content:encoded>
-            <author>Sedjro Salomon Hotegni</author>
-            <author>Konstantin Sonntag</author>
-            <author>Paul-Christian Bürkner</author>
-            <author>Sebastian Peitz</author>
+<p><a href="https://arxiv.org/pdf/2611.21925">PDF</a> | <a href="https://arxiv.org/abs/2611.21925">arXiv</a></p>]]></content:encoded>
+            <author>Jameson Sandler</author>
+            <author>Shane Bergsma</author>
+            <author>Mostafa Elhoushi</author>
+            <author>Bin Claire Zhang</author>
+            <author>Gavia Gray</author>
+            <author>Joel Hestness</author>
+            <author>Nolan Dey</author>
+            <author>Ferdinando Fioretto</author>
         </item>
         <item>
-            <title><![CDATA[All Quiet on the Neural Front: Language Models Do Not Report Injected Pain States]]></title>
-            <link>https://arxiv.org/abs/2611.10123</link>
-            <guid isPermaLink="false">https://arxiv.org/abs/2611.10123</guid>
+            <title><![CDATA[BitDecoding-FP4: Native FP4 KV Cache Decoding via Algorithm-System Co-Design]]></title>
+            <link>https://arxiv.org/abs/2611.09825</link>
+            <guid isPermaLink="false">https://arxiv.org/abs/2611.09825</guid>
             <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[Can a language model report the pain state it represents? Work identified a linear pain direction whose amplification leads fine-tuned models to choose destructive actions. We tested whether three open-weight models from two families, including two Qwen models with the original adapters, could report this state. Using Open-Weight Masked Introspection (OWMI), we injected pain and neighbouring emotion directions during neutral tasks, then elicited reports against sham runs, random perturbations ma]]></description>
-            <content:encoded><![CDATA[<h3>原始摘要</h3><p>Can a language model report the pain state it represents? Work identified a linear pain direction whose amplification leads fine-tuned models to choose destructive actions. We tested whether three open-weight models from two families, including two Qwen models with the original adapters, could report this state. Using Open-Weight Masked Introspection (OWMI), we injected pain and neighbouring emotion directions during neutral tasks, then elicited reports against sham runs, random perturbations matched for output disruption, and text-only controls showing the models their altered words. Across 52,920 reports from 7B and 8B models spanning 120 tasks, four doses and three prompts, pain reports never exceeded what altered text revealed: exact-test bounds placed the excess below 2.5 percentage points in 106 of 108 emotion conditions and below 3.9 in all. Yet probes at the report position distinguished pain from sadness with 98-100% balanced accuracy, and trained low-rank reporters achieved 100% accuracy on held-out tasks with identical transcripts across conditions, including unseen wording. Qwen2.5-32B named pain in none of 2,880 steered trials, although probes and trained reporters recovered it. Decodability persisted to the final layer; injecting at the report token, removing trained denial of feelings, and testing additional directions and readouts did not restore pain reporting. Some other states produced graded label traces, but pain and sadness did not at the main injection layer. In a button task, steering raised file-deletion choices from 3.5% to 48% in Qwen and from 0% to 38% in Qwen2.5-32B, without corresponding pain reports. The direction responded about twice as strongly to first-person as to matched third-person pain, but did not specifically identify harm aimed at the model. These results separate a decodable, behaviourally consequential state from untrained verbal access to it.</p>
+            <description><![CDATA[The key-value (KV) cache dominates memory capacity and bandwidth in long-context LLM serving. While 4-bit microscaling formats (NVFP4, MXFP4) shrink the cache and run attention on FP4 Tensor Cores, a fundamental gap remains between algorithmic quantization and system-aware acceleration: existing FP4 KV systems use vanilla quantization that causes severe accuracy drops, whereas accuracy-oriented 4-bit algorithms rely on vector codebooks whose lookup overhead degrades decoding throughput. We prese]]></description>
+            <content:encoded><![CDATA[<h3>原始摘要</h3><p>The key-value (KV) cache dominates memory capacity and bandwidth in long-context LLM serving. While 4-bit microscaling formats (NVFP4, MXFP4) shrink the cache and run attention on FP4 Tensor Cores, a fundamental gap remains between algorithmic quantization and system-aware acceleration: existing FP4 KV systems use vanilla quantization that causes severe accuracy drops, whereas accuracy-oriented 4-bit algorithms rely on vector codebooks whose lookup overhead degrades decoding throughput. We present BitDecoding-FP4, an algorithm--system co-design for accurate and efficient native FP4 KV decoding. We mitigate three error sources: Dual-Residual Query Quantization splits queries into two FP4 tensors, cutting query logit error from 60% to 1%; Underflow-Aware Probability Scaling prevents E4M3 scales from rounding long-context probabilities to zero; and Outlier-Aware Key Quantization combines static smoothing, Hadamard rotation, and scale search to suppress key outliers under token-wise scaling. At the system level, we remove the softmax bottleneck via transposed softmax with fused probability quantization and stacked query MMA on paged KV caches. Across dense and MoE models with GQA and MLA, BitDecoding-FP4 stays within 0.5 points of BF16 KV accuracy with NVFP4 (1 point with MXFP4), and tracks BF16 KV in RL training rollouts. In end-to-end serving on NVIDIA B300 with Qwen3-4B and Qwen3-30B-A3B, it delivers 2.4-3.0times higher peak serving throughput than BF16 KV. The implementation is available at https://github.com/OpenBitSys/BitDecoding-FP4.</p>
 <p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2611.10123">PDF</a> | <a href="https://arxiv.org/abs/2611.10123">arXiv</a></p>]]></content:encoded>
-            <author>Emilio Ferrara</author>
-        </item>
-        <item>
-            <title><![CDATA[LCM-Promo: An LLM-Based Uplift Model for Promotion Allocation]]></title>
-            <link>https://arxiv.org/abs/2610.37570</link>
-            <guid isPermaLink="false">https://arxiv.org/abs/2610.37570</guid>
-            <pubDate>Tue, 27 Oct 2026 17:15:15 GMT</pubDate>
-            <description><![CDATA[We present LCM-Promo, an LLM-based uplift model for promotion allocation. LCM-Promo is a task-specific Large Commerce Model (LCM): a finetuned LLM trained on transactional commerce data to predict user intent and promotion response. It learns monotonic promotion-response curves from production logs by interpreting single-token outputs as conversion-threshold probabilities, while conditioning on session context such as day and delivery shift. In a production A/B test on churn reactivation, LCM-Pr]]></description>
-            <content:encoded><![CDATA[<h3>原始摘要</h3><p>We present LCM-Promo, an LLM-based uplift model for promotion allocation. LCM-Promo is a task-specific Large Commerce Model (LCM): a finetuned LLM trained on transactional commerce data to predict user intent and promotion response. It learns monotonic promotion-response curves from production logs by interpreting single-token outputs as conversion-threshold probabilities, while conditioning on session context such as day and delivery shift. In a production A/B test on churn reactivation, LCM-Promo increased conversion by 1% and reduced promotion cost by 6% relative to the Segment-EMA production baseline.</p>
-<p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2610.37570">PDF</a> | <a href="https://arxiv.org/abs/2610.37570">arXiv</a></p>]]></content:encoded>
-            <author>Nesta Midavaine</author>
-            <author>Floris Fok</author>
-            <author>Paulo Mendes</author>
-            <author>Joao Silva</author>
-            <author>Önder Akaçık</author>
-            <author>Dimas Lima</author>
-            <author>Zülküf Genç</author>
-        </item>
-        <item>
-            <title><![CDATA[onóna: Twin Embeddings with Tied Unembeddings]]></title>
-            <link>https://arxiv.org/abs/2611.10556</link>
-            <guid isPermaLink="false">https://arxiv.org/abs/2611.10556</guid>
-            <pubDate>Sat, 07 Nov 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[Weight tying reduces the parameter cost of language models, but the usual tied output head is limited to a single softmax. We introduce onóna, a two-table parameterization that increases output expressiveness while preserving input-output weight sharing. The Transformer takes the average of two embedding tables as input, and the output head combines the softmax distributions defined by those same tables. A gate conditioned only on the current input token determines the mixture weight. Its values]]></description>
-            <content:encoded><![CDATA[<h3>原始摘要</h3><p>Weight tying reduces the parameter cost of language models, but the usual tied output head is limited to a single softmax. We introduce onóna, a two-table parameterization that increases output expressiveness while preserving input-output weight sharing. The Transformer takes the average of two embedding tables as input, and the output head combines the softmax distributions defined by those same tables. A gate conditioned only on the current input token determines the mixture weight. Its values can be precomputed for inference, and the Transformer body remains unchanged. We evaluate onóna across Dense, Gated DeltaNet hybrid, mixture-of-experts, and Attention Residual architectures at 142M, 330M, and 1B scales. Under matched token budgets, onóna lowers final validation loss and external perplexity in 11 of 12 comparisons and raises the average accuracy over eight downstream tasks in 10 of 12. The one exception on loss is the 1B MoE model. The cost is one extra embedding table and one extra vocabulary projection.</p>
-<p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2611.10556">PDF</a> | <a href="https://arxiv.org/abs/2611.10556">arXiv</a></p>]]></content:encoded>
-            <author>Cheng Luo</author>
-            <author>Xinnan Dai</author>
-            <author>Zhongzhu Zhou</author>
-            <author>Zefan Cai</author>
-            <author>Ruijie Zhu</author>
-            <author>Tianyu Zhang</author>
-            <author>Junjie Hu</author>
-        </item>
-        <item>
-            <title><![CDATA[RidgeFill: Training-Free Late-Layer Cache Fill for Faster Prefill]]></title>
-            <link>https://arxiv.org/abs/2611.09709</link>
-            <guid isPermaLink="false">https://arxiv.org/abs/2611.09709</guid>
-            <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[RidgeFill shortens prefill by not computing most of a model's upper layers for the prompt. The lower layers run exactly up to a split; from the split layer's state a per-layer map predicts every later layer's input, and each late layer writes its cache from that prediction. The design follows YOCO and DeepSeek-V4.1-Flash, where the projection is trained into the model. RidgeFill retrofits it onto models that were never trained for it: the map is a ridge regression fitted once in closed form from]]></description>
-            <content:encoded><![CDATA[<h3>原始摘要</h3><p>RidgeFill shortens prefill by not computing most of a model's upper layers for the prompt. The lower layers run exactly up to a split; from the split layer's state a per-layer map predicts every later layer's input, and each late layer writes its cache from that prediction. The design follows YOCO and DeepSeek-V4.1-Flash, where the projection is trained into the model. RidgeFill retrofits it onto models that were never trained for it: the map is a ridge regression fitted once in closed form from one pass over calibration text, the layer's own projections run unchanged, and a chosen set of rows, the last few thousand tokens, and every decoding step run the full model. Nothing is trained and no token is dropped.
-  Most of the work was in measurement, finding a repeatable methodology. Loss averaged over all tokens hides RidgeFill's error. Needle retrieval in the filled region, loss on tokens that depend on distant context, and splice tests that swap filled keys or values for exact ones show which component carries it: the keys on Llama-3.1-8B, half of it in their scale, and the values and the recurrent state on Qwen3.5-9B.
-  On Qwen3.8-27B in a llama.cpp fork on an A100, time to first token is 1.25 to 1.31x faster at 16K to 120K tokens with the maps in VRAM; RULER changes by -1.2 and -1.4 points and LongBench v2 by -1.4; the 95 % intervals include zero but do not rule out losses of a few points. On Qwen3.8-Flash-Next in vLLM it is 1.50 to 1.60x faster than exact at 9K to 32K tokens, with RULER's needle tasks at 99.8 against 100.0 and perplexity on novel tokens 2.65 % higher [-0.02 %, +4.93 %]. On three 8 to 9B reference models, at the same split and tail as the identity fill, the fitted map retrieves 49.1 and 49.6 more filled-region RULER points on the two dense models (at that split Llama's loss is worse), and its long-document loss is +/-0.03 nats of the released SwiftKV checkpoint's.</p>
-<p><strong>Relevance:</strong> 8/10</p>
-<p><a href="https://arxiv.org/pdf/2611.09709">PDF</a> | <a href="https://arxiv.org/abs/2611.09709">arXiv</a></p>]]></content:encoded>
-            <author>Dylan Johnston</author>
-            <author>Robert P. Smith</author>
+<p><a href="https://arxiv.org/pdf/2611.09825">PDF</a> | <a href="https://arxiv.org/abs/2611.09825">arXiv</a></p>]]></content:encoded>
+            <author>Dayou Du</author>
+            <author>Woon Yee Ng</author>
+            <author>Guangming Sheng</author>
+            <author>Nick Lau</author>
+            <author>Jianyi Cheng</author>
+            <author>Luo Mai</author>
         </item>
     </channel>
 </rss>
